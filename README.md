@@ -1,0 +1,2 @@
+# leetcode
+Do Leetcode
