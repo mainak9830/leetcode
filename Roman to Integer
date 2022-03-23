@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int romanToInt(string s) {
+        map<char,int> map;
+        map['I'] = 1;
+        map['V'] = 5;
+        map['X'] = 10;
+        map['L'] = 50;
+        map['C'] = 100;
+        map['D'] = 500;
+        map['M'] = 1000;
+        
+        int n = s.length();
+        int ans = 0;
+        int i=0;
+        for(;i < n;){
+            
+            if(i <= n-2 && map[s[i]] < map[s[i+1]]){
+                ans += map[s[i+1]] - map[s[i]];
+                i += 2;
+            }else{
+                ans += map[s[i]];
+                i++;
+            }
+                
+        }
+        return ans;
+    }
+};
