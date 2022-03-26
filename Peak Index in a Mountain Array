@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int binary_search(vector<int> arr, int l,int h){
+        int mid = l + (h-l)/2;
+        if(mid == 0)
+            return mid+1;
+        if(mid == arr.size()-1)
+            return mid-1;
+        if(mid > 0 && arr[mid] > arr[mid-1] && arr[mid] > arr[mid+1])
+            return mid;
+        else if(mid > 0 && arr[mid] > arr[mid-1] && arr[mid+1] > arr[mid])
+            return binary_search(arr,mid+1,h);
+        //else if(arr[mid-1] > arr[mid] && arr[mid] > arr[mid+1])
+        return binary_search(arr,l,mid-1);
+    }
+    int peakIndexInMountainArray(vector<int>& arr) {
+        
+        return binary_search(arr,0,arr.size()-1);
+    }
+};
