@@ -32,3 +32,37 @@ public:
         return true;
     }
 };
+
+
+//Process 2
+
+class Solution {
+public:
+    int next_gen(int n){
+        int sum=0;
+        while(n!=0){
+            int r = n%10;
+            sum += r*r;
+            n /= 10;
+        }
+        
+        return sum;
+    }
+    bool isHappy(int n) {
+        
+        int slow = n;
+        int fast = next_gen(n);
+        
+        
+        while(fast != 1 && slow != fast){
+            slow = next_gen(slow);
+            fast = next_gen(next_gen(fast));
+            
+        }
+        
+        if(fast == 1)
+            return true;
+        
+        return false;
+    }
+};
