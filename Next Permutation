@@ -1,0 +1,32 @@
+class Solution {
+public:
+    void nextPermutation(vector<int>& arr) {
+        int n = arr.size();
+        int peak = 0; //175654
+        for(int i=n-2;i >= 0;i--){
+            if(arr[i] < arr[i+1]){
+                peak = i+1;
+                break;
+            }
+        }
+        int lower = (peak == 0) ? 0 : peak-1;
+        int small = n-1;
+        for(int i=n-1;i >= peak;i--){
+            if(arr[i] > arr[lower]){
+                small = i;
+                break;
+            }
+        }
+
+        
+        if(peak > 0){
+            
+            int temp = arr[lower];
+            arr[lower] = arr[small];
+            arr[small] = temp;
+        }
+        reverse(arr.begin()+peak,arr.end());
+
+        
+    }
+};
