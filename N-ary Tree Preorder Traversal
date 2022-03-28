@@ -1,0 +1,86 @@
+//Attempt 1
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> children;
+
+    Node() {}
+
+    Node(int _val) {
+        val = _val;
+    }
+
+    Node(int _val, vector<Node*> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+
+class Solution {
+public:
+    vector<int> output; 
+    vector<int> preorder(Node* root) {
+        
+        if(root == NULL)
+            return output;
+        output.push_back(root->val);
+        for(Node* a : root->children){
+            
+            preorder(a);
+        }
+        
+        return output;
+        
+    }
+};
+
+//Attempt 2
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> children;
+
+    Node() {}
+
+    Node(int _val) {
+        val = _val;
+    }
+
+    Node(int _val, vector<Node*> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+
+class Solution {
+public:
+    
+    vector<int> preorder(Node* root) {
+        
+        vector<int> output; 
+        
+        stack<Node*> st;
+        if(root == NULL)
+            return output;
+        st.push(root);
+        
+        while(!st.empty()){
+            
+            Node* current = st.top();
+            st.pop();
+            output.push_back(current->val);
+            
+            for(int i = current->children.size()-1;i >= 0;i--){
+                st.push(current->children[i]);
+            }
+        }
+        
+        return output;   
+    }
+};
