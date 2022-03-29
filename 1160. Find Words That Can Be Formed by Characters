@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int countCharacters(vector<string>& words, string chars) {
+        vector<int> count(26,0);
+        int ans = 0;
+        for(int i=0;i < chars.length();i++)
+            count[chars[i]-'a']++;
+        
+        for(int i=0;i < words.size();i++){
+            
+            vector<int> count1(26,0);
+            bool flag=true;
+            for(int j=0;j < words[i].length();j++){
+                count1[words[i][j]-'a']++;
+                if(count1[words[i][j]-'a'] > count[words[i][j]-'a']){
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag)
+                ans += words[i].length();
+        }
+        return ans;
+        
+    }
+};
