@@ -1,0 +1,38 @@
+class MyHashSet {
+public:
+    vector<list<int>> set;
+    int m;
+    MyHashSet() {
+        m = 100;
+        set.resize(m);
+    }
+    
+    void add(int key) {
+        if(search(key) == set[key%m].end())
+            set[key%m].push_back(key);
+        
+    }
+    list<int> :: iterator search(int key){
+        int k = key % m;
+        return find(set[k].begin(),set[k].end(),key);
+    } 
+    void remove(int key) {
+        auto itr = search(key);
+        if( itr != set[key%m].end())
+            set[key%m].erase(itr);
+    }
+    
+    bool contains(int key) {
+        if(search(key) == set[key%m].end())
+            return false;
+        return true;
+    }
+};
+
+/**
+ * Your MyHashSet object will be instantiated and called as such:
+ * MyHashSet* obj = new MyHashSet();
+ * obj->add(key);
+ * obj->remove(key);
+ * bool param_3 = obj->contains(key);
+ */
