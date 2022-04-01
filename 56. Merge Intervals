@@ -1,0 +1,41 @@
+bool cmp(vector<int> a, vector<int> b){
+        if(a[0] < b[0])
+            return true;
+        else if(a[0] == b[0])
+            return a[1] > b[1];
+        
+        return false;
+}
+class Solution {
+public:
+    
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        
+        vector<vector<int>> output;
+        sort(intervals.begin(), intervals.end(), cmp);
+        
+        int start = intervals[0][0];
+        int end = intervals[0][1];
+        
+        for(int i=1;i < intervals.size();i++){
+            int current_start = intervals[i][0];
+            int current_end = intervals[i][1];
+            
+            if(end >= current_start){
+                end = max(current_end, end);
+            }else{
+                vector<int> v(2);
+                v[0] = start;
+                v[1] = end;
+                output.push_back(v);
+                start = current_start;
+                end = current_end;
+            }
+        }
+        vector<int> v(2);
+        v[0] = start;
+        v[1] = end;
+        output.push_back(v);
+        return output;
+    }
+};
