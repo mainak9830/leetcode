@@ -1,0 +1,30 @@
+//Asked in Amazon
+//Link
+https://www.interviewbit.com/problems/repeat-and-missing-number-array/
+vector<int> Solution::repeatedNumber(const vector<int> &A) {
+    vector<int> arr = A;
+    int n = A.size();
+    int missing;
+    int duplicate;
+    bool flag = true;
+    for(int i=0;i < n;i++){
+        int next = abs(arr[i]) - 1;
+        if(arr[next] < 0 && flag){
+            flag = false;
+            duplicate = next+1;
+        }
+        arr[next] = abs(arr[next])*-1;
+
+    }
+    vector<int> a(2);
+    a[0] = duplicate;
+
+    for(int i=0;i < n;i++){
+        if(arr[i] > 0){
+            a[1] = i+1;
+            break;
+        }
+    }
+
+    return a;
+}
