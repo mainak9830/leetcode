@@ -1,0 +1,68 @@
+//Attempt 1
+
+O(n) with scope for optimization
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string str) {
+        
+        int i = 0;
+        int n = str.length();
+        int j = 0;
+        
+        int maxlen = 0;
+        vector<int> map(256,-1);
+        
+        while(j < n){
+            char c = str[j];
+            if(map[c] != -1){
+                int k = i;
+                while(k <= map[c]){
+                    map[str[k]] = -1;
+                    k++;
+                }
+                i = k;
+            }
+            map[c] = j;
+            maxlen = max(maxlen,j-i+1);
+            //cout << j << " " << i << " " << endl;
+            j++;
+            
+        }
+        
+        
+        return maxlen;
+        
+    }
+};
+
+//Attempt 2 
+Optimized approach
+class Solution {
+public:
+    int lengthOfLongestSubstring(string str) {
+        
+        int i = 0;
+        int n = str.length();
+        int j = 0;
+        
+        int maxlen = 0;
+        vector<int> map(256,-1);
+        
+        while(j < n){
+            char c = str[j];
+            if(map[c] >= i)
+                i = map[c] + 1;
+            
+            map[c] = j;
+            maxlen = max(maxlen,j-i+1);
+            //cout << j << " " << i << " " << endl;
+            j++;
+            
+        }
+        
+        
+        return maxlen;
+        
+    }
+};
