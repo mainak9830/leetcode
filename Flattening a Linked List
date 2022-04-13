@@ -1,0 +1,55 @@
+struct Node{
+	int data;
+	struct Node * next;
+	struct Node * bottom;
+	
+	Node(int x){
+	    data = x;
+	    next = NULL;
+	    bottom = NULL;
+	}
+	
+};
+*/
+
+/*  Function which returns the  root of 
+    the flattened linked list. */
+
+Node *merge(Node *r1, Node *r2){
+    Node *temp = new Node(-1);
+    Node *head = temp;
+    
+    while(r1 || r2){
+        if(r1 == NULL){
+            temp->bottom = r2;
+            r2 = NULL;
+        }
+        else if(r2 == NULL){
+            temp->bottom = r1;
+            r1 = NULL;
+        }
+        else if(r1->data <= r2->data){
+            temp->bottom = r1;
+            r1 = r1->bottom;
+        }
+        else{
+            temp->bottom = r2;
+            r2 = r2->bottom;
+        }
+        temp = temp->bottom;
+            
+    }
+    
+    head->bottom->next = NULL;
+    return head->bottom;
+}
+Node *flatten(Node *root)
+{
+   // Your code here
+   if(root == NULL)
+    return root;
+   
+   return merge(root,flatten(root->next));
+   
+}
+
