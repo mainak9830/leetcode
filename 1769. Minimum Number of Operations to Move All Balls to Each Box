@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<int> minOperations(string boxes) {
+        int l = 0;
+        int r = 0;
+        int n = boxes.length();
+        int ones = 0;
+        int sum = 0;
+        for(int i=0;i < n;i++){
+            if(boxes[i] == '1'){
+                r++;
+                sum += i;
+            }
+                
+        }
+        vector<int> ans(n);
+        for(int i=0;i < n;i++){
+            int res = sum - r*i - l*(n-1-i);
+            if(boxes[i] == '1'){
+                sum = sum - i + n-1-i;
+                l++;
+                r--;  
+            }
+            ans[i] = res;
+            
+        }
+        return ans;
+    }
+};
