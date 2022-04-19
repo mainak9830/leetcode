@@ -1,0 +1,47 @@
+class Solution {
+public:
+    void extract_digits(long long num, vector<long long> &digits){
+        if(num < 0)
+            num = -1*num;
+        while(num){
+            digits[num%10]++;
+            num /= 10;
+        }
+    }
+    long long smallestNumber(long long num) {
+        
+        vector<long long> digits(10,0);
+        extract_digits(num,digits);
+        long long ans = 0;
+        if(num < 0){
+            for(int i=9;i>=0;i--){
+                while(digits[i]){
+                    digits[i]--;
+                    ans = ans*10 + i;
+                }     
+            }
+            
+            return -ans;
+        }
+        if(digits[0]){
+            for(int i=1;i <= 9;i++){
+                if(digits[i]){
+                    digits[i]--;
+                    ans = i;
+                    break;
+                }
+            }
+        }
+        
+        for(int i=0;i <= 9;i++){
+            while(digits[i]){
+                digits[i]--;
+                ans = ans*10 + i;
+            }     
+        }
+        
+        return ans;
+        
+        
+    }
+};
