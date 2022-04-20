@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int minDeletion(vector<int>& nums) {
+        
+        int n = nums.size();
+        int i = 0;
+        int count = 0;
+        while(i < n){
+            if(i == n-1){
+                count++;
+                i++;
+            } 
+            else if(nums[i+1] == nums[i]){
+                int j = i+1;
+                while(j < n && nums[j] == nums[i]){
+                    j++;
+                    count++;
+                }
+                i = j+1;
+                
+            }
+            else{
+                i = i + 2;
+            }
+        }
+        if((n-count)&1)
+            count++;
+        return count;
+        
+    }
+};
