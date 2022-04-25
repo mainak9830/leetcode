@@ -1,0 +1,30 @@
+// { Driver Code Starts
+#include<bits/stdc++.h> 
+using namespace std; 
+
+ // } Driver Code Ends
+class Solution
+{
+public:
+    vector<int> ans;
+    void subsum(vector<int> arr, int idx, int currentSum){
+        int n = arr.size();
+        if(idx == n){
+            ans.push_back(currentSum);
+            return;
+        }
+        
+        
+        subsum(arr,idx+1,currentSum+arr[idx]);
+        subsum(arr,idx+1,currentSum);
+        
+        
+    }
+    vector<int> subsetSums(vector<int> arr, int N)
+    {
+        // Write Your Code here
+        subsum(arr,0,0);
+        return ans;
+    }
+};
+
