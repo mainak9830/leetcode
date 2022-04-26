@@ -1,0 +1,55 @@
+//Approach 1
+
+class Solution {
+public:
+    vector<vector<string>> ans;
+    bool checkPallindrome(string s, int start, int end){
+        while(start < end){
+            if(s[start++] != s[end--])
+                return false;
+        }
+        return true;
+    }
+    
+    void helper(string s, int start, int end, vector<string> &temp){
+        int n = s.size();
+        if(end >= n)
+            return;
+//         if(end == n-1){
+//             temp.push_back(s.substr(start, end-start+1));
+            
+//             ans.push_back(temp);
+//             temp.pop_back();
+//             cout << s.substr(start,end-start+1) << endl;
+            
+//             return;
+            
+//         }
+        
+        
+        if(checkPallindrome(s, start, end)){
+            
+            temp.push_back(s.substr(start, end-start+1));
+            if(end == n-1){
+                ans.push_back(temp);
+            }
+            helper(s, end+1, end+1, temp);
+            temp.pop_back();
+            
+        }
+        
+        helper(s, start, end+1, temp);
+        
+        
+            
+        
+    }
+    vector<vector<string>> partition(string s) {
+        
+        vector<string> temp;
+        helper(s,0,0,temp);
+        
+        return ans;
+        
+    }
+};
