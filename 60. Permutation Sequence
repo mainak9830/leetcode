@@ -1,0 +1,28 @@
+class Solution {
+public:
+    string permute(vector<char> nums, int k){
+        string ans = "";
+        int n = nums.size();
+        int fac = 1;
+        for(int i=1;i <= n;i++){
+            fac = fac * i;
+        }
+        k = k-1;
+        while(nums.size()){
+            fac = fac/nums.size();
+            ans += nums[k/fac];
+            nums.erase(nums.begin() + k/fac);
+            
+            k = k % fac;
+        }
+        
+        return ans;
+    }
+    string getPermutation(int n, int k) {
+        vector<char> nums;
+        for(int i=1;i <= n;i++){
+            nums.push_back(i+'0');
+        }
+        return permute(nums,k);
+    }
+};
