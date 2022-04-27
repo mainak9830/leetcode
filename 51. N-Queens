@@ -1,0 +1,45 @@
+class Solution {
+public:
+    vector<vector<string>> ans;
+    vector<string> convert(vector<int> pos){
+        vector<string> res;
+        for(int i=1;i < pos.size();i++){
+            string s = "";
+            for(int j=1;j < pos.size();j++)
+                s += (pos[i] == j) ? 'Q' : '.';
+            res.push_back(s);
+        }
+        
+        return res;
+    }
+    bool validMove(vector<int> &pos, int row2, int col2){
+        
+        for(int row1 = 1; row1 < row2;row1++){
+            int col1 = pos[row1];
+            
+            if(col1 == col2 || abs(row2-row1) == abs(col2-col1))
+                return false;
+        }
+        //cout << row2 << " " << col2 << endl;
+        pos[row2] = col2;
+        return true;
+    }
+    void NQueens(vector<int> &pos, int queen, int n){
+        
+        if(queen == n+1){
+            ans.push_back(convert(pos));
+            return;
+        }
+        
+        for(int i=1;i <= n;i++){
+            if(validMove(pos, queen, i))
+                NQueens(pos,queen+1,n);
+        }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        vector<int> temp(n+1,0);
+        
+        NQueens(temp,1,n);
+        return ans;
+    }
+};
