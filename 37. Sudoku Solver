@@ -1,0 +1,86 @@
+class Solution {
+public:
+    
+    bool validMove(vector<vector<char>> board, int row, int col, char d){
+        int m = board.size();
+        int n = board[0].size();
+        
+        board[row][col] = d;
+        
+        for(int c = 0;c < n;c++){
+            //cout << board[row][col] << " ";
+            if(board[row][c] == d && c != col){
+                board[row][col] = '.';
+                return false;
+            }
+        }
+        //cout << endl;
+        
+        for(int r = 0;r < m;r++){
+            if(board[r][col] == d && r != row){
+                board[row][col] = '.';
+                return false;
+            }
+        }
+        
+        int row_i = row / 3;
+        int col_i = col / 3;
+        
+        for(int r = row_i*3;r < (row_i+1)*3;r++){
+            for(int c = col_i*3;c < (col_i+1)*3;c++){
+                if(board[r][c] != '.'){
+                    if(board[r][c] == d && r != row && c != col){
+                        board[row][col] = '.';
+                        return false;
+                    }
+                }
+            }
+        }
+        
+        
+        
+        return true;
+    }
+    bool fillBoard(vector<vector<char>> &board, int row, int col){
+        //cout << row << " " << col << endl;
+        int m = board.size();
+        int n = board[0].size();
+        if(row == m){
+            return true;
+        }
+        
+        for(int d=1;d <= 9;d++){
+            bool b;
+            if(board[row][col] == '.'){
+                
+                if(validMove(board, row, col, d+'0')){
+                    board[row][col] = d+'0';
+                    if(col < n-1)
+                        b = fillBoard(board, row,col+1);
+                    else
+                        b = fillBoard(board,row+1,0);
+                    if(b)
+                        return b;
+                    board[row][col] = '.';
+
+                }
+            }
+            else{
+                if(col < n-1)
+                    b = fillBoard(board, row,col+1);
+                else
+                    b = fillBoard(board,row+1,0);
+                
+                return b;
+            }
+        }
+        
+        return false;
+                
+    }
+          
+    
+    void solveSudoku(vector<vector<char>>& board) {
+        fillBoard(board, 0, 0);
+    }
+};
