@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int visited[101];
+    bool color(vector<vector<int>> &graph, int v, int c){
+        if(visited[v] != -1)
+            return true;
+        
+        visited[v] = c;
+        
+        for(auto i : graph[v]){
+            if(visited[i] == c)
+                return false;
+            if(!color(graph, i, 1-c))
+                return false;
+        }
+        
+        return true;
+    }
+    bool isBipartite(vector<vector<int>>& graph) {
+        int n = graph.size();
+        memset(visited,-1,sizeof(visited));
+        for(int i=0;i < n;i++){
+            if(visited[i] == -1 && !color(graph,i,0))
+                return false;
+        }
+        return true;
+    }
+};
