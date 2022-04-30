@@ -1,0 +1,55 @@
+class Solution {
+public:
+    int arr[26];
+    int leastInterval(vector<char>& tasks, int n) {
+        
+        for(int i=0;i < tasks.size();i++)
+            arr[tasks[i]-'A']++;
+        
+        priority_queue<pair<int,char>> pq;
+        
+        for(int i=0;i < 26;i++){
+            if(arr[i])
+                pq.push({arr[i],'A'+i});
+        }
+        
+        int time = 0;
+        int arr[26];
+        while(!pq.empty()){
+            pair<int,char> st = pq.top();
+            //cout << pq.top().second << " ---->";
+            pq.pop();
+            vector<pair<int,char>> temp;
+            if(st.first > 1){
+                time++;
+                for(int i=1;i <= n;i++){
+                    if(!pq.empty()){
+                        //cout << pq.top().second << " ---->";
+                        temp.push_back(pq.top());
+                        pq.pop();
+                        time++;
+                    }
+                    else{
+                        //cout << "idle--->";
+                        time += n-i+1; 
+                        break;
+                    }
+                }
+                
+                for(int i=0;i < temp.size();i++){
+                    if(temp[i].first > 1)
+                        pq.push({temp[i].first-1,temp[i].second});
+                }
+                
+                
+                pq.push({st.first-1,st.second});
+            }
+            else{
+                time++;
+            }
+            
+        }
+        
+        return time;
+    }
+};
