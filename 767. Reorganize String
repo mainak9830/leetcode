@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int arr[26];
+    string reorganizeString(string s) {
+        int n = s.size();
+        priority_queue<pair<int,char>> pq;
+        string ans = "";
+        
+        for(int i=0;i < n;i++){
+            arr[s[i]-'a']++;
+        }
+        
+        for(int i=0;i < 26;i++){
+            if(arr[i]){
+                pq.push({arr[i],'a'+i});
+            }
+        }
+        
+        while(!pq.empty()){
+            //cout << ans << endl;
+            pair<int,char> a = pq.top();
+            pq.pop();
+            if(pq.empty()){
+                if(a.first > 1 || ans[ans.size()-1] == a.second)
+                    return "";
+                else
+                    return ans + a.second;
+                
+            }
+            pair<int,char> b = pq.top();
+            pq.pop();
+            ans += a.second;
+            ans += b.second;
+            if(b.first > 1)
+                pq.push({b.first-1,b.second});
+            if(a.first > 1)
+                pq.push({a.first-1,a.second});
+            
+            
+        }
+        
+        return ans;
+        
+    }
+};
