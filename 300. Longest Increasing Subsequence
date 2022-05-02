@@ -42,3 +42,22 @@ public:
        return ans; 
     }
 };
+
+// O(nlogn) solution
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> sub;
+        
+        for(int i=0;i < n;i++){
+            if(sub.empty() || arr[i] > sub[sub.size()-1])
+                sub.push_back(arr[i]);
+            else{
+                auto x = lower_bound(sub.begin(),sub.end(),arr[i]);
+                *x = arr[i];
+            }
+        }
+        return sub.size();
+    }
+};
