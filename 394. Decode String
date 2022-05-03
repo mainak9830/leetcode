@@ -1,0 +1,63 @@
+class Solution {
+public:
+    bool check(char c){
+        if(c >= '1' && c <= '9')
+            return true;
+        
+        return false;
+    }
+    string decodeString(string s) {
+        int n = s.size();
+        stack<string> st;
+        string temp = "";
+        for(int i=0;i < n;i++){
+            
+            cout << s[i];
+            if(s[i] == '[')
+                st.push(temp+s[i]);
+            else if(check(s[i])){
+                if(i == 0 || !check(s[i-1]))
+                    st.push(temp + s[i]);
+                else{
+                    string t = st.top() + s[i];
+                    st.pop();
+                    st.push(t);
+                }
+                
+            }
+            else if(s[i] == ']'){
+                string add = "";
+                
+                while(st.top() != "["){
+                    add = st.top() + add;
+                    st.pop();
+                }
+                st.pop();
+                int c = stoi(st.top());
+                st.pop();
+                string f = "";
+                for(int j = 0;j < c;j++)
+                    f += add;
+                
+                st.push(f);
+            }
+            else{
+                if(st.empty() || st.top() == "[")
+                    st.push(temp + s[i]);
+                else{
+                    string t = st.top() + s[i];
+                    st.pop();
+                    st.push(t);
+                }
+                
+            }
+        }
+        string ans="";
+        
+        while(!st.empty()){
+            ans = st.top() + ans;
+            st.pop();
+        }
+        return ans;
+    }
+};
