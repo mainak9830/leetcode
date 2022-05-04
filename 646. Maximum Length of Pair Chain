@@ -1,0 +1,25 @@
+//Greedy approach
+class Solution {
+public:
+    bool static mycomp(vector<int> p1, vector<int> p2){
+        
+        
+            
+        return p1[1] < p2[1];
+    }
+    int findLongestChain(vector<vector<int>>& pairs) {
+        int n = pairs.size();
+        sort(pairs.begin(),pairs.end(),mycomp);
+        int end = pairs[0][1];
+        int i = 1;
+        int len = 1;
+        while(i < n){
+            if(pairs[i][0] > end){
+                end = pairs[i][1];
+                len++;
+            }
+            i++;
+        }
+        return len;
+    }
+};
