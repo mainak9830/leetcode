@@ -23,3 +23,26 @@ public:
         return len;
     }
 };
+// DP solution
+class Solution {
+public:
+    bool static mycomp(vector<int> p1, vector<int> p2){    
+        return p1[1] < p2[1];
+    }
+    int findLongestChain(vector<vector<int>>& pairs) {
+        int n = pairs.size();
+        sort(pairs.begin(),pairs.end());
+        vector<int> dp(n,1);
+        int ans = 1;
+        for(int i=1;i < n;i++){
+            int maxi = 0;
+            for(int j=i-1;j >= 0;j--){
+                if(pairs[j][1] < pairs[i][0])
+                    maxi = max(maxi, dp[j]);
+            }
+            dp[i] = 1 + maxi;
+            ans = max(ans, dp[i]);
+        }
+        return ans;
+    }
+};
