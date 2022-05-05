@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int findNumberOfLIS(vector<int>& arr) {
+        int count = 0;
+        int n = arr.size();
+        vector<int> sum(n,1);
+        vector<int> dp(n);
+        dp[0] = 1;
+        int ans = 1;
+        int count_f = 0;
+        for(int i=1;i < n;i++){
+            int len = 0;
+            count = 1;
+            for(int j = i-1;j >= 0;j--){
+                if(arr[j] < arr[i]){
+                    
+                    if(sum[j] == len){
+                        count += dp[j];
+                    }else if(sum[j] > len){
+                        count = dp[j];
+                        len = sum[j];
+                    }
+                }
+                
+            }
+               sum[i] = 1 + len;
+               dp[i] = count;
+               ans = max(ans,sum[i]);
+        }
+        
+        for(int i=0;i < n;i++){
+            if(sum[i] == ans)
+                count_f += dp[i];
+        }
+        
+        return count_f; 
+    }
+};
