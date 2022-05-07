@@ -1,0 +1,40 @@
+//Top-down dp solution
+class Solution {
+public:
+    map<int,int> scores;
+    vector<int> elements;
+    map<int,int> dp; 
+    
+    int earn(int idx){
+        
+        if(idx < 0)
+            return 0;
+        if(idx == 0)
+            return scores[elements[idx]];
+        if(dp.count(elements[idx]))
+            return dp[elements[idx]];
+        if(elements[idx-1] + 1 == elements[idx]){
+            
+            dp[elements[idx]] = max(earn(idx-1), earn(idx-2) + scores[elements[idx]]);
+            //cout << dp[elements[idx]];
+        }
+        else{
+            dp[elements[idx]] = scores[elements[idx]] + earn(idx-1);
+        }
+        
+        return dp[elements[idx]];
+    }
+    int deleteAndEarn(vector<int>& nums) {
+        int n = nums.size();
+        
+        for(int i=0; i < n;i++){
+            scores[nums[i]] += nums[i];
+        }
+        
+        for(auto it = scores.begin();it != scores.end();it++){
+            elements.push_back(it->first);
+        }
+        
+        return earn(elements.size()-1);
+    }
+};
