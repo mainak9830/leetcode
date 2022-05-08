@@ -1,0 +1,110 @@
+//TLE Top Down DP
+class Solution {
+public:
+    int dp[1001];
+    int count = 0;
+    bool static mycomp(string s1, string s2){
+        return s1.size() < s2.size();
+    }
+    bool checkPred(string curr, string next){
+        
+        if(curr.size() + 1 != next.size())
+            return false;
+        cout << curr << " " << next<<endl;
+        int i=0,j=0;
+        int seen = 0;
+        while(i < curr.size()){
+            
+            if(curr[i] == next[j]){
+                i++;
+                j++;
+            }else{
+                if(seen == 1)
+                    return false;
+                else{
+                    j++;
+                    seen = 1;
+                }
+            }
+        }
+        
+        return true;
+    }
+    int calc(vector<string> words, int idx, int prev){
+        int n = words.size();
+        
+        if(idx == n)
+            return 0;
+        
+        int len = 0;
+        if(dp[idx] != -1)
+            return dp[idx];
+        for(int i = idx;i < n;i++){
+            if(prev == -1 || prev > -1 && checkPred(words[prev], words[i]))
+                len = max(len, 1 + calc(words, i+1, i));
+        }
+        
+        dp[idx] = len;
+        return dp[idx];
+    }
+    int longestStrChain(vector<string>& words) {
+        memset(dp, -1, sizeof(dp));
+        sort(words.begin(),words.end(),mycomp);
+        return calc(words,0,-1);
+        
+    }
+};
+
+//Optimised O(n2) 
+class Solution {
+public:
+    int dp[1001];
+    int count = 0;
+    bool static mycomp(string s1, string s2){
+        return s1.size() < s2.size();
+    }
+    bool checkPred(string curr, string next){
+        
+        if(curr.size() + 1 != next.size())
+            return false;
+        //cout << curr << " " << next<<endl;
+        int i=0,j=0;
+        int seen = 0;
+        while(i < curr.size()){
+            
+            if(curr[i] == next[j]){
+                i++;
+                j++;
+            }else{
+                if(seen == 1)
+                    return false;
+                else{
+                    j++;
+                    seen = 1;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    int longestStrChain(vector<string>& words) {
+        memset(dp, -1, sizeof(dp));
+        sort(words.begin(),words.end(),mycomp);
+        int n = words.size();
+        dp[0] = 1;
+        int ans = 1;
+        for(int i=1;i < n;i++){
+            int len = 0;
+            for(int j=i-1;j >= 0;j--){
+                if(words[j].size() + 1 < words[i].size())
+                    break;
+                else if(words[j].size() + 1 == words[i].size() && checkPred(words[j],words[i]))
+                    len = max(len, dp[j]);
+            }
+            dp[i] = 1 + len;
+            ans = max(ans,dp[i]);
+        }
+        return ans;
+    }
+};
