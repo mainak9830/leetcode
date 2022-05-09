@@ -1,0 +1,20 @@
+class Solution{
+public:
+
+	// Function to find maximum product subarray
+	long long maxProduct(vector<int> nums, int n) {
+	    // code here
+        long long mini = nums[0];
+        long long maxi = nums[0];
+        
+        long long ans = nums[0];
+        for(int i=1;i < n;i++){
+            long long temp = maxi;
+            maxi = max(max((long long) nums[i],mini*nums[i]),maxi*nums[i]);
+            mini = min(min((long long) nums[i],mini*nums[i]),temp*nums[i]);
+            ans = max(ans, maxi);
+        }
+        
+        return ans;
+	}
+};
