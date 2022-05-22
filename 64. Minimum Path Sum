@@ -1,3 +1,4 @@
+//O(n^2) space
 class Solution {
 public:
     int minPathSum(vector<vector<int>>& grid) {
@@ -20,6 +21,7 @@ public:
     }
 };
 
+// O(n) space
 class Solution {
 public:
     int minPathSum(vector<vector<int>>& grid) {
