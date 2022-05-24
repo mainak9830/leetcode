@@ -1,0 +1,74 @@
+class Solution {
+public:
+    bool rowCheck(vector<vector<char>> board){
+        int m = board.size();
+        int n = board[0].size();
+        
+        for(int i = 0;i < m;i++){
+            vector<int> seen(10,0);
+            for(int j = 0;j < n;j++){
+                char c = board[i][j];
+                if( c != '.'){
+                    if(seen[c-'0'] == 1)
+                        return false;
+                    else
+                        seen[c-'0'] = 1;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    bool colCheck(vector<vector<char>> board){
+        int m = board.size();
+        int n = board[0].size();
+        
+        for(int i = 0;i < n;i++){
+            vector<int> seen(10,0);
+            for(int j = 0;j < m;j++){
+                char c = board[j][i];
+                if( c != '.'){
+                    if(seen[c-'0'] == 1)
+                        return false;
+                    else
+                        seen[c-'0'] = 1;
+                }
+            }
+        }
+        
+        return true;
+    }
+    bool searchBlock(vector<vector<char>> board, int r, int c){
+        vector<int> seen(10,0);
+        for(int i = r;i < r+3;i++){
+            for(int j = c;j < c+3;j++){
+                char c = board[j][i];
+                if( c != '.'){
+                    if(seen[c-'0'] == 1)
+                        return false;
+                    else
+                        seen[c-'0'] = 1;
+                }
+            }
+        }
+        
+        return true;
+    }
+    bool boxCheck(vector<vector<char>> board){
+        int m = board.size();
+        int n = board[0].size();
+        
+        for(int i = 0;i < m;i += 3){
+            for(int j = 0;j < n;j += 3){
+                if(!searchBlock(board,i,j))
+                    return false;
+            }
+        }
+        return true;
+    }
+    bool isValidSudoku(vector<vector<char>>& board) {
+        
+        return rowCheck(board) && colCheck(board) && boxCheck(board);
+    }
+};
