@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std;
+bool isPossible(vector<int> stalls, int C, int min){
+	int n = stalls.size();
+	int pos = stalls[0];
+	int cow = 1;
+
+	for(int i=1;i < n;i++){
+		if(pos + min <= stalls[i]){
+			pos = stalls[i];
+			cow++;
+		}
+		if(cow == C)
+			return true;
+	}
+	
+	return false;
+}
+int placeCows(vector<int> stalls, int C){
+	int n = stalls.size();
+	int low = INT_MAX, high, mid;
+	high = stalls[n-1] - stalls[0];
+	for(int i = 1;i < n;i++)
+		low = min(low, stalls[i] - stalls[i-1]);
+	while(low <= high){
+		mid = low + (high-low)/2;
+
+		if(isPossible(stalls, C, mid))
+			low = mid + 1;
+		else
+			high = mid - 1;
+	}
+	return high;
+}
+int main(){
+	int t, N, C, x;
+	cin >> t;
+	
+	while(t--){
+		cin >> N >> C;
+		vector<int> stalls;
+		while(N--){
+			cin >> x;
+			stalls.push_back(x);
+		}
+		sort(stalls.begin(), stalls.end());
+		cout << placeCows(stalls, C) << endl;
+	}
+	
+}
