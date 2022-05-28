@@ -1,0 +1,25 @@
+class Solution{
+    
+	public:
+	    vector<string> ans;
+	    
+	    void generate(string s, int i, string temp){
+	        int n = s.size();
+	        
+	        if(i == n){
+	            if(temp.size())
+	                ans.push_back(temp);
+	            return;
+	        }
+	        
+	        generate(s,i+1,temp + s[i]);
+	        
+	        generate(s,i+1,temp);
+	    }
+		vector<string> AllPossibleStrings(string s){
+		    // Code here
+		    generate(s, 0, "");
+		    sort(ans.begin(), ans.end());
+		    return ans;
+		}
+};
