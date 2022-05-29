@@ -1,0 +1,26 @@
+void place(stack<int> &stack, int el){
+    
+    if(stack.empty() || stack.top() <= el){
+        stack.push(el);
+        return;
+    }
+    
+    
+     int top = stack.top();
+     stack.pop();
+     place(stack, el);
+     stack.push(top);
+        
+        
+    
+}
+void sortStack(stack<int> &stack)
+{
+    if(stack.empty())
+        return;
+	// Write your code here
+    int top = stack.top();
+    stack.pop();
+    sortStack(stack);
+    place(stack, top);
+}
