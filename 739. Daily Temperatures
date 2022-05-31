@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        
+        int n = temperatures.size();
+        vector<int> ans(n);
+        int hot = 0;
+        
+        for(int i = n-1;i >= 0;i--){
+            int current = temperatures[i];
+            if(current >= hot){
+                ans[i] = 0;
+                hot = current;
+                continue;
+            }
+            
+            int days = 1;
+            
+            while(temperatures[i + days] <= current)
+                days += ans[i + days];
+            
+            ans[i] = days;
+        }
+        
+        return ans;
+        
+    }
+};
