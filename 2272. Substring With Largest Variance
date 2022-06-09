@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int largestVariance(string s) {
+        int res = 0;
+        unordered_set<char> unique(begin(s), end(s));
+        for(char i : unique){
+            for(char j : unique){
+                if(i == j)
+                    continue;
+                int sum = 0;
+                bool has_b = false, first_b = false;
+                for(char c : s){
+                    if(c == i)
+                        sum += 1;
+                    if(c == j){
+                        
+                        has_b = true;
+                        if(first_b && sum >= 0){
+                            sum += 1;
+                            first_b = false;
+                        }
+                        if(--sum < 0){
+                            sum = -1;
+                            first_b = true;
+                        }
+                        
+                    }
+                    
+                    
+                    res = max(res,has_b ? sum : 0);
+                }
+            }
+        }
+        
+        return res;
+    }
+};
