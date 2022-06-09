@@ -1,0 +1,30 @@
+#include <queue>
+struct comparator
+{
+    bool operator()(pair<int, pair<int,int>> a, pair<int, pair<int,int>> b)
+    {
+        return a.first > b.first;
+    }
+};
+vector<int> mergeKSortedArrays(vector<vector<int>>&kArrays, int k)
+{
+    // Write your code here. 
+    
+    priority_queue<pair<int, pair<int,int>>,vector<pair<int, pair<int,int>>>,comparator> pq;
+    
+    for(int i = 0;i < k;i++)
+        pq.push({kArrays[i][0],{i,0}});
+    vector<int> ans;
+    while(!pq.empty()){
+        pair<int, pair<int,int>> d = pq.top();
+        int r = d.second.first;
+        int c = d.second.second;
+        ans.push_back(d.first);
+        pq.pop();
+        
+        if(c < kArrays[r].size()-1)
+            pq.push({kArrays[r][c+1], {r,c+1}});
+    }
+    
+    return ans;
+}
