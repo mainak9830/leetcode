@@ -35,3 +35,42 @@ public:
         return res;
     }
 };
+
+
+class Solution {
+public:
+    int largestVariance(string s) {
+        int res = 0;
+        unordered_set<char> unique(begin(s), end(s));
+        for(char i : unique){
+            for(char j : unique){
+                if(i == j)
+                    continue;
+                int count_a = 0,count_b = 0;
+                bool b_first = false;
+                for(char c : s){
+                    
+                    if(c == i)
+                        count_a++;
+                    if(c == j)
+                        count_b++;
+                    if(count_b > 0){
+                        res = max(res, count_a - count_b);
+                    } else if(b_first){
+                        res = max(res, count_a - count_b - 1);
+                    }
+                    if(count_b > count_a){
+                        count_a = 0;
+                        count_b = 0;
+                        b_first = true;
+                    }
+                    
+                        
+                    
+                }
+            }
+        }
+        
+        return res;
+    }
+};
