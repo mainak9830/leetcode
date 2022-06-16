@@ -1,0 +1,41 @@
+// { Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+class Solution
+{
+	public:
+	void dfs(int node, vector<int> &vis, vector<int> adj[], stack<int> &stack){
+	    
+	    vis[node] = 1;
+	    
+	    for(auto i : adj[node]){
+	        if(!vis[i])
+	            dfs(i, vis, adj, stack);
+	    }
+	    stack.push(node);
+	}
+	//Function to return list containing vertices in Topological order. 
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    // code here
+	    vector<int> vis(V,0);
+	    stack<int> stack;
+	    for(int i=0;i < V;i++){
+	        if(!vis[i])
+	            dfs(i, vis, adj, stack);
+	    }
+	    
+	    vector<int> ans;
+	    
+	    while(!stack.empty()){
+	        ans.push_back(stack.top());
+	        stack.pop();
+	    }
+	    
+	    
+	    return ans;
+	    
+	}
+};
