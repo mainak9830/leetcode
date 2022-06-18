@@ -9,8 +9,11 @@ public:
         set<pair<int,int>> visited;
         int rotten = 0;
         int fresh = 0;
+        int total = 0;
         for(int i = 0;i < m;i++){
             for(int j = 0;j < n;j++){
+                if(grid[i][j] != 0)
+                    total++;
                 if(grid[i][j] == 1)
                     fresh++;
                 if(grid[i][j] == 2){
@@ -21,15 +24,14 @@ public:
             }
         }
         
-        if(fresh > 0 && rotten == 0)
-            return -1;
         if(fresh == 0)
             return 0;
         int time = 0;
+        int rotten_track = 0;
         while(!queue.empty()){
             
             int size = queue.size();
-            
+            rotten_track += size;
             for(int i=0;i < size;i++){
                 pair<int,int> x_y = queue.front();
                 int x = x_y.first;
@@ -60,14 +62,8 @@ public:
             
             time++;
         }
-        for(int i = 0;i < m;i++){
-            for(int j = 0;j < n;j++){
-                if(grid[i][j] == 1)
-                    return -1; 
-                    
-            }
-        }
         
-        return time-1;
+        
+        return (total == rotten_track) ? time-1 : -1;
     }
 };
