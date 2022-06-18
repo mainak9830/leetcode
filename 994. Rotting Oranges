@@ -1,0 +1,73 @@
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        
+        int m = grid.size();
+        int n = grid[0].size();
+        
+        queue<pair<int,int>> queue;
+        set<pair<int,int>> visited;
+        int rotten = 0;
+        int fresh = 0;
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                if(grid[i][j] == 1)
+                    fresh++;
+                if(grid[i][j] == 2){
+                    rotten = 1;
+                    queue.push({i,j});
+                }
+                    
+            }
+        }
+        
+        if(fresh > 0 && rotten == 0)
+            return -1;
+        if(fresh == 0)
+            return 0;
+        int time = 0;
+        while(!queue.empty()){
+            
+            int size = queue.size();
+            
+            for(int i=0;i < size;i++){
+                pair<int,int> x_y = queue.front();
+                int x = x_y.first;
+                int y = x_y.second;
+                
+                if(x > 0 && grid[x-1][y] == 1){
+                    grid[x-1][y] = 2;
+                    queue.push({x-1,y});
+                }
+                if(x < m-1 && grid[x+1][y] == 1){
+                    grid[x+1][y] = 2;
+                    queue.push({x+1,y});
+                }
+                    
+                if(y > 0 && grid[x][y-1] == 1){
+                    grid[x][y-1] = 2;
+                    queue.push({x,y-1});
+                }
+                    
+                if(y < n-1 && grid[x][y+1] == 1){
+                    grid[x][y+1] = 2;
+                    queue.push({x,y+1});
+                }
+                    
+                
+                queue.pop();
+            }
+            
+            time++;
+        }
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                if(grid[i][j] == 1)
+                    return -1; 
+                    
+            }
+        }
+        
+        return time-1;
+    }
+};
