@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int tribonacci(int n) {
+        if(n == 0)
+            return 0;
+        if(n <= 2)
+            return 1;
+        
+        int t_0 = 0, t_1 = 1, t_2 = 1;
+        
+        for(int i=3; i <= n;i++){
+            
+            int tem = t_2;
+            int temp = t_1;
+           
+            t_2 = t_2 + t_1 + t_0;
+            t_1 = tem;
+            t_0 = temp;
+        }
+        
+        return t_2;
+    }
+};
