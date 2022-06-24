@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        
+        set<int> setA, setB;
+        
+        for(int i=0;i < nums1.size();i++){
+            setA.insert(nums1[i]);
+        }
+        
+        for(int i=0;i < nums2.size();i++){
+            setB.insert(nums2[i]);
+        }
+        vector<int> ans;
+        for(auto it = setA.begin();it != setA.end();it++){
+            if(setB.count(*it))
+                ans.push_back(*it);
+        }
+        
+        return ans;
+        
+    }
+};
