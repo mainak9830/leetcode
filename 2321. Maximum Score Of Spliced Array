@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int maximumsSplicedArray(vector<int>& nums1, vector<int>& nums2) {
+        
+        int n = nums1.size();
+        
+        int res1 = 0, temp1 = 0, sum1 = 0;
+        int res2 = 0, temp2 = 0, sum2 = 0;
+        
+        for(int i = 0;i < n;i++){
+            int a = nums1[i] - nums2[i];
+            temp1 = max(temp1 + a, a);
+            temp2 = max(temp2 - a, -a);
+            res1 = max(temp1, res1);
+            res2 = max(temp2, res2);
+            sum1 += nums1[i];
+            sum2 += nums2[i];
+        }
+        
+        res1 = max(res1, 0);
+        res2 = max(res2, 0);
+        return max(sum1 + res2, sum2 + res1);
+    }
+};
