@@ -1,0 +1,29 @@
+class Solution {
+public:
+    void helper(string maps[], int d, string digits, string temp, vector<string> &ans){
+        
+        int n = digits.length();
+        
+        if(d == n){
+            ans.push_back(temp);
+            return;
+        }
+        
+        string t = maps[digits[d] - '0'];
+        
+        for(char c : t){
+            helper(maps,d+1,digits,temp+c,ans);
+        }
+    }
+    vector<string> letterCombinations(string digits) {
+        
+        string maps[10] = {"", "", "abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        
+        vector<string> ans;
+        if(digits == "")
+            return ans;
+        helper(maps,0,digits, "",ans);
+        
+        return ans;
+    }
+};
