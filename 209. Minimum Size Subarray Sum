@@ -30,3 +30,40 @@ public:
         return ans == INT_MAX ? 0 : ans;
     }
 };
+
+
+
+//Solution 2
+
+
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        
+        int ans = INT_MAX;
+        int n = nums.size();
+        int sum = 0;
+        vector<int> prefix(n);
+        
+        for(int i = 0;i < n;i++){
+            sum += nums[i];
+            prefix[i] = sum;
+        }
+        
+        for(int i = 0;i < n;i++){
+            
+            int len;
+            int idx = lower_bound(prefix.begin(), prefix.end(), prefix[i]-target) - prefix.begin();
+            if(prefix[idx] == prefix[i]-target)
+                len = i - idx;
+            else
+                len = i-idx+1;
+            if(prefix[i] >= target)
+                ans = min(ans, len);
+        }
+        
+        
+        
+        return ans == INT_MAX ? 0 : ans;
+    }
+};
