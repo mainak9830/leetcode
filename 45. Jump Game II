@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        
+        int n = nums.size();
+        int pos = 1;
+        int max_pos = nums[0];
+        int count = 0;
+        while(pos < n){
+            int temp = 0;
+            while(pos < n && pos <= max_pos){
+               temp = max(temp, pos + nums[pos]);
+               pos++;
+            }
+            
+            max_pos = temp;
+            count++;
+            
+        }
+        
+        
+        return count;
+        
+    }
+};
