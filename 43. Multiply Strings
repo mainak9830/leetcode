@@ -1,0 +1,33 @@
+class Solution {
+public:
+    string multiply(string num1, string num2) {
+        
+        if(num1 == "0" || num2 == "0")
+            return "0";
+        
+        reverse(num1.begin(), num1.end());
+        reverse(num2.begin(), num2.end());
+        
+        string ans(num1.length()+num2.length(), '0');
+        
+        for(int i = 0;i < num1.length();i++){
+            int i1 = num1[i] - '0';
+            for(int j = 0;j < num2.length();j++){
+                int i2 = num2[j] - '0';
+                int place = i+j;
+                
+                int temp = (i1*i2) + (ans[place] - '0');
+                ans[place] = temp % 10 + '0';
+                
+                ans[place+1] += temp/10;
+                
+            }
+        }
+        if(ans.back() == '0')
+            ans.pop_back();
+        
+        reverse(ans.begin(), ans.end());
+        
+        return ans;
+    }
+};
