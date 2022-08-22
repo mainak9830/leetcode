@@ -1,0 +1,25 @@
+class Solution {
+public:
+    string removeOuterParentheses(string s) {
+        stack<int> stack;
+        string ans = "";
+        
+        for(int i=0;i < s.size();i++){
+            if(s[i] == '(')
+                stack.push(i);
+            else{
+                int start = stack.top();
+                stack.pop();
+                
+                if(stack.empty()){
+                    for(int j = start+1;j < i;j++)
+                        ans += s[j];
+                }
+                
+            }
+        }
+        
+        
+        return ans;
+    }
+};
