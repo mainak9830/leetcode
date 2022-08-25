@@ -1,0 +1,50 @@
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> ans = {-1,-1};
+        if(nums.size() == 0)
+            return ans;
+        ans[0] = lower_bound(nums, target);
+        if(ans[0] == -1)
+            return ans;
+        ans[1] = upper_bound(nums, target);
+        
+        return ans;
+    }
+    
+    int lower_bound(vector<int> nums, int target){
+        
+        int l = 0;
+        int h = nums.size()-1;
+        
+        while(l <= h){
+            int mid = l + (h-l)/2;
+            
+            if(nums[mid] < target)
+                l = mid+1;
+            else
+                h = mid-1;
+        }
+        
+        if(h+1 >= nums.size() || nums[h+1] != target)
+            return -1;
+        return h+1;
+    }
+    
+    int upper_bound(vector<int> nums, int target){
+        int l = 0;
+        int h = nums.size()-1;
+        
+        while(l <= h){
+            int mid = l + (h-l)/2;
+            
+            if(nums[mid] <= target)
+                l = mid+1;
+            else
+                h = mid-1;
+        }
+        if(l-1 < 0 || nums[l-1] != target)
+            return -1;
+        return l-1;
+    }
+};
