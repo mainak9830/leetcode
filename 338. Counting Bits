@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<int> countBits(int n) {
+        
+        vector<int> dp(n+1);
+        dp[0] = 0;
+        int step = 1;
+        for(int i=1;i <= n;i++){
+            if(i == step){
+                dp[i] = 1;
+                step *= 2;
+            }else{
+                int curr = step/2;
+                dp[i] = dp[i-curr] + dp[curr];
+            }
+        }
+        
+        return dp;
+    }
+};
