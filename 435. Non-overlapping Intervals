@@ -1,0 +1,39 @@
+bool mycompare(vector<int> &i1, vector<int> &i2){
+        if(i1[1] == i2[1])
+            return i1[0] < i2[0];
+        
+        return i1[1] < i2[1];    
+}
+
+class Solution {
+public:
+    
+    
+    
+    int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+        
+        sort(intervals.begin(), intervals.end(), mycompare);
+        int count = 0;
+        int n = intervals.size();
+        
+        int start = intervals[0][0];
+        int end = intervals[0][1];
+        
+        for(int i=1;i < n;i++){
+            
+            int curStart = intervals[i][0];
+            int curEnd = intervals[i][1];
+            
+            if(curStart < end)
+                count++;
+            else{
+                start = curStart;
+                end = curEnd;
+            }
+            
+        }
+        
+        
+        return count;
+    }
+};
