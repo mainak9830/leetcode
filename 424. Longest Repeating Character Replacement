@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        
+        int l = 0;
+        vector<int> count(26,0);
+        int ans = 0;
+        int max_f = 0;
+        for(int h = 0;h < s.length();h++){
+            
+            char c = s[h];
+           
+            count[c-'A']++;
+            
+            max_f = max(max_f, count[c-'A']);
+            
+            
+            while(h-l+1 - max_f > k){
+                
+                count[s[l]-'A']--;
+                l++;
+            }
+            
+            ans = max(ans, h-l+1);
+        }
+        
+        // A A B C D D
+        
+        
+        return ans;
+        
+        
+        
+    }
+};
