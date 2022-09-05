@@ -1,0 +1,55 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        
+        int n = s.length();
+        int m = t.length();
+        
+        unordered_map<char, int> mapt, maps;
+        int req = 0;
+        
+        for(int i=0;i < m;i++){
+            char c = t[i];
+            if(mapt.count(c))
+                mapt[c]++;
+            else{
+                mapt[c] = 1;
+                req++;
+            } 
+        }
+        
+        int seen = 0;
+        int ans = INT_MAX;
+        string res = "";
+        int l = 0;
+        
+        for(int h = 0;h < n;h++){
+            char c = s[h];
+            if(mapt.count(c) == 0)
+                continue;
+            maps[c]++;
+            if(mapt[c] == maps[c])
+                seen++;
+            while(seen == req){
+                
+                char ch = s[l];
+                if(mapt.count(ch) > 0){
+                    maps[ch]--;
+                    if(maps[ch] < mapt[ch])
+                        seen--;
+                }
+                
+                if(h-l+1 < ans){
+                    ans = h-l+1;
+                    res = s.substr(l,h-l+1);
+                }
+                l++;
+            }
+            
+            
+        }
+        
+        return res;
+        
+    }
+};
