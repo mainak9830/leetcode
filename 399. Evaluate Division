@@ -1,0 +1,49 @@
+class Solution {
+public:
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+        
+        int n = equations.size();
+        map<string, vector<pair<string, double>>> graph; 
+        
+        for(int i=0;i < n;i++){
+            string num = equations[i][0];
+            string deno = equations[i][1];
+            if(graph.count(num) == 0)
+                graph[num] =  {};
+            if(graph.count(deno) == 0)
+                graph[deno] = {};
+            graph[num].push_back({deno, values[i]});
+            graph[deno].push_back({num, 1/values[i]});
+        }
+        
+        vector<double> ans;
+        for(int i=0;i < queries.size();i++){
+            set<string > visited;
+            ans.push_back(evaluate(graph, queries[i][0], queries[i][1], visited));
+        }
+        return ans;
+    }
+    double evaluate(map<string, vector<pair<string, double>>>& graph, string currNode, string target, set<string>& visited){
+        if(graph.count(currNode) == 0 || graph.count(target) == 0)
+            return -1;
+        if(currNode == target)
+            return 1.0;
+        visited.insert(currNode);
+        double res = -1.0;
+        for(auto item : graph[currNode]){
+            
+            if(visited.count(item.first))
+                continue;
+            double k = evaluate(graph, item.first, target, visited);
+            if(k != -1){
+                res = item.second * k;
+                return res;
+            }
+            
+        }
+        
+        visited.erase(currNode);
+        
+        return res;
+    }
+};
