@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool validWordAbbreviation(string word, string abbr) {
+        
+        int temp = 0;
+        int j = 0;
+        for(int i=0;i < abbr.length();i++){
+            if(abbr[i] >= 'a' && abbr[i] <= 'z'){
+                if(abbr[i] != word[j+temp])
+                    return false;
+                j = j + temp;
+                if(j >= word.size())
+                    return false;
+                j++;
+                temp = 0;
+                continue;
+            }
+            
+            temp = temp*10 + abbr[i]-'0';
+            if(temp == 0)
+                return false;
+        }
+        if(j+temp < word.length() || j+temp > word.length())
+            return false;
+            
+        return true;
+    }
+};
