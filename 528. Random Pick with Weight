@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> prefix;
+    Solution(vector<int>& w) {
+        int temp = 0;
+        for(auto i : w){
+            temp += i;
+            prefix.push_back(temp);
+        }
+    }
+    
+    int pickIndex() {
+        
+        float target = rand() % prefix[prefix.size()-1]+1;
+        return lower_bound(prefix.begin(), prefix.end(), target) - prefix.begin();
+    }
+};
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution* obj = new Solution(w);
+ * int param_1 = obj->pickIndex();
+ */
