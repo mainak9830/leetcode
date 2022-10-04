@@ -1,0 +1,44 @@
+class Solution {
+public:
+    string simplifyPath(string path) {
+        stack<string> stack;
+        int n = path.length();
+        int i = 0;
+        string ans = "";
+        string directory = "";
+        while(i < n){
+            
+            if(path[i] != '/'){
+                int count = 0;
+                directory = "";
+                while(i < n && path[i] == '.'){
+                    directory += path[i++];
+                    count++;
+                }
+                if((i == n || path[i] == '/') && (count == 2 && !stack.empty())){
+                    stack.pop();
+                    continue;
+                }
+                
+                if(count <= 2 && (i == n || path[i] == '/'))
+                    directory = "";
+                while(i < n && path[i] != '/')
+                    directory += path[i++];
+                if(directory != "")
+                    stack.push(directory);
+                
+            }else
+                i++;
+            
+                
+        }
+        
+        while(!stack.empty()){
+            ans = '/' + stack.top() + ans;
+            stack.pop();
+        }
+        if(ans == "")
+            ans = '/' + ans;
+        return ans;
+    }
+};
