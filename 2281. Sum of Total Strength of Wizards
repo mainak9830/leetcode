@@ -1,0 +1,56 @@
+class Solution {
+public:
+    int totalStrength(vector<int>& strength) {
+        
+        int mod = 1000000007;
+        int n = strength.size();
+        stack<int> stack, stack1;
+        vector<int> left(n), right(n);
+        vector<long long int> prefix(n+1,0), prefixsum(n+2,0);
+        
+        for(int i = 1;i <= n;i++)
+            prefix[i] = (prefix[i-1] + strength[i-1])%mod;
+        
+        for(int i = 1;i <= n+1;i++)
+            prefixsum[i] = (prefixsum[i-1] + prefix[i-1])%mod;
+          
+        for(int i = 0;i < n;i++){
+            // 1 4 2 3 5 1 6
+            while(!stack.empty() && strength[stack.top()] >= strength[i]){
+                stack.pop();
+            }
+            left[i] = stack.empty() ? -1 : stack.top();
+            stack.push(i);
+            
+        }
+        
+        
+        for(int i = n-1;i >= 0;i--){
+            // 1 4 2 3 5 1 6
+            while(!stack1.empty() && strength[stack1.top()] > strength[i]){
+                stack1.pop();
+            }
+            right[i] = stack1.empty() ? n : stack1.top();
+            stack1.push(i);
+        }
+        
+        
+        long long int res = 0;
+        for(int i=0;i < n;i++){
+            int lefti = left[i];
+            int righti = right[i];
+            long long int l = (prefixsum[righti+1] - prefixsum[i+1]) * (i-lefti) % mod;
+            long long int r = (prefixsum[i+1] - prefixsum[lefti+1]) * (righti-i)%mod;
+            res += ((mod + l - r)%mod) * strength[i]%mod;
+            res %= mod;
+             
+            
+        }
+        
+        
+        
+        return (int) res;
+            
+        
+    }
+};
