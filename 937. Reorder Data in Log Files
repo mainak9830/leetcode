@@ -1,0 +1,34 @@
+class Solution {
+public:
+    bool static mycomparator(string a, string b){
+        int i = a.find(' ');
+        int j = b.find(' ');
+        
+        string a1 = a.substr(i+1);
+        string b1 = b.substr(j+1);
+        if(a1 == b1)
+            return a.substr(0,i) < b.substr(0,j);
+        
+        return a1 < b1;
+    }
+    vector<string> reorderLogFiles(vector<string>& logs) {
+        vector<string> llogs, dlogs;
+        
+        int n = logs.size();
+        for(int i=0;i < n;i++){
+            if(isdigit(logs[i].back()))
+                dlogs.push_back(logs[i]);
+            else
+                llogs.push_back(logs[i]);
+        }
+        
+        sort(llogs.begin(), llogs.end(),mycomparator);
+        
+        for(auto s : dlogs){
+            llogs.push_back(s);
+        }
+        
+        return llogs;
+            
+    }
+};
