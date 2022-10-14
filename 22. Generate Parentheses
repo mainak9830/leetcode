@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<string> ans;
+    
+    vector<string> generateParenthesis(int n) {
+        
+        generate(n,0,0,"");
+        return ans;
+        
+    }
+    
+    void generate(int n, int left, int right, string s){
+        
+        if(left > n || right > n || right > left)
+            return;
+        if(left == n && right == n)
+            ans.push_back(s);
+        
+        generate(n,left+1,right,s+'(');
+        generate(n,left,right+1,s+')');
+        
+        
+    }
+};
