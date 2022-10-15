@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int MOD = 1000000007;
+    vector<vector<vector<int>>> dp;
+    int ways(vector<string>& pizza, int k) {
+        int m = pizza.size();
+        int n = pizza[0].size();
+        dp = vector<vector<vector<int>>>(m, vector<vector<int>>(n, vector<int>(k,-1)));
+        vector<vector<int>> prefixSum(m+1, vector<int>(n+1,0));
+        
+        for(int i = m-1;i >= 0;i--){
+            for(int j=n-1;j >= 0;j--)
+                prefixSum[i][j] = prefixSum[i+1][j] + prefixSum[i][j+1] - prefixSum[i+1][j+1] + (pizza[i][j] == 'A');  
+        }
+        
+        return dfs(0, 0, m, n, k-1, prefixSum);
+        
+        
+    }
+    
+    int dfs(int x, int y, int m, int n, int k, vector<vector<int>> &prefix) {
+        if(prefix[x][y] == 0)
+            return 0;
+        if(k == 0)
+            return 1;
+        if(dp[x][y][k] != -1)
+            return dp[x][y][k];
+        int ans = 0;
+        for(int rcut = x+1; rcut < m;rcut++){
+            
+            if(prefix[x][y] - prefix[rcut][y] > 0)
+                ans = (ans + dfs(rcut,y,m,n,k-1,prefix)) % MOD;
+        }
+        
+        for(int ccut = y+1; ccut < n;ccut++){
+            if(prefix[x][y] - prefix[x][ccut] > 0)
+                ans = (ans + dfs(x,ccut,m,n,k-1,prefix)) % MOD;
+        }
+        dp[x][y][k] = ans;
+        return ans;
+    }
+};
