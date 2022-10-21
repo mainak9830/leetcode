@@ -1,0 +1,46 @@
+class Solution {
+public:
+    map<string, vector<string>> ingr;
+    
+    bool completeCheck(string recipe, set<string> &supplies, map<string, bool> &visited){
+        //cout << recipe << " ";
+        if(visited.count(recipe) > 0 || ingr.count(recipe) == 0)
+            return false;
+        visited[recipe] = true;
+        for(auto in : ingr[recipe]) {
+            if(supplies.count(in) == 0 && !completeCheck(in, supplies, visited))
+                return false;
+                
+        }
+    
+        supplies.insert(recipe);
+        
+        
+        return true;
+    }
+    vector<string> findAllRecipes(vector<string>& recipes, vector<vector<string>>& ingredients, vector<string>& supplies) {
+        // a b c d/  d e f/ f/ d
+        int n = recipes.size();
+        vector<string> allRecipes;
+        
+        set<string> sup;
+        
+        for(int i = 0;i < supplies.size();i++){
+            sup.insert(supplies[i]);
+            
+        }
+        for(int i = 0;i < recipes.size();i++){
+            ingr[recipes[i]] = ingredients[i];  
+        }
+        
+        for(int i = 0;i < n;i++){
+            map<string, bool> visited;
+            
+            if(completeCheck(recipes[i], sup, visited))
+                allRecipes.push_back(recipes[i]);
+        }
+        
+        
+        return allRecipes;
+    }
+};
