@@ -1,0 +1,45 @@
+class Solution {
+public:
+
+    int unionf(vector<int> &vertex, vector<int> size, int x, int y){
+        
+        int v1 = find(vertex, x);
+        int v2 = find(vertex, y);
+        if(v1 == v2)
+            return 0;
+        if(size[v1] < size[v2]){
+            vertex[v1] = v2;
+            size[v2] += size[v1];
+        }else{
+            vertex[v2] = v1;
+            size[v2] += size[v1];
+        }
+        
+        return 1;
+    }
+    
+    int find(vector<int> &arr, int x){
+        if(arr[x] != x)
+            arr[x] = find(arr, arr[x]);
+        return arr[x];
+    }
+    int countComponents(int n, vector<vector<int>>& edges) {
+        vector<int> map(n), size(n);
+        vector<int> count(n,0);
+        int ans = n;
+        
+        for(int i = 0;i  < n;i++){
+            map[i] = i;
+            size[i] = 1;
+        }
+        
+        for(auto  e : edges){
+            ans -= unionf(map, size, e[0], e[1]);
+        }
+        
+        
+        return ans;
+        
+        
+    }
+};
