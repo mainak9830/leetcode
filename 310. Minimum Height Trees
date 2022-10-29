@@ -1,0 +1,48 @@
+class Solution {
+public:
+    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+        set<int> neighbors[n];
+        vector<int> centroids;
+        if(n <= 2){
+            for(int i = 0;i < n;i++)
+                centroids.push_back(i);
+            return centroids;
+        }
+        
+        for(auto edge : edges){
+            neighbors[edge[0]].insert(edge[1]);
+            neighbors[edge[1]].insert(edge[0]);
+        }
+        
+        queue<int> leaves;
+        int remaining = n;
+        for(int i = 0;i < n;i++){
+            if(neighbors[i].size() == 1)
+                leaves.push(i);
+        }
+        while(leaves.size()){
+            if(remaining <= 2)
+                break;
+            int m = leaves.size();
+            for(int i = 0;i < m;i++){
+                int nbr = *neighbors[leaves.front()].begin();
+                neighbors[nbr].erase(leaves.front());
+                leaves.pop();
+                if(neighbors[nbr].size() == 1)
+                    leaves.push(nbr);
+                remaining--;
+            }
+            
+        }
+        
+        while(leaves.size()){
+            centroids.push_back(leaves.front());
+            leaves.pop();
+        }
+        
+        
+        
+        
+        return centroids;
+    }
+};
