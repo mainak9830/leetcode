@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        
+        queue<int> topo;
+        vector<int> indegree(numCourses,0);
+        vector<int> sequence;
+        vector<int> edges[numCourses];
+        for(auto courses : prerequisites){
+            //
+            int x = courses[1];
+            int y = courses[0];
+            edges[x].push_back(y);
+            indegree[y]++;
+        }
+        for(int i=0;i < numCourses;i++){
+            if(indegree[i] == 0)
+                topo.push(i);
+        }
+            
+        int visited = 0;
+        while(!topo.empty()){
+            int x = topo.front();
+            visited++;
+            sequence.push_back(x);
+            for(int e : edges[x]){
+                indegree[e]--;
+                if(indegree[e] == 0)
+                    topo.push(e);
+            }
+            topo.pop();
+            
+        }
+        cout << visited;
+        
+        return (visited < numCourses) ? vector<int>() : sequence;
+    }
+};
