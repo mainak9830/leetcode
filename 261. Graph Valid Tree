@@ -1,0 +1,43 @@
+class Solution {
+public:
+    bool dfs(int n, vector<int> neighbors[], int u, int parent, vector<bool> &visited){
+        
+        visited[u] = true;
+        
+        for(int v : neighbors[u]){
+            if(!visited[v]){
+                if(!dfs(n, neighbors, v, u, visited))
+                    return false;
+            }
+            else if(v != parent)
+                return false;
+        }
+        
+        return true;
+        
+    }
+    bool validTree(int n, vector<vector<int>>& edges) {
+        
+        if(n-1 != edges.size())
+            return false;
+        if(n == 1)
+            return true;
+        vector<int> neighbors[n];
+        int start = INT_MAX;
+        for(auto edge : edges){
+            start = min({start, edge[0], edge[1]});
+            neighbors[edge[0]].push_back(edge[1]);
+            neighbors[edge[1]].push_back(edge[0]);
+        }
+        vector<bool> visited(n, false);
+        
+        if(!dfs(n, neighbors, start, -1, visited))
+                return false;
+        for(int i = 0;i < n;i++){
+            if(!visited[i])
+                return false;
+        }
+        
+        return true;
+    }
+};
