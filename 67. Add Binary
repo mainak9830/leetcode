@@ -1,0 +1,33 @@
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        
+        int n = a.length();
+        int m = b.length();
+        
+        int i = n-1;
+        int j = m-1;
+        int carry = 0;
+        string rev = "";
+        while(i >= 0 || j >= 0){
+            int c1 = (i >= 0) ? a[i]-'0' : 0;
+            int c2 = (j >= 0) ? b[j]-'0' : 0;
+            
+            int total = c1 + c2 + carry;
+            
+            rev += total % 2 + '0';
+            carry = total/2;
+            i--;
+            j--;
+        }
+        
+        if(carry == 1){
+            
+            rev += carry+'0';
+            
+        }
+        
+        reverse(rev.begin(), rev.end());
+        return rev;
+    }
+};
