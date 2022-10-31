@@ -1,0 +1,68 @@
+class Trie
+{
+    public:
+        map<int, Trie*> character;
+        vector<int> seq[26];
+        Trie() {
+
+        }
+
+        void insert(string word, int j) {
+            Trie* root = this;
+            for(int i = 0;i < word.size();i++){
+                int c = word[i]-'a';
+                if(root->character.count(c) == 0)
+                  root->character[c] = new Trie();
+                root->seq[c].push_back(j);
+                root = root->character[c];
+            }
+        }
+
+
+        vector<vector<int>> search(string searchWord){
+            vector<vector<int>> ans;
+            Trie* root = this;
+            for(char c : searchWord){
+                if(root && root->character.count(c-'a'))
+                    ans.push_back(root->seq[c-'a']);
+                else
+                    ans.push_back({});
+                if(root)
+                    root = root->character[c-'a'];
+            }
+
+            return ans;
+        }
+};
+class Solution {
+public:
+    
+    vector<vector<string>> suggestedProducts(vector<string>& products, string searchWord) {
+        
+        Trie* trie = new Trie();
+        sort(products.begin(), products.end());
+        
+        int n = products.size();
+        
+        for(int i = 0;i < n;i++){
+            string word = products[i];
+            trie->insert(word, i);
+        }
+        vector<vector<int>> t = trie->search(searchWord);
+        vector<vector<string>> ans;
+        for(auto i : t){
+            vector<string> t1;
+            int limit = 0;
+            for(int j : i){
+
+                t1.push_back(products[j]);
+                limit++;
+                if(limit == 3)
+                    break;
+            }
+            ans.push_back(t1);
+        }
+            
+        return ans;
+    }
+};
