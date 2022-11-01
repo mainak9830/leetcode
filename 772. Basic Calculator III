@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int i = 0;
+    int helper(string s){
+        int answer = 0;
+        int currentNum = 0;
+        int lastNumber = 0;
+        int n = s.length();
+        char sign = '+';
+        while(i < n){
+            
+            if(isdigit(s[i]))
+                currentNum = currentNum * 10 + (s[i] - '0');
+            if(s[i] == '('){
+                i++;
+                currentNum = helper(s);
+            }
+            if(!isdigit(s[i]) || i == n-1 || s[i] == ')'){
+                
+                if(sign == '+' || sign == '-'){
+                    answer += lastNumber;
+                    lastNumber = (sign == '+') ? currentNum : - currentNum;
+                }else if(sign == '*'){
+                    lastNumber = lastNumber * currentNum;
+                }else if(sign == '/'){
+                    lastNumber = lastNumber / currentNum;
+                }
+                currentNum = 0;
+                sign = s[i];
+                
+                if(s[i] == ')'){
+                    i++;
+                    break;
+                }
+            } 
+            
+            i++;
+        }
+        
+        answer += lastNumber;
+        return answer;
+    }
+    int calculate(string s) {
+        return helper(s);
+    }
+};
