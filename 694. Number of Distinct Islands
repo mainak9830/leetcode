@@ -1,0 +1,31 @@
+class Solution {
+public:
+    string dfs(vector<vector<int>>& grid, int x, int y, char c){
+        int m = grid.size();
+        int n = grid[0].size();
+        
+        if(x < 0 || y < 0 || x >= m || y >= n || grid[x][y] != 1)
+            return "o";
+        
+        grid[x][y] = 2;
+        
+        string path = "";
+        path += c;
+        path += dfs(grid, x+1, y, 'u');
+        path += dfs(grid, x, y+1, 'r');
+        path += dfs(grid, x, y-1, 'l');
+        path += dfs(grid, x-1, y, 'd');
+        return path;
+    }
+    int numDistinctIslands(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        set<string> map;
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++)
+                if(grid[i][j] == 1)
+                    map.insert(dfs(grid,i,j,'s'));
+        }
+        return map.size();
+    }
+};
