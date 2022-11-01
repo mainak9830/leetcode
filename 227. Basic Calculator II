@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int calculate(string s) {
+        // 9 - 8 * 7
+        
+        int n = s.length();
+        int answer = 0;
+        int num = 0;
+        int lastnum = 0;
+        char sign = '+';
+        
+        for(int i = 0;i < n;i++) {
+            
+            if(isdigit(s[i])){
+                num = num*10 + (s[i]-'0');
+            }
+            if((!isdigit(s[i]) && s[i] != ' ') || i == n-1){
+                
+                if(sign == '+' || sign == '-'){
+                    answer += lastnum;
+                    lastnum = (sign == '+') ? num : -num;
+                    
+                }if(sign == '*'){
+                    lastnum = lastnum * num; 
+                }if(sign == '/'){
+                    lastnum = lastnum / num;
+                }
+                
+                
+                num = 0;
+                sign = s[i];
+                 
+            }
+            
+        }
+        answer += lastnum;
+        return answer;
+    }
+};
