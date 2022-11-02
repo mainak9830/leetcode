@@ -1,0 +1,34 @@
+class ProductOfNumbers {
+public:
+    vector<int> db;
+    ProductOfNumbers() {
+        db.push_back(1);
+    }
+    
+    void add(int num) {
+        if(num == 0){
+            while(db.size() > 1)
+                db.pop_back();
+        }
+        else
+            db.push_back(db[db.size()-1]*num);
+        
+    }
+    
+    int getProduct(int k) {
+        if(k > db.size()-1)
+            return 0;
+        // for(int i = 0;i < db.size();i++)
+        //     cout << db[i] << " ";
+        // cout << endl;
+        return db[db.size()-1]/db[db.size()-k-1];
+        
+    }
+};
+
+/**
+ * Your ProductOfNumbers object will be instantiated and called as such:
+ * ProductOfNumbers* obj = new ProductOfNumbers();
+ * obj->add(num);
+ * int param_2 = obj->getProduct(k);
+ */
