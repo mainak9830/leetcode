@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<vector<int>> ans;
+    void factors(int n, int start, vector<int>& combination){
+        for(int i = start;i <= n/i;i++){
+            if(n % i == 0){
+                combination.push_back(i);
+                combination.push_back(n/i);
+                ans.push_back(combination);
+                combination.pop_back();
+                factors(n/i, i,combination);
+                combination.pop_back();
+            }
+        }
+    }
+    vector<vector<int>> getFactors(int n) {
+        vector<int> t;
+        factors(n, 2, t);
+        return ans;
+    }
+};
