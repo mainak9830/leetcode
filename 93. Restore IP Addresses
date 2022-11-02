@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<string> answer;
+    
+    void restore(string s, int start, string res, int seg){
+        int n = s.length();
+        
+        if(start == n && seg == 4){
+            res.pop_back();
+            answer.push_back(res);
+            return;
+        }
+        for(int i = start;i < n;i++){
+            
+            int t = stoi(s.substr(start,i-start+1));
+            if(i != start && s[start] =='0')
+                break;
+            if(t <= 255)
+                restore(s, i+1, res + s.substr(start,i-start+1) + '.', seg+1);
+            else
+                break;
+        }
+        
+    }
+    vector<string> restoreIpAddresses(string s) {
+        restore(s, 0, "", 0);
+        return answer;
+    }
+};
