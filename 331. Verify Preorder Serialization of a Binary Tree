@@ -1,0 +1,37 @@
+class Solution {
+public:
+    bool isValidSerialization(string preorder) {
+        stack<string> stack;
+        int n = preorder.length();
+        string temp = "";
+        for(int i = 0;i <= n;i++){
+            char c = (i == n) ? ',' : preorder[i];
+            string word = "";
+            if(c != ','){
+                temp += c;
+                continue;
+            }
+            else{
+                word = temp;
+                temp = "";
+            }
+            
+            
+            while(!stack.empty() && (stack.top() == "#") && (word == "#")){
+                
+                stack.pop();
+                if(stack.empty() || stack.top() == "#")
+                    return false;
+                stack.pop();
+            
+                word = "#";
+                
+            }
+            stack.push(word);
+            
+            
+        }
+        
+        return stack.size() == 1 && stack.top() == "#";
+    }
+};
