@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int calcDays(vector<int>& weights, int maxWeight){
+        
+        int w = 0;
+        int n = weights.size();
+        int days = 0;
+        for(int i = 0;i < n;i++){
+            if(w + weights[i] > maxWeight){
+                days++;
+                w = weights[i];
+            }
+            else{
+                w += weights[i];
+            }
+        }
+        
+        return days+1;
+    }
+    int shipWithinDays(vector<int>& weights, int days) {
+        int n = weights.size();
+        int low = 0;
+        int high = 0;
+        for(int i = 0;i < n;i++){
+            low = max(low,weights[i]);
+            high += weights[i];
+        }
+        while(low <= high){
+            int mid = low + (high-low)/2;
+            if(calcDays(weights, mid) > days)
+                low = mid + 1;
+            else
+                high = mid - 1;
+            
+        }
+        
+        
+        return low;
+        
+    }
+};
