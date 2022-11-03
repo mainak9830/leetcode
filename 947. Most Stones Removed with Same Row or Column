@@ -1,0 +1,42 @@
+class Solution {
+public:
+    bool sameRC(vector<vector<int>>& stones, int i, int j){
+        if(stones[i][0] == stones[j][0] || stones[i][1] == stones[j][1])
+            return true;
+        return false;
+    }
+    void dfs(vector<int> neighbors[], vector<int>& visited, int u){
+        visited[u] = 1;
+        for(auto v : neighbors[u]){
+            if(visited[v] == -1)
+                dfs(neighbors, visited, v);
+        }
+    }
+    int removeStones(vector<vector<int>>& stones) {
+        int n = stones.size();
+        vector<int> neighbors[n];
+        
+        
+        for(int i = 0;i < n;i++){
+            for(int j = i+1;j < n;j++){
+                if(sameRC(stones,i,j)){
+                    neighbors[i].push_back(j);
+                    neighbors[j].push_back(i);
+                }
+                
+            }
+        }
+        
+        int comp = 0;
+        vector<int> visited(n,-1);
+        
+        for(int i = 0;i < n;i++){
+            if(visited[i] == -1){
+                comp++;
+                dfs(neighbors, visited, i);
+            }
+            
+        }
+        return n - comp;
+    }
+};
