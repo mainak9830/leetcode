@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int partitionArray(vector<int>& nums, int k) {
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        int count = 1;
+        int i = n-1;
+        int max = nums[i];
+        int min = nums[i]-k;
+        while(i >= 0){
+            if(nums[i] > max || nums[i] < min){
+                max = nums[i];
+                min = nums[i]-k;
+                count++;
+            }
+            i--;
+        }
+        
+        return count;
+    }
+};
