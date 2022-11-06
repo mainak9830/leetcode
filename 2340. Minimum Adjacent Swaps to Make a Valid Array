@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int minimumSwaps(vector<int>& nums) {
+        
+        int n = nums.size();
+        int minIndex = 0;
+        int maxIndex = 0;
+        
+        for(int i = 0; i < n;i++){
+            if(nums[minIndex] > nums[i])
+                minIndex = i;
+            if(nums[maxIndex] <= nums[i])
+                maxIndex = i;
+            
+        }
+        cout << minIndex << " " << maxIndex << endl;
+        if(minIndex <= maxIndex)
+            return minIndex + (n-1-maxIndex);
+        int d = minIndex - maxIndex - 1;
+        int count = 0;
+        if(d % 2 == 0){
+            count = d + 1;
+            maxIndex = maxIndex + d/2 + 1;
+            minIndex = minIndex - d/2 - 1;
+        }else{
+            count = d + 1;
+            maxIndex = maxIndex + d/2 + 1;
+            minIndex = minIndex - d/2 - 2;
+        }
+        //cout << minIndex << " " << maxIndex << endl;
+        return count + minIndex + (n-1-maxIndex);
+    }
+};
