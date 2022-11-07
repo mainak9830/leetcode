@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int maximum69Number (int num) {
+        int temp = num;
+        int i = 0;
+        int idx = 0;
+        while(num){
+            int d = num%10;
+            num /= 10;
+            if(d == 6)
+                idx = i;
+            i++;
+        }
+        if(idx == 0 && temp%10 == 9)
+            return temp;
+        return temp + 3*(int)pow(10,idx);
+        
+    }
+};
