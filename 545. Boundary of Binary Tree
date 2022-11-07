@@ -1,0 +1,66 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> left, leaves, right;
+    void push(TreeNode* root, int type){
+        int val = root->val;
+        if(!root->left && !root->right)
+            leaves.push_back(val);
+        else if(type == 0 || type == 1)
+            left.push_back(val);
+        
+        else if(type == 2)
+            right.push_back(val);
+    }
+    int leftFlag(TreeNode* root, int type) {
+        
+        if((type == 0) && root->left)
+            return 1;
+        else if((type == 1) && root->left)
+            return 1;
+        else if((type == 2) && root->right == NULL)
+            return 2;
+        
+        return 3;
+    }
+    int rightFlag(TreeNode* root, int type) {
+        if((type == 0) && root->right)
+            return 2;
+        else if((type == 2) && root->right)
+            return 2;
+        else if((type == 1) && root->left == NULL)
+            return 1;
+        
+        return 3;
+    }
+    //Preorder Traversal
+    void  preorder(TreeNode* root, int type){
+        if(root == NULL)
+            return;
+        
+        push(root, type);
+        
+        preorder(root->left, leftFlag(root, type));
+        
+        preorder(root->right, rightFlag(root, type));
+    }
+    //Main function
+    vector<int> boundaryOfBinaryTree(TreeNode* root) {
+        preorder(root,0);        
+        reverse(right.begin(), right.end());
+        left.insert(left.end(), leaves.begin(), leaves.end());
+        left.insert(left.end(), right.begin(), right.end());
+        
+        return left;
+    }
+};
