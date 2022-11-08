@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool static mycomp(vector<int> v1, vector<int> v2){
+        return v1[1] > v2[1];
+    }
+    int maximumUnits(vector<vector<int>>& boxTypes, int truckSize) {
+        int n = boxTypes.size();
+        sort(boxTypes.begin(), boxTypes.end(), mycomp);
+        int ans = 0;
+        int unit = truckSize;
+        for(int i = 0;i < n;i++){
+            ans += min(boxTypes[i][0], unit) * boxTypes[i][1];
+            unit -=min(boxTypes[i][0], unit);
+            
+            if(unit == 0)
+                break;
+        }
+        
+        return ans;
+    }
+};
