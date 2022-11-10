@@ -1,0 +1,76 @@
+class Solution {
+public:
+    string transform(string price1, int discount){
+        string price = price1.substr(1);
+        if(price.length() == 0)
+            return "$";
+        
+        long long int p = stol(price);
+        cout << price << endl;
+        long double ans = (p*(100-discount)) * 0.01;
+        
+        int j = 4;
+        string a = to_string(ans);
+        while(j--)
+            a.pop_back();
+        return '$' + a;
+        
+    }
+    string discountPrices(string sentence, int discount) {
+        int n = sentence.size();
+        string final = "";
+        bool dollar = false;
+        string price = "";
+        bool valid = false;
+        int prev = -1;
+        int d = -1;
+        for(int i = 0;i < n;i++){
+            char c = sentence[i];
+            
+            
+            
+            if(dollar == true){
+                
+                if(valid && c >= '0' && c <= '9'){
+                    price += c;
+                    
+                }else if(c == ' '){
+                    if(valid && i-prev-1 == price.length())
+                        final += transform(price, discount);
+                    else
+                        final += price;
+                    price = "";
+                    dollar = false;
+                    valid = false;
+                    
+                    
+                }else{
+                    final += price;
+                    price = "";
+                    valid = false;
+                }
+            }else{
+                if(c == '$'){
+                    dollar = d;
+                    price += c;
+                    dollar = true;
+                    valid = true;
+                    
+                    
+                }
+            }
+            //cout << valid;
+            if(valid == false)
+                final += c;
+            if(c == ' ')
+                prev = i;
+            
+        }
+        
+        if(valid && n-prev-1 == price.length())
+                final += transform(price, discount);
+        else
+            final += price;
+        return final;
+    }
+};
