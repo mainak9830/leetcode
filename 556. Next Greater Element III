@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int nextGreaterElement(int n) {
+        string s = to_string(n);
+        // 1 2 2 4 3 2 1
+        string range = to_string(INT_MAX);
+        int len = s.length()-1;
+        int i = len;
+    
+        while(i > 0 && (s[i] <= s[i-1]))
+            i--;
+        if(i == 0)
+            return -1;
+        int j = i;
+        while(j <= len && s[j] > s[i-1]){
+            j++;
+        }
+        if(s.length() > range.length())
+            return -1;
+        swap(s[i-1], s[j-1]);
+        reverse(s.begin()+i, s.end());
+        //2,147,483,647
+        //cout << s.substr(0,i);
+        if((s.length() == range.length()) && s > range)
+            return -1;
+        
+        
+        
+        return stoi(s);
+    }
+};
