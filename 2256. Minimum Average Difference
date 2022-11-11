@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int minimumAverageDifference(vector<int>& nums) {
+        int n = nums.size();
+        vector<long long int> prefix(n+2,0), suffix(n+2,0);
+        
+        for(int i = 1;i <= n;i++){
+            prefix[i] = prefix[i-1] + nums[i-1];
+            suffix[i] = suffix[i-1] + nums[n-i];
+            
+        }
+        
+        int idx = 0;
+        int avg = INT_MAX;
+        for(int i = 1;i <= n;i++){
+            
+            long long int d = (n-i) == 0 ? 0 : suffix[n-i]/(n-i);
+            
+            long long int calc = abs((prefix[i]/i) - d);
+            //cout << calc << endl;
+            if(calc < avg){
+                idx = i-1;
+                avg = calc;
+            }
+        }
+        
+        return idx;
+    }
+};
