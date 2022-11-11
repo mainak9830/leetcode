@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int connectSticks(vector<int>& sticks) {
+        
+        priority_queue<int, vector<int>, greater<int>> heap;
+        
+        for(int stick : sticks)
+            heap.push(stick);
+        int cost = 0;
+        while(heap.size() > 1){
+            int x = heap.top();
+            heap.pop();
+            int y = heap.top();
+            heap.pop();
+            heap.push(x+y);
+            cost += x+y;
+        }
+        return cost;
+    }
+};
