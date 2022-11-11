@@ -1,0 +1,53 @@
+class TicTacToe {
+public:
+    vector<int> row1,col1,row2,col2;
+    int diag1, diag2,rdiag1,rdiag2;
+    int len;
+    TicTacToe(int n) {
+        len = n;
+        row1.resize(n,0);
+        row2.resize(n,0);
+        col1.resize(n,0);
+        col2.resize(n,0);
+        diag1 = 0;
+        diag2 = 0;
+        rdiag1 = 0;
+        rdiag2 = 0;
+    }
+    
+    int move(int row, int col, int player) {
+        if(player == 1){
+            if(row == col)
+                diag1++;
+            if(row + col == len-1)
+                rdiag1++;
+             row1[row]++;
+             col1[col]++;
+             
+            
+            if(rdiag1 == len || diag1 == len || row1[row] == len || col1[col] == len)
+                return 1;
+            
+        }else{
+            if(row == col)
+                diag2++;
+            if(row + col == len-1)
+                rdiag2++;
+             row2[row]++;
+             col2[col]++;
+            
+             
+            
+            if(rdiag2 == len || diag2 == len || row2[row] == len || col2[col] == len)
+                return 2;
+        }
+        
+        return 0;
+    }
+};
+
+/**
+ * Your TicTacToe object will be instantiated and called as such:
+ * TicTacToe* obj = new TicTacToe(n);
+ * int param_1 = obj->move(row,col,player);
+ */
