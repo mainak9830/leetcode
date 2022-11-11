@@ -1,0 +1,18 @@
+class Solution {
+public:
+    long long getDescentPeriods(vector<int>& prices) {
+        int len = 1;
+        long long ans = 0;
+        int n = prices.size();
+        for(int i = 1;i <= n;i++){
+            if(i < n && prices[i] == prices[i-1] - 1){
+                len++;
+            }else{
+                ans += ((long long)(len)*(len+1))/2;
+                len = 1;
+            }
+        }
+        
+        return ans;
+    }
+};
