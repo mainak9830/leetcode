@@ -1,0 +1,29 @@
+class Solution {
+public:
+    long long minimalKSum(vector<int>& nums, int k) {
+        if(k == 0)
+            return 0;
+        int prev = 0;
+        long long ans = 0;
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        for(int i = 0;i < n;i++){
+            
+            if(nums[i]-prev > 1){
+                int t = min(k,nums[i] - prev - 1);
+                ans += (1LL)*(prev+1)*t + ((1LL)*(t-1)*t)/2;
+                k = k - t;
+                if(k == 0)
+                    return ans;
+            }
+            
+            
+            prev = nums[i];
+        }
+        int number = prev+1;
+        
+        
+        ans += (1LL)*number*k + ((1LL)*(k-1)*k)/2;
+        return ans;
+    }
+};
