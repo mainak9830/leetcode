@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int calculate(int rounds){
+        if(rounds == 1)
+            return -1;
+        if(rounds%3 == 0)
+            return rounds/3;
+        
+        return rounds/3+1;
+    }
+    int minimumRounds(vector<int>& tasks) {
+        map<int, int> map;
+        
+        int n = tasks.size();
+        for(int i = 0;i < n;i++){
+            map[tasks[i]]++;
+        }
+        
+        int rounds = 0;
+        for(auto task : map){
+            int freq = task.second;
+            int minRounds = calculate(freq);
+            if(minRounds == -1)
+                return -1;
+            rounds += minRounds;
+        }
+        
+        return rounds;
+    }
+};
