@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int furthestBuilding(vector<int>& heights, int bricks, int ladders) {
+        
+        int n = heights.size();
+        priority_queue<int, vector<int>, greater<int>> pq;
+        int brickSteps = 0;
+        for(int i = 1;i < n;i++){
+            if(heights[i] <= heights[i-1])
+                continue;
+            int moreSteps = heights[i] - heights[i-1];
+            
+            if(pq.size() < ladders)
+                pq.push(moreSteps);
+            else{
+                //cout << pq.top() << endl;
+                if(!pq.empty() && moreSteps > pq.top()){
+                    brickSteps += pq.top();
+                    pq.pop();
+                    pq.push(moreSteps);
+                }else{
+                    brickSteps += moreSteps;
+                }
+                if(brickSteps > bricks)
+                    return i-1;
+                
+            }
+                
+        }
+        // cout << "hey";
+        return n-1;
+    }
+};
