@@ -1,0 +1,50 @@
+class RandomizedSet {
+public:
+    vector<int> set;
+    unordered_map<int,int> map;
+    RandomizedSet() {
+        
+    }
+    
+    bool insert(int val) {
+        if(map.count(val) == 0){
+            map[val] = map.size();
+            set.push_back(val);
+            //cout << val << "inserted" << endl;
+            return true;
+        }
+        
+        return false;
+    }
+    
+    bool remove(int val) {
+        if(map.count(val)){
+            int i = map[val];
+            int n = set.size()-1;
+            map[set[n]] = i;
+            int t = set[i];
+            set[i] = set[n];
+            set[n] = t;
+            
+            set.pop_back();
+            map.erase(val);
+            //cout << set[set.size()-1] << endl;
+            return true;
+        }
+        
+        return false;
+    }
+    
+    int getRandom() {
+        
+        return set[rand()%set.size()];
+    }
+};
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * RandomizedSet* obj = new RandomizedSet();
+ * bool param_1 = obj->insert(val);
+ * bool param_2 = obj->remove(val);
+ * int param_3 = obj->getRandom();
+ */
