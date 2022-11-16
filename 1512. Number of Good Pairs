@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int numIdenticalPairs(vector<int>& nums) {
+        map<int,int> map;
+        int n = nums.size();        
+        for(int i : nums){
+            map[i]++;
+        }
+        int ans = 0;
+        for(auto it : map){
+            int count = it.second;
+            ans += (count*(count-1))/2;
+        }
+        return ans;
+    }
+};
