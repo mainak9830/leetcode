@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int divideBy(int k, int num){
+        while(num > 0 && num % k == 0){
+            
+            num = num/k;
+        }
+        return num;
+    }
+    bool isUgly(int n) {
+        
+        n = divideBy(2,n);
+        n = divideBy(3,n);
+        n = divideBy(5,n);
+        if(n == 1)
+            return true;
+        return false;
+    }
+};
