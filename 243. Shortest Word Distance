@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int shortestDistance(vector<string>& wordsDict, string word1, string word2) {
+        
+        int word1Loc = -1;
+        int word2Loc = -1;
+        int n = wordsDict.size();
+        int shortest = INT_MAX;
+        for(int i = 0;i < n;i++){
+            if(wordsDict[i] == word1)
+                word1Loc = i;
+            else if(wordsDict[i] == word2)
+                word2Loc = i;
+            if(word1Loc > -1 && word2Loc > -1)
+                shortest = min(shortest, word2Loc > word1Loc ? word2Loc-word1Loc : word1Loc - word2Loc);
+        }
+        
+        return shortest;
+    }
+};
