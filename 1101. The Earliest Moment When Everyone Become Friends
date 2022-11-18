@@ -1,0 +1,44 @@
+class Solution {
+public:
+    void addFriend(int f1, int f2, vector<int> &vertex, vector<int> &size){
+        
+        int vertex1 = findVertex(f1, vertex);
+        int vertex2 = findVertex(f2, vertex);
+        if(vertex1 == vertex2)
+            return;
+        int len1 = size[vertex1];
+        int len2 = size[vertex2];
+        
+        if(len1 <= len2){
+            vertex[vertex1] = vertex[f2];
+            size[vertex2] += len1;
+        }else{
+            vertex[vertex2] = vertex[f1];
+            size[vertex1] += len2;
+        }
+    }
+    int findVertex(int f, vector<int> vertex){
+        if(f != vertex[f])
+            vertex[f] = findVertex(vertex[f], vertex);
+        return vertex[f];
+    }
+    int earliestAcq(vector<vector<int>>& logs, int n) {
+        sort(logs.begin(), logs.end());
+        int len = logs.size();
+        vector<int> vertex(n), size(n,1);
+        for(int i = 0;i < n;i++)
+            vertex[i] = i;
+        for(int i = 0;i < len;i++){
+            int timestamp = logs[i][0];
+            int friend1 = logs[i][1];
+            int friend2 = logs[i][2];
+            
+            addFriend(friend1, friend2, vertex, size);
+            if(size[findVertex(friend1, vertex)] == n || size[findVertex(friend2, vertex)] == n)
+                return timestamp;
+            //cout << size[vertex[friend1]] << " " << size[vertex[friend2]] << endl;
+        }
+        
+        return -1;
+    }
+};
