@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int maximumArea(vector<int> heights){
+        int n = heights.size();
+        stack<int> stack;
+        int maxi = 0;
+        for(int i = 0;i <= n;i++){
+            //cout << "hey" << endl;
+            while(!stack.empty() && (i == n || heights[stack.top()] > heights[i])){
+                int c = stack.top();
+                stack.pop();
+                int l = !stack.empty() ? stack.top() : -1;
+                
+                maxi = max(maxi, (i-l-1) * heights[c]);
+                //cout << i << "i value" << maxi << endl;
+            }
+            stack.push(i);
+        }
+        
+        return maxi;
+    }
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        int m = matrix.size();
+        int n =  matrix[0].size();
+        
+        vector<int> heights(n,0);
+        int maxi = 0;
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                if(matrix[i][j] == '1')
+                    heights[j] += 1;
+                else
+                    heights[j] = 0;
+               
+            }
+             maxi = max(maxi, maximumArea(heights));
+        }
+        
+        return maxi;
+        
+    }
+    
+};
