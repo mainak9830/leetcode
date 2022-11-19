@@ -1,0 +1,66 @@
+class Solution {
+public:
+    vector<vector<int>> dp;
+    int countPaths(int x, int y, vector<vector<int>>& grid){
+        int m = grid.size();
+        int n = grid[0].size();
+        //cout << x << " " << y << endl;
+        if(x < 0 || y < 0 || x >= m || y >= n || grid[x][y] > 0)
+            return 0;
+        if(x == m-1 && y == n-1)
+            return 1;
+        if(dp[x][y] != -1)
+            return dp[x][y];
+        int p = 0;
+        
+        
+        
+        p += countPaths(x+1,y,grid);
+        p += countPaths(x,y+1,grid);
+        
+        dp[x][y] = p;
+        return dp[x][y];
+        
+    }
+    int uniquePathsWithObstacles(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        if(grid[0][0] > 0 || grid[m-1][n-1] > 0)
+            return 0;
+        
+        dp.resize(m, vector<int>(n,-1));
+        return countPaths(0,0,grid);
+        
+    }
+};
+
+
+class Solution {
+public:
+    
+    
+    int uniquePathsWithObstacles(vector<vector<int>>& grid) {
+        
+        int m = grid.size();
+        int n = grid[0].size();
+        if(grid[0][0] > 0 || grid[m-1][n-1] > 0)
+            return 0;
+        vector<vector<int>> dp(m+1, vector<int>(n+1,0));
+        
+        for(int i = 1;i <= m;i++){
+            for(int j = 1;j <= n;j++){
+                if(i == 1 && j == 1){
+                    dp[1][1] = 1;
+                    continue;
+                }
+                    
+                if(grid[i-1][j-1] > 0)
+                    dp[i][j] = 0;
+                else
+                    dp[i][j] = dp[i-1][j] + dp[i][j-1];
+            }
+        }
+        return dp[m][n];
+        
+    }
+};
