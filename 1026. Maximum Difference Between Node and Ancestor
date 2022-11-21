@@ -1,0 +1,37 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    pair<int,int> subTreeMin(TreeNode* root,int &ans){
+        if(!root)
+            return {INT_MAX, INT_MIN};
+        if(!root->left && !root->right)
+            return {root->val, root->val};
+        int data = root->val;
+        pair<int,int> l = subTreeMin(root->left, ans);
+        pair<int,int> r = subTreeMin(root->right, ans);
+        
+        cout << root->val << l.first << r.second << endl;
+        if(root->left)
+            ans = max({ans, abs(data - l.first), abs(data-l.second)});
+        if(root->right)
+            ans = max({ans, abs(data - r.first),abs(data - r.second)});
+        // cout << "min" << min({data, l.first, r.first}) << "max" << max({data, r.second, l.second}) << endl;
+        return { min({data, l.first, r.first}), max({data, r.second, l.second}) };
+    
+    }
+    int maxAncestorDiff(TreeNode* root) {
+        int ans = INT_MIN;
+        subTreeMin(root, ans);
+        return ans;
+    }
+};
