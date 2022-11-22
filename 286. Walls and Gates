@@ -1,0 +1,51 @@
+class Solution {
+public:
+    int INF = INT_MAX;
+    bool check(vector<vector<int>> &rooms, int x, int y, int d){
+        int m = rooms.size();
+        int n = rooms[0].size();
+        
+        if(x < 0 || y < 0 || x >= m || y >= n || rooms[x][y] != INF)
+            return false;
+        //cout << x << " " << y << endl;
+        rooms[x][y] = d;
+        return true;
+    }
+    void wallsAndGates(vector<vector<int>>& rooms) {
+        int m = rooms.size();
+        int n = rooms[0].size();
+        
+        vector<int> directions[4] = {{0,1}, {1,0}, {0,-1},{-1,0}};
+        queue<pair<int,int>> queue;
+        
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                if(rooms[i][j] == 0)
+                    queue.push({i,j});
+            }
+        }
+        
+        int d = 1;
+        while(!queue.empty()){
+            int len = queue.size();
+            
+            for(int i = 0;i < len;i++){
+                int x = queue.front().first;
+                int y = queue.front().second;
+                queue.pop();
+                
+                
+                for(int j = 0;j < 4;j++){
+                    int dx = directions[j][0];
+                    int dy = directions[j][1];
+                    if(check(rooms,x+dx,y+dy,d)){
+                        queue.push({x+dx, y+dy});
+                        
+                    }
+                }
+            }
+            d++;
+        }
+        
+    }
+};
