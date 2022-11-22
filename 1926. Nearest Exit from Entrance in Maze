@@ -1,0 +1,48 @@
+class Solution {
+public:
+    bool check(vector<vector<char>>& maze, int x, int y){
+        int m = maze.size();
+        int n = maze[0].size();
+        
+        if(x < 0 || y < 0 || x >= m || y >= n || maze[x][y] != '.')
+            return false;
+        maze[x][y] = '#';
+        //cout << x << " " << y << endl;
+        return true;
+    }
+    int nearestExit(vector<vector<char>>& maze, vector<int>& entrance) {
+        int m = maze.size();
+        int n = maze[0].size();
+        
+        int xent = entrance[0];
+        int yent = entrance[1];
+        
+        queue<pair<int,int>> queue;
+        vector<int> directions[4] = {{0,1}, {1,0}, {0,-1}, {-1,0}};
+        int steps = 0;
+        queue.push({xent,yent});
+        maze[xent][yent] = '#';
+        while(!queue.empty()){
+            int len = queue.size();
+            
+            for(int i = 0;i < len;i++){
+                int x = queue.front().first;
+                int y = queue.front().second;
+                if(!(x == xent && y == yent) && (x == m-1 || y == n-1 || x == 0 || y == 0))
+                    return steps;
+                queue.pop();
+                for(int j = 0;j < 4;j++){
+                    int dx = directions[j][0];
+                    int dy = directions[j][1];
+                    
+                    if(check(maze, x+dx, y+dy)){
+                        queue.push({x+dx,y+dy});
+                    }
+                }
+            }
+            steps++;
+        }
+        
+        return -1;
+    }
+};
