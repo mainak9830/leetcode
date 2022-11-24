@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int findCenter(vector<vector<int>>& edges) {
+        map<int, int> degree;
+        int star;
+        int maxDegree = 0;
+        int nodes = 0;
+        for(auto edge : edges){
+            degree[edge[0]]++;
+            degree[edge[1]]++;
+            if(degree[edge[0]] > maxDegree){
+                maxDegree = degree[edge[0]];
+                star = edge[0];
+            }
+            if(degree[edge[1]] > maxDegree){
+                maxDegree = degree[edge[1]];
+                star = edge[1];
+            }
+            nodes = max({nodes, edge[0], edge[1]});
+        }
+        
+        if(maxDegree == nodes-1)
+            return star;
+        return -1;
+        
+    }
+};
