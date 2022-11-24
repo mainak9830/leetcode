@@ -1,0 +1,29 @@
+class Solution {
+public:
+    bool dfs(vector<int> *graph, int u, int parent, int dest, vector<bool>& visited){
+        if(u == dest)
+            return true;
+        visited[u] = true;
+        for(auto v : graph[u]){
+            if(v != parent && !visited[v]){
+                bool t = dfs(graph, v, u, dest, visited);
+                if(t)
+                    return t;
+                
+                    
+            }
+        }
+        
+        return false;
+    }
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        
+        vector<int> *graph = new vector<int>[n];
+        vector<bool> visited(n, false);
+        for(vector<int> e : edges){
+            graph[e[0]].push_back(e[1]);
+            graph[e[1]].push_back(e[0]);
+        }
+        return dfs(graph, source, -1, destination, visited);
+    }
+};
