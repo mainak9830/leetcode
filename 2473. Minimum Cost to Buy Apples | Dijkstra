@@ -1,0 +1,43 @@
+//Dijkstra's Algo O(n*n*log|V|)
+class Solution {
+public:
+    typedef pair<long long, int> pa;
+    vector<long long> minCost(int n, vector<vector<int>>& roads, vector<int>& appleCost, int k) {
+        priority_queue<pa, vector<pa>, greater<pa>> pq;
+        vector<pair<int,int>> *neighbors = new vector<pair<int,int>> [n+1];
+        for(vector<int> road : roads){
+            neighbors[road[0]].push_back({road[1], road[2]});
+            neighbors[road[1]].push_back({road[0], road[2]});
+        }
+        
+        vector<long long> ans;
+        for(int i = 1;i <= n;i++){
+            long long cost = LLONG_MAX;
+            vector<bool> visited(n+1,false);
+            pq.push({0,i});
+            
+            while(!pq.empty()){
+                pa topEl = pq.top();
+                long long costU = topEl.first;
+                int u = topEl.second;
+                pq.pop();
+                if(visited[u])
+                    continue;
+                cost = min(cost, costU + appleCost[u-1]);
+                visited[u] = true;
+                
+                
+                
+                for(auto v : neighbors[u]){
+                    if(!visited[v.first]){
+                        pq.push({costU+v.second*(k+1), v.first});
+                    }
+                }
+            }
+            //cout <<"done";
+            ans.push_back(cost);
+        }
+        
+        return ans;
+    }
+};
