@@ -1,0 +1,37 @@
+class Solution {
+public:
+    typedef pair<int,int> pa;
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+        vector<pa> *neighbors = new vector<pa>[n+1];
+        for(vector<int> it : times){
+            neighbors[it[0]].push_back({it[1], it[2]});
+        }
+        priority_queue<pa, vector<pa>, greater<pa>> pq;
+        pq.push({0,k});
+        vector<bool> visited(n+1, false);
+        int minTime = 0;
+        while(!pq.empty()){
+            pa node = pq.top();
+            pq.pop();
+            int u = node.second;
+            int cost = node.first;
+            
+            if(visited[u])
+                continue;
+            minTime = max(minTime, cost);
+            visited[u] = true;
+            for(pa it : neighbors[u]){
+                if(!visited[it.first]){
+                    pq.push({cost+it.second, it.first});
+                }
+            }
+        }
+        for(int i=1;i <= n;i++){
+            //cout << i << endl;
+            if(!visited[i])
+                return -1;
+        }
+        return minTime;
+        
+    }
+};
