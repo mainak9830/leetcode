@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool dfs(vector<int> *neighbors, int u, int dest, vector<bool>& visited){
+        if(u == dest)
+            return true;
+        
+        visited[u] = true;
+        
+        for(int v : neighbors[u]){
+            if(!visited[v] && dfs(neighbors, v, dest, visited)){
+                return true;
+            }
+        }
+        return false;
+    }
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int n = edges.size();
+        vector<int> *neighbors = new vector<int>[n+1];
+        for(vector<int> edge : edges){
+            vector<bool> visited(n+1, false);
+            if(dfs(neighbors, edge[0], edge[1], visited))
+                return edge;
+            neighbors[edge[0]].push_back(edge[1]);
+            neighbors[edge[1]].push_back(edge[0]);
+        }
+        return {};
+    }
+};
