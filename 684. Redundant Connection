@@ -26,3 +26,54 @@ public:
         return {};
     }
 };
+
+//Union Find Solution
+class DSU {
+public:    
+    vector<int> parent;
+    vector<int> rank;
+    DSU(int MAX_SIZE){
+        parent.resize(MAX_SIZE);
+        rank.resize(MAX_SIZE, 1);
+        
+        for(int i=0;i < MAX_SIZE;i++)
+            parent[i] = i;
+    }
+    int find(int x){
+        if(parent[x] != x)
+            parent[x] = find(parent[x]);
+        return parent[x];
+    }
+    
+    void unionF(int x, int y){
+        int xhead = find(x);
+        int yhead = find(y);
+        if(xhead == yhead)
+            return;
+        
+        if(rank[xhead] < rank[yhead]){
+            parent[xhead] = yhead;
+            rank[xhead] += rank[yhead];
+        }else{
+           parent[yhead] = xhead;
+           rank[yhead] += rank[xhead]; 
+        }
+        
+    }
+};
+class Solution {
+private:
+    
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        DSU dsu(1001);
+        
+        for(vector<int> edge : edges){
+            if(dsu.find(edge[0]) == dsu.find(edge[1]))
+                return edge;
+            dsu.unionF(edge[0], edge[1]);
+        }
+        
+        return {};
+    }
+};
