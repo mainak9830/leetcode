@@ -1,0 +1,26 @@
+class Solution {
+public:
+    long long maximumImportance(int n, vector<vector<int>>& roads) {
+        long long ans = 0;
+        
+        priority_queue<pair<int,int>> pq;
+        
+        vector<int> degree(n,0);
+        for(auto road : roads){
+            degree[road[0]]++;
+            degree[road[1]]++;
+        }
+        for(int i = 0;i < n;i++){
+            if(degree[i] > 0)
+                pq.push({degree[i], i});
+        }
+        int k = n;
+        while(!pq.empty()){
+            ans += (1LL)*pq.top().first*k;
+            pq.pop();
+            k--;
+        }
+        return ans;
+                    
+    }
+};
