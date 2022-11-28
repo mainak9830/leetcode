@@ -1,0 +1,24 @@
+class Solution {
+public:
+    string transform(string s){
+        string codes[] = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+        string ans = "";
+        
+        for(char c : s){
+            ans += codes[c-'a'];
+        }
+        
+        return ans;
+    }
+    int uniqueMorseRepresentations(vector<string>& words) {
+       
+        
+        set<string> set;
+        
+        for(string s : words){
+            set.insert(transform(s));
+        }
+        
+        return set.size();
+    }
+};
