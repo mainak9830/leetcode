@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int minProductSum(vector<int>& nums1, vector<int>& nums2) {
+        
+        vector<int> counter1(101,0), counter2(101,0);
+        
+        for(int i = 0;i < nums1.size();i++){
+            counter1[nums1[i]]++;
+            counter2[nums2[i]]++;
+        }
+        int p1 = 0;
+        int p2 = 100;
+        int ans = 0;
+        while(p1 < 101 && p2 > 0){
+            
+            while(p1 < 101 && counter1[p1] == 0)
+                p1++;
+            while(p2 > 0 && counter2[p2] == 0)
+                p2--;
+            if(p1 == 101 || p2 == 0)
+                break;
+            int bottleneck = min(counter1[p1], counter2[p2]);
+            ans += p1*p2*bottleneck;
+            counter1[p1] -= bottleneck;
+            counter2[p2] -= bottleneck;
+        }
+        
+        return ans;
+    }
+};
