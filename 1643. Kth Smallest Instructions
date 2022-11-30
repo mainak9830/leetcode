@@ -89,3 +89,52 @@ public:
         
     }
 };
+
+//Using Factorial // Great Learning just by 1 hard!!!! Loved it
+class Solution {
+public:
+    int helper(int n, int r){
+        long p = 1;
+        
+        for(int i = 1;i <= r;i++){
+            p = (p * (n-r+i))/i;
+        }
+        return p;
+    }
+    string kthSmallestPath(vector<int>& destination, int k) {
+        
+        int hcount = destination[1];
+        int vcount = destination[0];
+        int n = hcount + vcount;
+        
+      
+        string ans = "";
+        
+        for(int i=1;i <= n;i++){
+            if(hcount == 0){
+                ans += 'V';
+                vcount -= 1;
+                continue;
+            }
+            if(vcount == 0){
+                ans += 'H';
+                hcount -= 1;
+                continue;
+            }
+            int ways = helper(hcount+vcount-1, hcount-1);
+            //cout << ways << endl;
+            if(k > ways){
+                ans += 'V';
+                vcount -= 1;
+                k -= ways;
+            }else{
+                ans += 'H';
+                hcount -= 1;
+            }
+            
+            
+        }
+        
+        return ans;
+    }
+};
