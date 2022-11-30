@@ -1,0 +1,49 @@
+//Not possible with the implementation of factorial, need alternate implementation
+class Solution {
+public:
+    int helper(vector<unsigned long long int> factorial, int n, int r){
+        if(n <= 0)
+            return 0;
+        unsigned long long int x = factorial[n]/factorial[r];
+        x = x / factorial[n-r];
+        return (int)x;
+    }
+    string kthSmallestPath(vector<int>& destination, int k) {
+        
+        int hcount = destination[1];
+        int vcount = destination[0];
+        int n = hcount + vcount;
+        vector<unsigned long long int> factorial(n+1,1);
+        for(int i=1;i <= n;i++){
+            factorial[i] = factorial[i-1] * i;
+        }
+        string ans = "";
+        
+        for(int i=1;i <= n;i++){
+            if(hcount == 0){
+                ans += 'V';
+                vcount -= 1;
+                continue;
+            }
+            if(vcount == 0){
+                ans += 'H';
+                hcount -= 1;
+                continue;
+            }
+            int ways = helper(factorial, hcount+vcount-1, vcount-1);
+            cout << ways << endl;
+            if(k > ways){
+                ans += 'V';
+                vcount -= 1;
+                k -= ways;
+            }else{
+                ans += 'H';
+                hcount -= 1;
+            }
+            
+            
+        }
+        
+        return ans;
+    }
+};
