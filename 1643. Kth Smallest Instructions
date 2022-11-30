@@ -47,3 +47,45 @@ public:
         return ans;
     }
 };
+
+//Right Solution Optimized
+class Solution {
+public:
+    string kthSmallestPath(vector<int>& destination, int k) {
+        int c = destination[1];
+        int r = destination[0];
+        vector<vector<int>> dp(r+1,vector<int>(c+1,1));
+        
+        for(int i = 1;i <= r;i++){
+            for(int j = 1;j <= c;j++){
+                dp[i][j] = dp[i-1][j] + dp[i][j-1];
+            }
+        }
+        string ans = "";
+        int x = r;
+        int y = c;
+        for(int i = 1;i <= r+c;i++){
+            if(y == 0){
+                ans += 'V';
+                x -= 1;
+                continue;
+            }
+            if(x == 0){
+                ans += 'H';
+                y -= 1;
+                continue;
+            }
+            if(k > dp[x][y-1]){
+                ans += 'V';
+                k -= dp[x][y-1];
+                x -= 1;
+            }else{
+                ans += 'H';
+                y -= 1;
+            }
+            //cout << x << " " << y << endl;
+        }
+        return ans;
+        
+    }
+};
