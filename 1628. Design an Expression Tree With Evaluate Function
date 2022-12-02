@@ -1,0 +1,99 @@
+/**
+ * This is the interface for the expression tree Node.
+ * You should not remove it, and you can define some classes to implement it.
+ */
+
+class Node {
+public:
+    virtual ~Node () {};
+    virtual int evaluate() const = 0;
+protected:
+    // define your fields here
+};
+
+class Operator : public Node {
+public:
+    string val;
+    Node* left, *right;
+    void setValue(string op){
+        val = op;
+    }
+    void setLeft(Node* l){
+        left = l;
+    }
+    void setRight(Node* r){
+        right = r;
+    }
+    int evaluate() const{
+        return f(left->evaluate(), right->evaluate());
+    }
+    int f(int a, int b) const{
+        int value;
+        if(val == "+")
+            value = a+b;
+        if(val == "-")
+            value = a-b;
+        if(val == "*")
+            value = a*b;
+        if(val == "/")
+            value = a/b;
+        //cout << a << " " << b << endl;
+        return value;
+    }
+        
+};
+
+class Operand : public Node {
+public:
+    string val;
+    void setValue(string num){
+        val = num;
+    }
+    int evaluate() const{
+        return stoi(val);
+    }
+    
+};
+
+/**
+ * This is the TreeBuilder class.
+ * You can treat it as the driver code that takes the postinfix input 
+ * and returns the expression tree represnting it as a Node.
+ */
+
+class TreeBuilder {
+public:
+    Node* buildTree(vector<string>& postfix) {
+        stack<Node*> stack;
+        for(string s : postfix){
+            
+            if(s == "+" || s == "-" || s == "*" || s == "/"){
+                Node* a = stack.top();
+                stack.pop();
+                Node* b = stack.top();
+                stack.pop();
+                Operator* node = new Operator();
+                node->setValue(s);
+                node->setLeft(b);
+                node->setRight(a);
+                stack.push(node);
+            }else{
+                Operand* node = new Operand();
+                node->setValue(s);
+                stack.push(node);
+            }   
+                
+            
+        }
+        
+        return stack.top();
+    }
+};
+
+
+/**
+ * Your TreeBuilder object will be instantiated and called as such:
+ * TreeBuilder* obj = new TreeBuilder();
+ * Node* expTree = obj->buildTree(postfix);
+ * int ans = expTree->evaluate();
+ */
