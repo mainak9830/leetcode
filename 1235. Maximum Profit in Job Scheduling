@@ -1,0 +1,126 @@
+//recursive solution TLE
+class Solution {
+public:
+    static bool mycomp(vector<int> &job1, vector<int> &job2){
+        return job1[0] < job2[0];
+    }
+    vector<int> startT, endT, profitT;
+    int n;
+    vector<int> dp;
+    int maxprofit(vector<vector<int>> jobInfo, int currentJob, int lastJobEnd){
+        
+        if(currentJob == n)
+            return 0;
+        
+        int startT = jobInfo[currentJob][0];
+        int endT = jobInfo[currentJob][1];
+        int profitT = jobInfo[currentJob][2];
+        if(startT < lastJobEnd){
+            return maxprofit(jobInfo, currentJob+1, lastJobEnd);
+            
+        }
+        int consider = profitT + maxprofit(jobInfo, currentJob+1, endT);
+        int nconsider = maxprofit(jobInfo, currentJob+1, lastJobEnd);
+        return max(consider, nconsider);
+        //cout << currentJob << " " << consider << " " << nconsider << endl;
+        
+    }
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        
+        n = startTime.size();
+        
+        
+        vector<vector<int>> jobInfo(n, vector<int>(3));
+        for(int i = 0;i < n;i++){
+            jobInfo[i][0] = startTime[i];
+            jobInfo[i][1] = endTime[i];
+            jobInfo[i][2] = profit[i];
+        }
+        
+        sort(jobInfo.begin(), jobInfo.end(), mycomp);
+        // for(int i = 0;i < n;i++){
+        //     cout <<  jobInfo[i][2] << endl;
+        // }
+        return maxprofit(jobInfo, 0, 0);
+    }
+};
+//TLE Buttom Up DP
+class Solution {
+public:
+    
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        
+        n = startTime.size();
+        
+        vector<int> dp(n);
+        vector<vector<int>> jobInfo(n, vector<int>(3));
+        for(int i = 0;i < n;i++){
+            jobInfo[i][0] = startTime[i];
+            jobInfo[i][1] = endTime[i];
+            jobInfo[i][2] = profit[i];
+        }
+        
+        sort(jobInfo.begin(), jobInfo.end(), mycomp);
+        int maxProfit = 0;
+        for(int i = n-1;i >= 0;i--){
+            int p = jobInfo[i][2];
+            dp[i] = p;
+            int end = jobInfo[i][1];
+            for(int j = i+1;j < n;j++){
+                int start = jobInfo[j][0];
+                if(start >= end)
+                    dp[i] = max(dp[j]+p, dp[i]);
+                
+            }
+            maxProfit = max(dp[i], maxProfit);
+            //cout << maxProfit;
+        }
+        return maxProfit;
+    }
+};
+
+// O(NlogN)
+
+ class Solution {
+public:
+    static bool mycomp(vector<int> &job1, vector<int> &job2){
+        return job1[0] < job2[0];
+    }
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        
+        int n = startTime.size();
+        
+        vector<int> dp(n,0);
+        vector<vector<int>> jobInfo(n, vector<int>(3));
+        for(int i = 0;i < n;i++){
+            jobInfo[i][0] = startTime[i];
+            jobInfo[i][1] = endTime[i];
+            jobInfo[i][2] = profit[i];
+        }
+        
+        sort(jobInfo.begin(), jobInfo.end(), mycomp);
+        int maxProfit = 0;
+        vector<int> stTime;
+        for(int i = 0;i < n;i++){
+            stTime.push_back(jobInfo[i][0]);
+        }
+        for(int i = n-1;i >= 0;i--){
+            
+            int p = jobInfo[i][2];
+            int endt = jobInfo[i][1];
+            if(i == n-1){
+                dp[i] = p;
+                continue;
+            }
+            int nextJob = lower_bound(stTime.begin(), stTime.end(), endt) - stTime.begin();
+            //cout << nextJob << endl;
+            dp[i] = p;
+            if(nextJob < n)
+                dp[i] = max(dp[i], p + dp[nextJob]);
+            
+            dp[i] = max(dp[i], dp[i+1]);
+            //cout << maxProfit;
+        }
+        return dp[0];
+    }
+};
