@@ -1,0 +1,48 @@
+class Solution {
+public:
+    vector<vector<int>> diagonalSort(vector<vector<int>>& mat) {
+        int m = mat.size();
+        int n = mat[0].size();
+        
+        for(int i = 0;i < m;i++)
+            sortDiag(mat, i, 0);
+        
+        for(int i = 0;i < n;i++)
+            sortDiag(mat, 0, i);
+        
+        return mat;
+    }
+    vector<int> countingSort(vector<int> nums) {
+        int min = 1;
+        int max = 100;
+        
+        int len = max-min+1;
+        vector<int> count(len,0);
+        for(int num : nums){
+            count[num-min]++;
+        }
+        
+        vector<int> sorted;
+        
+        for(int i = 0;i < len;i++){
+            for(int c = 1;c <= count[i];c++)
+                sorted.push_back(i+min);
+        }
+        return sorted;
+    }
+    void sortDiag(vector<vector<int>>& mat, int r, int c){
+        int m = mat.size();
+        int n = mat[0].size();
+        int len = min(m-r, n-c);
+        vector<int> diagonal;
+        for(int i = 0;i < len;i++){
+            diagonal.push_back(mat[r+i][c+i]);
+        }
+        
+        //sort(diagonal.begin(), diagonal.end());
+        vector<int> newdiagonal = countingSort(diagonal);
+        for(int i = 0;i < len;i++){
+            mat[r+i][c+i] = newdiagonal[i];
+        }
+    }
+};
