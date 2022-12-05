@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<int> partitionLabels(string s) {
+        vector<int> first(26,-1), last(26, -1);
+        int n = s.length();
+        for(int i = 0;i < n;i++){
+            if(first[s[i]-'a'] == -1){
+                first[s[i]-'a'] = i;
+                last[s[i]-'a'] = i;
+            }
+            else
+                last[s[i]-'a'] = i; 
+        }
+        vector<int> ans;
+        
+        int start = first[s[0]-'a'];
+        int end = last[s[0]-'a'];
+        
+        for(int i = 1;i <= n;i++){
+            if(i > end){
+                ans.push_back(end-start+1);
+                if(i == n)
+                    break;
+                start = first[s[i]-'a'];
+                end = last[s[i]-'a'];
+            }
+            else
+                end = max(end, last[s[i]-'a']);
+        }
+        
+        return ans;
+    }
+};
