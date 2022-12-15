@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int partitionString(string s) {
+        int n = s.length();
+        
+        
+        int count = 1;
+        // abcdeabc
+        set<char> set;
+        for(int i = 0;i < n;i++){
+            
+            if(set.count(s[i])){
+                count++;
+                set.clear();
+                
+            }
+            set.insert(s[i]);
+        }
+
+        return count;
+    }
+};
