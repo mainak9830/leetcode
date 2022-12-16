@@ -33,3 +33,44 @@ public:
         return (positives == 1) ? ans : -ans;
     }
 };
+
+class Solution {
+public:
+    int divide(int dividend, int divisor) {
+        int negatives = 0;
+        int half_min = INT_MIN /2;
+        if(dividend == INT_MIN && divisor == -1)
+            return INT_MAX;
+        if(dividend > 0){
+            dividend = -dividend;
+            negatives++;
+        }
+
+        if(divisor > 0){
+            divisor = -divisor;
+            negatives++;
+        }
+        int quotient = 0;
+
+        int value = divisor;
+        int power = -1;
+        
+        while(half_min <= value && value + value >= dividend){
+            power += power;
+            value += value;
+        }
+
+        while(divisor >= dividend){
+            
+            if(dividend <= value){
+                quotient += power;
+                dividend -= value;
+            }
+
+            value >>= 1;
+            power >>= 1;
+        }
+
+        return (negatives == 1) ? quotient : -quotient;
+    }
+};
