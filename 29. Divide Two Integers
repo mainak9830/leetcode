@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int divide(int dividend, int divisor) {
+        int halfMin = INT_MIN / 2;
+
+        if(dividend == INT_MIN && divisor == -1)
+            return INT_MAX;
+        int positives = 0;
+        if(dividend > 0){
+            dividend = -dividend;
+            positives++;
+        }
+        if(divisor > 0){
+            divisor = -divisor;
+            positives++;
+        }
+        int ans = 0;
+
+        while(divisor >= dividend){
+            
+            //Count the max value that could be deducted
+            int count = -1;
+            int value = divisor;
+            while(value >= halfMin && value + value >= dividend){
+                value += value;
+                count += count;
+            }
+            ans += count;
+            dividend -= value;
+        }
+
+
+        return (positives == 1) ? ans : -ans;
+    }
+};
