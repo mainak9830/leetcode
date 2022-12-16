@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<int> findBall(vector<vector<int>>& grid) {
+        
+        int m = grid.size();
+        int n = grid[0].size();
+        vector<int> ans(n,-1);
+        int i,j;
+        for(j = 0;j < n;j++){
+            int y = j;
+            for(i = 0;i < m;i++){
+                if(grid[i][y] == 1){
+                    if(y == n-1 || grid[i][y+1] == -1)
+                        break;
+                    else
+                        y = y + 1;
+                }
+                if(grid[i][y] == -1){
+                    if(y == 0 || grid[i][y-1] == 1)
+                        break;
+                    else
+                        y = y - 1;
+                }
+            }
+            ans[j] = (i == m) ? y : -1;
+            
+        }
+        return ans;
+    }
+};
