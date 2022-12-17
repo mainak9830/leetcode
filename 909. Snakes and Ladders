@@ -1,0 +1,53 @@
+class Solution {
+public:
+    set<int> seen;
+    pair<int,int> getCoordinate(int t, int n){
+        int x = (t-1)/n + 1;
+        int y = x % 2 ? (t-1)%n+1 : n - (t-1)%n;
+        
+        return {x,y};
+    }
+    int play(vector<vector<int>>& board, int start){
+        //if(map.count())
+        int n = board.size();
+        
+        queue<int> queue;
+        queue.push(start);
+        seen.insert(start);
+        int level = 0;
+        while(!queue.empty()){
+            int len = queue.size();
+            for(int i = 1;i <= len;i++){
+                int node = queue.front();
+                queue.pop();
+                int low = node + 1;
+                int high = min(node + 6, n * n);
+
+                for(int i = low;i <= high;i++){
+                    pair<int,int> l = getCoordinate(i, n);
+                    int x = n - l.first;
+                    int y = l.second - 1;
+                    //cout << level << "level " << x << " " << y << " " << i << endl;
+                    int next = board[x][y] == -1 ? i : board[x][y];
+                    if(next == n*n)
+                        return level+1; 
+                    if(seen.count(next) == 0){
+                        queue.push(next);
+                        seen.insert(next);
+                    }
+                }
+                    
+
+                
+            }
+            level++;
+        }
+
+        return -1;
+
+    }
+    int snakesAndLadders(vector<vector<int>>& board) {
+        int n = board.size();
+        return play(board, 1);
+    }
+};
