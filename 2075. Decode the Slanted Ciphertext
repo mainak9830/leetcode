@@ -1,0 +1,24 @@
+class Solution {
+public:
+    string decodeCiphertext(string encodedText, int rows) {
+        if(encodedText == "")
+            return ""; 
+        int cols = encodedText.length() / rows;
+        string original = "";
+        
+        for(int j = 0;j < cols;j++){
+            for(int i = 0;i < rows;i++){
+                if(cols*i+j+i >= encodedText.length())
+                    break;
+                
+                original += encodedText[cols*i+j+i];
+                
+                
+            }
+        }
+        int i = original.length()-1;
+        while(original[i] == ' ')
+            i--;
+        return original.substr(0, i+1);
+    }
+};
