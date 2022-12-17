@@ -1,0 +1,27 @@
+class Solution {
+public:
+    map<vector<int>, double> dp;
+    double knightProbability(int n, int k, int row, int column) {
+        if(row < 0 || column < 0 || row >= n || column >= n)
+            return 0.0;
+        
+        if(k == 0){
+            
+            return 1.0;
+        }
+        if(dp.count({row, column, n, k})){
+            //cout << dp[{row, column, n, k}] << "In dp" << endl;
+           return dp[{row, column, n, k}];
+        }
+        vector<vector<int>> direc = {{-1,2}, {1,-2}, {1,2}, {-1,-2}, {2,1}, 
+        {2,-1}, {-2,1}, {-2,-1}};
+        double p = 0.0;
+        for(vector<int> d : direc){
+            p += 0.125 * knightProbability(n,k-1,row+d[0], column+d[1]);
+        }
+        //cout << k << " " << row << " " << column << " " << " " << p << endl;
+        dp[{row, column, n, k}] = p;
+        return p;
+
+    }   
+};
