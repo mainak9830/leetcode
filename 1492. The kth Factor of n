@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int kthFactor(int n, int k) {
+        
+        vector<int> factors;
+        bool edge = false;
+        int count = 0;
+        for(int i = 1;i*i <= n;i++){
+            if(n % i == 0){
+                if(i*i != n)
+                    factors.push_back(i);
+                else
+                    edge = true;
+                count++;
+                if(count == k)
+                    return i;
+            }
+        }
+        //1 2 4 6 6 n/6
+        if(edge == true){
+            k--;
+            count--;
+        }
+        int d = factors.size();
+        return d >= (k-count) ? n/factors[d-(k-count)] : -1;
+    }
+};
