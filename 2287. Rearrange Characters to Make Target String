@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int rearrangeCharacters(string s, string target) {
+        map<char,int> countT, countS;
+        for(char c : target)
+            countT[c]++;
+        for(char c : s){
+            if(countT.count(c)){
+                countS[c]++;
+            }
+        }
+        int maxi = INT_MAX;
+        for(auto it : countT){
+            char c = it.first;
+
+            if(countS.count(c) == 0)
+                return 0;
+            maxi = min(maxi, countS[c]/countT[c]);
+            if(maxi == 0)
+                return 0;
+        }
+
+        return maxi;
+    }
+};
