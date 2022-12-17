@@ -1,0 +1,15 @@
+class Solution {
+public:
+    double angleClock(int hour, int minutes) {
+        int hspeed = 30; //degree/hour
+        int mspeed = 6;    //degree/min
+
+        double degreeHour = hspeed * (hour) + (minutes)*0.5;
+        
+        double degreeM = minutes * mspeed;
+        
+        
+        return min(abs(degreeHour - degreeM), 360-abs(degreeHour - degreeM)); 
+
+    }
+};
