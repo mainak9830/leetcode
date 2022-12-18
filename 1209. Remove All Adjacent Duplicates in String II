@@ -1,0 +1,30 @@
+class Solution {
+public:
+    string removeDuplicates(string s, int k) {
+      int n = s.length();
+
+      string ans = "";
+      stack<pair<char,int>> stack;
+
+      for(char c : s){
+          if(stack.empty() || stack.top().first != c)
+            stack.push({c,1});
+          else if(stack.top().first == c){
+              pair<char, int> t = stack.top();
+              stack.pop();
+              if(t.second < k-1)
+                stack.push({t.first,t.second+1}); 
+          }
+      }
+
+      while(!stack.empty()){
+        pair<char, int> t = stack.top();
+        int count = t.second;
+        stack.pop();
+        while(count--)
+            ans += t.first;
+      }
+      reverse(ans.begin(), ans.end());
+      return ans;
+    }
+};
