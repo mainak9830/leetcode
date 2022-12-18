@@ -1,0 +1,73 @@
+class Solution {
+public:
+    int findLonelyPixel(vector<vector<char>>& picture) {
+        
+        int m = picture.size();
+        int n = picture[0].size();
+        int count = 0;
+        int black = 0;
+        for(int i = 0;i < m;i++){
+            //(i,0)
+            black += (picture[i][0] == 'B') ? 1 : 0;
+        }
+        
+        if(black == 1){
+            for(int i = 0;i < m;i++){
+            if(picture[i][0] == 'W')
+                continue;
+            int b = 0;
+            for(int j = 0;j < n;j++){
+                
+                b += (picture[i][j] == 'B') ? 1 : 0;
+            }
+            if(b == 1)
+                count++;
+            }
+        }
+        
+        black = 0;
+        for(int i = 0;i < n;i++){
+            //(i,0)
+            black += (picture[0][i] == 'B') ? 1 : 0;
+        }
+        
+        if(black == 1){
+            for(int i = 1;i < n;i++){
+            if(picture[0][i] == 'W')
+                continue;
+            int b = 0;
+            for(int j = 0;j < m;j++){
+                
+                b += (picture[j][i] == 'B') ? 1 : 0;
+            }
+            if(b == 1)
+                count++;
+            }
+        }
+        
+        for(int i = 0;i < n;i++){
+            picture[0][i] = (picture[0][i] == 'B') ? '1' : '0';
+        }
+        for(int i = 0;i < m;i++){
+            picture[i][0] = (picture[i][0] == 'B') ? '1' : '0';
+        }
+        for(int i = 1;i < m;i++){
+            for(int j = 1;j < n;j++){
+                if(picture[i][j] == 'B'){
+                    picture[i][0]++;
+                    picture[0][j]++;
+                }
+            }
+        }
+
+        for(int i = 1;i < m;i++){
+            for(int j = 1;j < n;j++){
+                if(picture[i][j] == 'B' && picture[i][0] == '1' && picture[0][j] == '1'){
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+};
