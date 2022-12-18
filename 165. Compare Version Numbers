@@ -1,0 +1,67 @@
+class Solution {
+public:
+    int compareVersion(string version1, string version2) {
+        
+        int i = 0;
+        int j = 0;
+        int n = version1.length();
+        int m = version2.length();
+        bool end1 = false, end2 = false;
+        long long int num1 = 0;
+        long long int num2 = 0;
+        while(i <= n || j <= m){
+            
+            
+            if(i >= n){
+                end1 = true;
+            }
+            else if(!end1 && isdigit(version1[i])){
+                //000123
+                num1 = num1*10 + version1[i]-'0';
+                i++;
+            }
+            else if(version1[i] == '.'){
+                end1 = true;
+            }
+            
+            
+            
+            if(j >= m){
+                end2 = true;
+            }
+            else if(!end2 && isdigit(version2[j])){
+                num2 = num2*10 + version2[j]-'0';
+                j++;
+            }
+            else if(version2[j] == '.'){
+                end2 = true;
+            }
+            //cout << i << " " << j <<  "end1 " << end1 << "end2 " << end2 << endl;
+            if(end1 && end2){
+                //cout << num1 << " " << num2 << endl;
+                if(num1 < num2)
+                    return -1;
+                if(num1 > num2)
+                    return 1;
+                if(i < n)
+                    i++;
+                if(j < m)
+                    j++;
+
+                
+                end1 = false;
+                
+                end2 = false;
+            
+                num1 = 0;
+                num2 = 0;
+                if(i == n && j == m)
+                    break;
+            }
+
+            
+        }
+
+        return 0;
+    }
+};
