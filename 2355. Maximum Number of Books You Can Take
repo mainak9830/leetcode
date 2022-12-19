@@ -1,0 +1,20 @@
+class Solution {
+public:
+    long long maximumBooks(vector<int>& books) {
+        int n = books.size();
+        long long maxi = 0;
+        stack<int> stack;
+        vector<long long> dp(n,0);
+        for(int i = 0;i < n;i++){
+            while(!stack.empty() && books[stack.top()] >= books[i]-(i-stack.top()))
+                stack.pop();
+            int j = stack.empty() ? max(0, i-books[i]+1) : stack.top()+1;
+            dp[i] = ((1ll)*(books[i]-(i-j))*(i-j+1) + (1ll)*(i-j)*(i-j+1)/2) + (stack.empty() ? 0 : dp[j-1]);
+            stack.push(i);
+            maxi = max(dp[i], maxi);
+        }
+        
+        return maxi;
+
+    }
+};
