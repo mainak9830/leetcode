@@ -1,0 +1,107 @@
+O(nlog(max(distance)-min(distance)))
+// Binary search
+class Solution {
+public:
+    int distance(vector<vector<int>>& points, int i){
+        return points[i][0]*points[i][0] + points[i][1]*points[i][1];
+    }
+    int countLE(vector<vector<int>>& points, int d, int k){
+        int n = points.size();
+        int cnt = 0;
+        for(int i = 0;i < n;i++){
+            if(distance(points, i) <= d)
+                cnt++;
+        }
+        return cnt;
+    }
+    int search(vector<vector<int>>& points, int l, int h, int k){
+        int low = l;
+        int high = h;
+
+        while(low <= high){
+            int mid = low + (high-low)/2;
+            int n = countLE(points, mid, k);
+            if(n == k)
+                return mid;
+            else if(n > k)
+                high = mid-1;
+            else
+                low = mid+1;
+        }
+        return low;
+    }
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
+        int n = points.size();
+        int l = INT_MAX;
+        int h = INT_MIN;
+        for(int i = 0;i < n;i++){
+            l = min(l, distance(points, i));
+            h = max(h, distance(points, i));
+        }
+        int threshold = search(points, l, h, k);
+        vector<vector<int>> ans;
+        for(int i = 0;i < n;i++){
+            if(distance(points, i) <= threshold)
+                ans.push_back(points[i]);
+            if(ans.size() == k)
+                break;
+        }
+        return ans;
+    }
+};
+
+TLE - 0(N)  worst O(N*N)
+class Solution {
+public:
+    
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
+        sorting(points, 0, points.size()-1,k);
+        vector<vector<int>> ans;
+        for(int i = 0;i < k;i++)
+            ans.push_back(points[i]);
+        return ans;
+    }
+    void sorting(vector<vector<int>> &points, int l, int h, int k){
+        if(l < h){
+            int p = partition(points, l, h);
+            int len = p-l+1;
+            if(len > k)
+                sorting(points,l,p-1,k);
+            else if(len < k)
+                sorting(points, p+1, h, k-len);
+        }
+
+        
+    }
+    int partition(vector<vector<int>> &points, int low, int high){
+        int pivot = distance(points, high); // pivot
+        int i= (low - 1); // Index of smaller element and indicates
+                    // the right position of pivot found so far
+    
+        for (int j = low; j <= high - 1; j++) {
+            // If current element is smaller than the pivot
+            if (distance(points, j) < pivot) {
+                i++; // increment index of smaller element
+                swap(points,i,j);
+            }
+        }
+        swap(points,i+1,high);
+        return (i + 1);
+    }
+
+    int distance(vector<vector<int>>& points, int i){
+        return points[i][0]*points[i][0] + points[i][1]*points[i][1];
+    }
+    void swap(vector<vector<int>>& points, int i, int j){
+        int x = points[j][0];
+        int y = points[j][1];
+        points[j][0] = points[i][0];
+        points[j][1] = points[i][1];
+        points[i][0] = x;
+        points[i][1] = y;
+
+    }
+  
+    
+};
+
