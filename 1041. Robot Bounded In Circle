@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool isRobotBounded(string instructions) {
+        int x = 0;
+        int y = 0;
+        int direction = 0;
+        set<pair<int,int>> visited;
+        for(char c : instructions){
+            if(c == 'G'){
+                if(direction == 0){
+                    y++;
+                }else if(direction == 1){
+                    x--;
+                }else if(direction == 2){
+                    y--;
+                }else{
+                    x++;
+                }
+
+            }else if(c == 'L'){
+                direction = (direction + 1)%4;
+
+            }else if(c == 'R'){
+                direction = (direction + 3)%4;
+            }
+        }
+
+        return (x == 0 && y == 0) || direction != 0;
+    }
+};
