@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<int> maximumBeauty(vector<vector<int>>& items, vector<int>& queries) {
+        int n = items.size();
+        vector<int> beautM;
+        vector<int> itemN;
+        sort(items.begin(), items.end());
+        int maxi = -1;
+        for(vector<int> it : items){
+            itemN.push_back(it[0]);
+            maxi = max(it[1], maxi);
+            beautM.push_back(maxi);
+        }
+        
+        vector<int> ans;
+        int res;
+        for(int q : queries){
+            auto it = upper_bound(itemN.begin(), itemN.end(), q);
+            int i =  it - itemN.begin();
+            //cout << i << " " << n << endl;
+            
+
+            if(it == itemN.end() || itemN[i] > q){
+                if(i == 0)
+                    res = 0;
+                else
+                    res = beautM[i-1];
+            }else{
+                res = beautM[i];
+            }
+            ans.push_back(res);
+        }
+        return ans;
+    }
+};
