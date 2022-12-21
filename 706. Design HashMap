@@ -1,0 +1,82 @@
+class Bucket{
+    list<pair<int, int>> list;
+public:
+    Bucket(){
+
+    }
+    void put(int key, int value){
+        //cout << "key" << key << endl;
+        bool present = false;
+        for(auto it = list.begin();it != list.end();it++){
+            if(it->first == key){
+                //cout << it->first << " " << it->second << endl;
+                present = true;
+                it->second = value;
+            }
+        }
+        if(!present)
+            list.push_back({key, value});
+        //cout << "size" << " " << list.size();
+    }
+    void remove(int key){
+        
+        //cout << list.size();
+        for(auto it = list.begin();it != list.end();++it){
+            cout << it->first << " " << endl;
+            if(it->first == key){
+                //list.remove({key, it.second});
+                //cout << it->first << "hey" << " ";
+                it = list.erase(it);
+            }
+            
+        }
+
+    }
+    int get(int key){
+        for(auto it : list){
+            if(it.first == key)
+                return it.second;
+        }
+
+        return -1;
+    }
+};
+class MyHashMap {
+public:
+    int keyspace;
+    vector<Bucket> keys; 
+    MyHashMap() {
+        keyspace = 2069;
+        for(int i = 0;i < keyspace;i++)
+            keys.push_back(Bucket());
+        
+            
+    }
+    
+    void put(int key, int value) {
+        int hash = key % keyspace;
+        //cout << hash << endl;
+        keys[hash].put(key, value);
+    }
+    
+    int get(int key) {
+        int hash = key % keyspace;
+        //cout << hash << endl;
+        return keys[hash].get(key);
+       
+    }
+    
+    void remove(int key) {
+        int hash = key % keyspace;
+        //cout << hash << endl;
+        keys[hash].remove(key);
+    }
+};
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap* obj = new MyHashMap();
+ * obj->put(key,value);
+ * int param_2 = obj->get(key);
+ * obj->remove(key);
+ */
