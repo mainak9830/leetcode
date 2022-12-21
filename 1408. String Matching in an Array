@@ -1,0 +1,79 @@
+struct Node{
+    Node *childs[26];
+    bool end = false;
+};
+class Trie {
+private:
+    Node *root;
+public:
+    
+    Trie() {
+        root = new Node();
+        
+    }
+    
+    void insert(string word) {
+        int n = word.size();
+        Node *node = root;
+        for(int i = 0;i < n;i++){
+            int ind = word[i]-'a';
+            
+            if(node->childs[ind] == NULL)
+                node->childs[ind] = new Node();
+                
+            node = node->childs[ind];
+               
+        }
+        node->end = true;
+        
+        
+    }
+    
+    bool search(string word) {
+        int n = word.size();
+        Node *node = root;
+        for(int i = 0;i < n;i++){
+            int ind = word[i]-'a';
+            if(node->childs[ind] != NULL)
+                node = node->childs[ind];
+            else
+                return false;
+            
+        }
+        
+        return node->end;
+    }
+};
+class Solution {
+public:
+    vector<string> stringMatching(vector<string>& words) {
+        Trie trie;
+        vector<string> ans;
+        set<string> set;
+        for(string s : words)
+            trie.insert(s);
+        for(string s : words){
+            int n = s.length();
+            for(int i = 0;i < n;i++){
+                string t = "";
+                for(int j = i;j < n;j++){
+                     t += s[j];
+                    //cout << t << endl;
+                    if(t.length() == n)
+                        continue;
+                    
+                    if(trie.search(t)){
+                        //ans.push_back(t);
+                        set.insert(t);
+                    }
+                }
+            }
+            // cout << trie.search(s) << endl;
+        }
+        for(auto it : set){
+            ans.push_back(it);
+        }
+        return ans;
+
+    }
+};
