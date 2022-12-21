@@ -1,0 +1,51 @@
+o(log(n) + k)
+class Solution {
+public:
+    int closest(vector<int>& arr, int x){
+        int l = 0;
+        int h = arr.size()-1;
+        int mid = 0;
+        while(l < h){
+
+            mid = l + (h-l)/2;
+
+            if(arr[mid] == x){
+                return mid;
+            }else if(arr[mid] > x){
+                h = mid;
+            }else{
+                l = mid+1;
+            }
+
+        }
+        //cout << "hey" << arr[l] << " " << arr[h] << endl;
+        return l;
+    }
+    vector<int> findClosestElements(vector<int>& arr, int k, int x) {
+        int n = arr.size();
+        int l,r;
+        l = closest(arr,x);
+        r = l;
+        l--;
+
+        while(r-l-1 < k){
+            if(l == -1){
+                r++;
+                continue;
+            }
+            if(r == n){
+                l--;
+                continue;
+            }
+            if(abs(arr[l]-x) <= abs(arr[r]-x)){
+                l--;
+            }else
+                r++;
+        }
+        vector<int> ans;
+        for(int i=l+1;i < r;i++)
+            ans.push_back(arr[i]);
+        return ans;
+    }
+};
+
