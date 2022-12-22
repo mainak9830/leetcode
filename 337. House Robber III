@@ -31,3 +31,55 @@ vector<int> levelSum;
         
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+
+    int rob(TreeNode* root) {
+        
+        queue<TreeNode*> queue;
+        vector<TreeNode*> levels;
+        queue.push(root);
+        while(!queue.empty()){
+            TreeNode* node = queue.front();
+            queue.pop();
+            levels.push_back(node);
+            if(node->left)
+                queue.push(node->left);
+            if(node->right)
+                queue.push(node->right);
+        }
+
+        map<TreeNode*, pair<int,int>> dp;
+
+        for(int i = levels.size()-1;i >= 0;i--){
+            TreeNode* node = levels[i];
+            
+            pair<int,int> l = {0,0}; 
+            pair<int,int> r = {0,0}; 
+            if(node->left)
+                l = dp[node->left];
+            if(node->right)
+                r = dp[node->right];
+
+
+            int rob = node->val + l.second + r.second;
+            int nrob = max(l.first, l.second) + max(r.first, r.second);
+            dp[node] = {rob, nrob}; 
+            
+        }
+
+        return max(dp[root].first, dp[root].second);
+    }
+};
