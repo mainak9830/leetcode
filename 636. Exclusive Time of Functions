@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<string> parse(string log){
+        int n = log.length();
+        vector<string> res;
+        int index = 0;
+        int first = 0;
+        while((index = log.find(':',index)) != string::npos){
+            //cout << index << " ";
+            res.push_back(log.substr(first,index-first));
+            index += 1;
+            first = index;
+        }
+        res.push_back(log.substr(first, n-first));
+        return res;
+    }
+    vector<int> exclusiveTime(int n, vector<string>& logs) {
+        vector<int> time(n,0);
+        int running = 0;
+        stack<pair<string,string>> stack;
+        for(string log : logs){
+            vector<string> parsed = parse(log);
+            if(parsed[1] == "start")
+                stack.push({parsed[0], parsed[2]});
+            else{
+                
+                pair<string, string> job = stack.top();
+                int t = stoi(parsed[2]) - stoi(job.second)+1;
+                time[stoi(job.first)] += t;
+                stack.pop();
+                if(!stack.empty()){
+                    time[stoi(stack.top().first)] -= t;
+                    
+                }
+                
+            }
+        }
+        return time;
+    }
+};
