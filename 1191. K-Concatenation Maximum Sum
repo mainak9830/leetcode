@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int kConcatenationMaxSum(vector<int>& arr, int k) {
+        
+        int n = arr.size();
+        int64_t total = accumulate(arr.begin(), arr.end(), 0);
+        int MOD = 1000000007;
+        int msum = 0;
+        int sum = 0;
+
+        for(int i = 0;i < min(k,2)*n;i++){
+            int idx = i % n;
+            sum = max(sum + arr[idx], arr[idx]);
+            msum = max(msum, sum);
+        }
+        return max<int64_t>({0, msum + total*max(k-2,0), msum})%MOD;
+    }
+};
