@@ -1,0 +1,56 @@
+class Solution {
+public:
+    void dfs(vector<vector<int>>& grid, queue<pair<int,int>>& queue, int i, int j){
+        int n = grid.size();
+        if(min(i,j) < 0 || max(i,j) == grid.size() || grid[i][j] != 1){
+            return;
+        }
+        grid[i][j] = 2;
+        queue.push({i,j});
+        dfs(grid,queue,i+1,j);
+        dfs(grid,queue,i,j-1);
+        dfs(grid,queue,i,j+1);
+        dfs(grid,queue,i-1,j);
+    }
+    int shortestBridge(vector<vector<int>>& grid) {
+        int n = grid.size();
+        queue<pair<int,int>> queue;
+        int done = false;
+        for(int i = 0;i < n;i++){
+            for(int j = 0;j < n;j++){
+                if(grid[i][j] == 1){
+                    dfs(grid,queue,i,j);
+                    done = true;
+                    break;
+                }
+            }
+            if(done)
+                break;
+        }
+        int level = 0;
+        while(!queue.empty()){
+            int len = queue.size();
+            for(int i = 0;i < len;i++){
+                auto [x,y] = queue.front();
+                queue.pop();
+                //cout << x << " " << y << " " << grid[x][y] << endl;
+                vector<vector<int>> directions = {{0,1}, {-1,0}, {1,0}, {0,-1}};
+                for(vector<int> d : directions){
+                    int x1 = x + d[0];
+                    int y1 = y + d[1];
+                    if(min(x1,y1) >= 0 && max(x1,y1) < n){
+                        if(grid[x1][y1] == 0){
+                            grid[x1][y1] = 3;
+                            queue.push({x1,y1});
+                        }else if(grid[x1][y1] == 1){
+                            return level;
+                        }
+                        
+                    }
+                }
+            }
+            level++;
+        }
+        return 0;
+    }
+};
