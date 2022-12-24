@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int minMoves(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        int moves = 0;
+        int total_moves = 0;
+        for(int i=1;i < n;i++){
+            
+            moves += nums[i] - nums[i-1];
+            total_moves += moves;
+        }
+
+        return total_moves;
+    }
+};
+
+class Solution {
+public:
+    int minMoves(vector<int>& nums) {
+        int n = nums.size();
+        int mini = INT_MAX;
+        for(int i = 0;i < n;i++)
+            mini = min(mini, nums[i]);
+        
+        int total_moves = 0;
+        for(int i=0;i < n;i++){
+            
+            total_moves += nums[i] - mini;
+            
+        }
+
+        return total_moves;
+    }
+};
