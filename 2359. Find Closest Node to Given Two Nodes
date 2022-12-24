@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<int> distance(vector<int>& edges, int root){
+        int n = edges.size();
+        vector<int> dis(n,-1);
+        queue<pair<int,int>> queue;
+        
+        queue.push({root,0});
+        dis[root] = 0;
+        while(!queue.empty()){
+            pair<int,int> node = queue.front();
+            queue.pop();
+            //cout << node.first << endl;
+            if((edges[node.first] != -1) && (dis[edges[node.first]] == -1)){
+                dis[edges[node.first]] = node.second + 1;
+                queue.push({edges[node.first], dis[edges[node.first]]});
+            }
+        }
+
+        return dis;
+    }
+    int closestMeetingNode(vector<int>& edges, int node1, int node2) {
+        int n = edges.size();
+        int ans = INT_MAX;
+        vector<int> dis1 = distance(edges, node1);
+        vector<int> dis2 = distance(edges, node2);
+        int node = -1;
+        for(int i = 0;i < n;i++){
+            //cout << dis1[i] << " distance from node1 " << node1 << " to " << i << endl;
+            //cout << dis2[i] << " distance from node2 " << node2 << " to " << i << endl;
+            if((dis1[i] != -1) && (dis2[i] != -1)){
+                int d = max(dis1[i], dis2[i]);
+                if(d < ans){
+                    node = i;
+                    ans = d;
+                }
+            }
+        }
+        
+        return node;
+    }
+};
