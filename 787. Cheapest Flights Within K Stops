@@ -1,0 +1,33 @@
+class Solution {
+public:
+    typedef pair<int,int> pa;
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<vector<pa>> graph(n);
+        vector<int> stops(n,INT_MAX);
+        for(vector<int> flight : flights){
+            graph[flight[0]].push_back({flight[1], flight[2]});
+        }
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+        pq.push({0,src, 0});
+        
+        while(!pq.empty()){
+
+            vector<int> info = pq.top();
+            pq.pop();
+            int step = info[2];
+            int curr = info[1];
+            int cost = info[0];
+            cout << curr << " " << step << endl;
+            if(step > stops[curr] || step > k+1)
+                continue;
+            stops[curr] = step;
+            if(curr == dst)
+                return cost;
+            for(pa t : graph[curr]){
+                pq.push({cost + t.second, t.first, step+1});
+            }
+
+        }
+        return -1;
+    }
+};
