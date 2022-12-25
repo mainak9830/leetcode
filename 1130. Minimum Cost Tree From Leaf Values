@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int maximum(vector<int>& arr, int i, int j){
+        int maxi = INT_MIN;
+        for(int k = i;k <= j;k++){
+            maxi = max(maxi, arr[k]);
+        }
+        return maxi;
+    }
+    int mctFromLeafValues(vector<int>& arr) {
+        int n = arr.size();
+        vector<vector<int>> dp(n, vector<int>(n,0));
+        int total = 0;
+        for(int len = 2;len <= n;len++){
+            for(int i = 0;i < n-len+1;i++){
+                int j = i+len-1;
+                int mini = INT_MAX;
+                //cout << i << " " << j << endl;
+                for(int k = i;k < j;k++){
+                    int c1 = maximum(arr, i, k);
+                    int c2 = maximum(arr, k+1, j);
+                    mini = min(mini, c1*c2 + dp[i][k] + dp[k+1][j]);
+                }
+                dp[i][j] = mini;
+            }
+        }
+
+        return dp[0][n-1];
+    }
+};
