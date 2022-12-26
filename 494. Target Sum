@@ -1,0 +1,51 @@
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int n = nums.size();
+        int total = accumulate(nums.begin(), nums.end(), 0);
+        if(abs(target) > total)
+            return 0;
+        vector<vector<int>> dp(n+1, vector<int>(2*total+1,0));
+        dp[0][total] = 1;
+
+        for(int i = 1;i <= n;i++){
+            for(int j = -total;j <= total;j++){
+                //cout << i << " " << j+total << endl;
+                if(dp[i-1][total+j] > 0){
+                    dp[i][total+j-nums[i-1]] += dp[i-1][total+j];
+                    dp[i][total+j+nums[i-1]] += dp[i-1][total+j];
+                }     
+            }
+        }
+
+        return dp[n][total+target];
+    }
+};
+
+
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int n = nums.size();
+        int total = accumulate(nums.begin(), nums.end(), 0);
+        if(abs(target) > total)
+            return 0;
+        vector<int> dp(2*total+1,0);
+        dp[total] = 1;
+
+        for(int i = 1;i <= n;i++){
+            vector<int> next(2*total+1,0);
+
+            for(int j = -total;j <= total;j++){
+                //cout << i << " " << j+total << endl;
+                if(dp[total+j] > 0){
+                    next[total+j-nums[i-1]] += dp[total+j];
+                    next[total+j+nums[i-1]] += dp[total+j];
+                }     
+            }
+            dp = next;
+        }
+
+        return dp[total+target];
+    }
+};
