@@ -1,0 +1,45 @@
+class Solution {
+public:
+    vector<vector<string>> findDuplicate(vector<string>& paths) {
+        vector<vector<string>> ans;
+        map<string, vector<string>> map;
+        for(string path : paths){
+            string prefix = "", accumulate = "", content = "";
+            bool start = false;
+            int n = path.length();
+            for(int i=0;i <= n;i++){
+                if(i == n || path[i] == ' '){
+                    if(i < n && prefix.length() == 0){
+                        prefix = accumulate;
+                    }
+                    else{
+                        map[content].push_back(prefix+'/'+accumulate);
+                        content = "";
+                    }
+                    accumulate = "";
+                    continue;
+                }
+                
+                // if(i == n)
+                //     break;
+                if(path[i] == '('){
+                    start = true;
+                    continue;
+                }else if(path[i] == ')'){
+                    start = false;
+                    continue;
+                }
+                if(!start)
+                    accumulate += path[i];
+                else{
+                    content += path[i];
+                }
+            }
+        }
+        for(auto it : map){
+            if(it.second.size() > 1)
+                ans.push_back(it.second);
+        }
+        return ans;
+    }
+};
