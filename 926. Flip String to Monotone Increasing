@@ -22,3 +22,29 @@ public:
         return min(dp2[n], dp1[n]);
     }
 };
+
+
+class Solution {
+public:
+    int minFlipsMonoIncr(string s) {
+        int n = s.length();
+        //vector<int> dp1(n+1,0), dp2(n+1,0);
+        //dp1 ending with 0
+        //dp2 ending with 1
+        int dp1 = 0, dp2 = 0;
+        for(int i = 1;i <= n;i++){
+            char c = s[i-1];
+
+            if(c == '0'){
+                dp2 = min(dp1, dp2) + 1;
+            }else{
+                
+                dp2 = min(dp1, dp2);
+                dp1 = dp1 + 1;
+            }
+        }
+
+
+        return min(dp2, dp1);
+    }
+};
