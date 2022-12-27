@@ -1,0 +1,55 @@
+class Solution {
+public:
+    void gameOfLife(vector<vector<int>>& board) {
+        //Live to dead (1) to -1
+        //dead to live (0) to 2
+        int m = board.size();
+        int n = board[0].size();
+        vector<vector<int>> directions;
+
+        for(int i = -1;i <= 1;i++){
+            for(int j = -1;j <= 1;j++){
+                if(i == 0 && j == 0)
+                continue;
+                directions.push_back({i,j});
+            }
+        }
+
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                int countL = 0;
+                int countD = 0;
+                for(vector<int> d : directions){
+                    int x = i + d[0];
+                    int y = j + d[1];
+
+                    if(x < 0 || y < 0 || x >= m || y >= n)
+                        continue;
+                    if(board[x][y] == 1 || board[x][y] == -1)
+                        countL++;
+                    else if(board[x][y] == 0 || board[x][y] == 2)
+                        countD++;
+                }
+                if(board[i][j] == 1){
+                    if(countL < 2 || countL > 3)
+                        board[i][j] = -1;
+                }else{
+                    if(countL == 3)
+                        board[i][j] = 2;
+                }
+            }
+        }
+
+        //Live to dead (1) to -1
+        //dead to live (0) to 2
+
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                if(board[i][j] == 2)
+                    board[i][j] = 1;
+                else if(board[i][j] == -1)
+                    board[i][j] = 0;
+            }
+        }
+    }
+};
