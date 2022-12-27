@@ -1,0 +1,21 @@
+class Solution {
+public:
+    map<pair<int,int>, int> dp;
+    int dfs(int x, int y){
+        if(dp.count({x,y}))
+            return dp[{x,y}];
+        if(x == 0 && y == 0)
+            return 0;
+        if(x+y == 2)
+            return 2;
+        
+        dp[{x,y}] = min(dfs(abs(x-1), abs(y-2)), dfs(abs(x-2), abs(y-1))) + 1;
+        return dp[{x,y}];
+    }
+    int minKnightMoves(int x, int y) {
+
+        return dfs(abs(x), abs(y));
+        
+        
+    }
+};
