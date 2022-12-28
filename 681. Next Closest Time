@@ -1,0 +1,54 @@
+class Solution {
+public:
+    char nextGreater(char c, int limit, vector<int> digits){
+        int c1 = c - '0';
+        for(int d : digits){
+            if(d > c1 && d <= limit)
+                return d + '0';
+        }
+
+        return c;
+    }
+    string nextClosestTime(string time) {
+        vector<int> digits;
+        for(char c : time)
+            digits.push_back(c-'0');
+        string result = time;
+        sort(digits.begin(), digits.end());
+
+        //"HH::M_"
+        result[4] = nextGreater(time[4], 9, digits);
+        if(result[4] > time[4]) return result;
+
+        //"HH::_M"
+        result[3] = nextGreater(time[3], 5, digits);
+        if(result[3] > time[3]){
+            result[4] = digits[0] + '0';
+            return result;
+        }
+
+        //"H_::MM"
+        result[1] = (time[0] == '2') ? nextGreater(time[1], 3, digits) : nextGreater(time[1], 9, digits);
+        if(result[1] > time[1]){
+            result[3] = digits[0]+'0';
+            result[4] = digits[0]+'0';
+            //cout << result << endl;
+            if(!(time[0] == '2' && result[1] > '3'))
+                return result;
+        }
+
+        //"_H::MM"
+        result[0] = nextGreater(time[0], 2, digits);
+        
+        if(result[0] >= time[0]){
+            //cout << "df" << endl;
+            if(result[0] == time[0])
+                result[0] = digits[0]+'0';
+            result[1] = digits[0]+'0';
+            result[3] = digits[0]+'0';
+            result[4] = digits[0]+'0';
+        }
+        return result;
+        
+    }
+};
