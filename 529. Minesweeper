@@ -1,0 +1,42 @@
+class Solution {
+public:
+    void dfs(vector<vector<char>>& board, int x, int y){
+        int m = board.size();
+        int n = board[0].size();
+        vector<int> directions[8] = {{0,1}, {1,0}, {0,-1}, {-1,0}, {1,1}, {-1,1}, {1,-1}, {-1,-1}};
+        if(board[x][y] == 'M'){
+            board[x][y] = 'X';
+            return;
+        }
+        int count = 0;
+        for(vector<int> d : directions){
+            int x1 = x + d[0];
+            int y1 = y + d[1];
+            if(x1 < 0 || y1 < 0 || x1 >= m || y1 >= n)
+                continue;
+            if(board[x1][y1] == 'M'){
+                count++;
+            }
+        }
+
+        if(count > 0){
+            board[x][y] = count + '0';
+            return;
+        }
+        board[x][y] = 'B';
+        for(vector<int> d : directions){
+            int x1 = x + d[0];
+            int y1 = y + d[1];
+            if(x1 < 0 || y1 < 0 || x1 >= m || y1 >= n || board[x1][y1] == 'B')
+                continue;
+            if(board[x1][y1] == 'E'){
+                dfs(board,x1,y1);
+            }
+        }
+
+    } 
+    vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
+        dfs(board, click[0], click[1]);
+        return board;
+    }
+};
