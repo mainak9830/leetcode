@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        
+        vector<int> dp(366,INT_MAX);
+        dp[0] = 0;
+        int n = days.size();
+        int k = 0;
+        int prev = dp[0];
+        for(int i = 1;i <= 365;i++){
+
+            if(days[k] == i){
+                dp[i] = min(dp[i], costs[0] + dp[i-1]);
+                dp[i] = min(dp[i], costs[1] + ((i-7) >= 0 ? dp[i-7] : dp[0]));
+                
+                dp[i] = min(dp[i], costs[2] + ((i-30) >= 0 ? dp[i-30] : dp[0]));
+                //cout << i << " cost till ith day " << dp[i] << endl;
+                if(k == n-1)
+                    break;
+                prev = dp[i];
+                k++;
+            }else{
+                dp[i] = prev;
+            }
+        }
+        
+        return dp[days[n-1]];
+    }
+};
