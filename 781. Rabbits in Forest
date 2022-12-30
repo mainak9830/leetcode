@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int numRabbits(vector<int>& answers) {
+        map<int,int> rabbits;
+        for(int i : answers){
+            rabbits[i+1]++;
+        }
+        int ans = 0;
+        for(auto it : rabbits){
+            int rabbits = it.first;
+            int count = it.second;
+
+            ans += ceil((float)count/rabbits)*rabbits;
+        }
+
+        return ans;
+    }
+};
