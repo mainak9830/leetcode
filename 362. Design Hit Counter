@@ -1,0 +1,36 @@
+class HitCounter {
+public:
+    deque<pair<int,int>> queue;
+    int total = 0;
+    HitCounter() {
+        
+    }
+    
+    void hit(int timestamp) {
+        if(queue.empty() || queue.back().first != timestamp)
+            queue.push_back({timestamp,1});
+        else{
+            auto [time, count] = queue.back();
+            queue.pop_back();
+            queue.push_back({timestamp, count+1});
+        }
+        total++;
+    }
+    
+    int getHits(int timestamp) {
+        
+        while(!queue.empty() && queue.front().first + 300 <= timestamp){
+            total -= queue.front().second;
+            queue.pop_front();
+        }
+        
+        return total;
+    }
+};
+
+/**
+ * Your HitCounter object will be instantiated and called as such:
+ * HitCounter* obj = new HitCounter();
+ * obj->hit(timestamp);
+ * int param_2 = obj->getHits(timestamp);
+ */
