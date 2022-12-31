@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int longestSubsequence(string s, int k) {
+        int n = s.length();
+        int count = 0;
+        int sum = 0;
+        int cost = 1;
+        for(int i = n-1;i >= 0;i--){
+            if(s[i] == '0' || sum + cost <= k){
+                count++;
+                sum += cost*(s[i]-'0');
+            }
+            
+            if(sum + cost <= k)
+                cost *= 2;
+        }
+
+        return count;
+    }
+};
