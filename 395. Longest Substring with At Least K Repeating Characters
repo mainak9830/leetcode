@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int length(string s, int l, int h, int k) {
+        if(l > h || h-l+1 < k)
+            return 0;
+        vector<int> map(26,0);
+        for(int i = l;i <= h;i++)
+            map[s[i]-'a']++;
+        
+        for(int i = l;i <= h;i++){
+            if(map[s[i]-'a'] < k){
+                int lo = length(s, l, i-1, k);
+                int r = length(s, i+1, h, k);
+                return max(lo,r);
+            }
+        }
+        cout << h-l+1 << "hello" << endl;
+        return h-l+1;
+    }
+    int longestSubstring(string s, int k) {
+        int n = s.length()-1;
+        return length(s,0,n,k);
+    }
+};
