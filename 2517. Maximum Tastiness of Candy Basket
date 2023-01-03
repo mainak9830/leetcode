@@ -1,0 +1,40 @@
+class Solution {
+public:
+    bool check(int minimum, vector<int>& price, int k){
+        int i = 0;
+        int n = price.size();
+        int prev = price[0];
+        int m = 1;
+        for(int i = 1;i < n;i++){
+            // if(price[i] == prev)
+            //     continue;
+            if(price[i]-prev >= minimum){
+                prev = price[i];
+                m++;
+            }
+        }
+
+        return (m >= k);
+    }
+    int maximumTastiness(vector<int>& price, int k) {
+
+        int n = price.size();
+        int ans = INT_MIN;
+        sort(price.begin(), price.end());
+
+        //binary search answer
+        int l = INT_MAX;
+        for(int i = 1;i < n;i++)
+            l = min(l, price[i]-price[i-1]);
+        int h = price[n-1]-price[0];
+        
+        while(l <= h){
+            int mid = l + (h-l)/2;
+            if(check(mid, price, k)){
+                l = mid + 1;
+            }else
+                h = mid - 1;
+        }
+        return l-1; 
+    }
+};
