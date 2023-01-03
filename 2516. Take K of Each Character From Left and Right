@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int takeCharacters(string s, int k) {
+        
+        int n = s.length();
+        int l = 0;
+        int len = INT_MIN;
+        vector<int> count(3,0);
+        for(char c : s)
+            count[c-'a']++;
+        if(count[0] < k || count[1] < k || count[2] < k)
+            return -1;
+        for(int h = 0;h < n;h++){
+            count[s[h]-'a']--;
+
+            while(count[s[h]-'a'] < k){
+                count[s[l]-'a']++;
+                l++;
+            }
+
+            len = max(len, h-l+1);
+
+        }
+
+        return n - len;
+    }
+};
