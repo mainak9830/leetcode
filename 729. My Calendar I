@@ -1,0 +1,59 @@
+class Node {
+public:
+    int start;
+    int end;
+    Node* left;
+    Node* right;
+    Node(int s, int e){
+        start = s;
+        end = e;
+        left = NULL;
+        right = NULL;
+    }
+};
+class MyCalendar {
+public:
+    Node* node;
+    MyCalendar() {
+        node = NULL;
+    }
+    
+    bool book(int start, int end) {
+        if(!node){
+            node = new Node(start, end);
+            return true;
+        }
+        Node* root = node;
+        
+        while(root!=NULL){
+            
+            if(end <= root->start){
+                if(root->left)
+                    root = root->left;
+                else{
+                    root->left = new Node(start, end);
+                    return true;
+                }
+            }
+            else if(start >= root->end){
+                if(root->right)
+                    root = root->right;
+                else{
+                    root->right = new Node(start, end);
+                    return true;
+                }
+            }
+            else
+            return false;
+           
+        }
+        
+        return true;
+    }
+};
+
+/**
+ * Your MyCalendar object will be instantiated and called as such:
+ * MyCalendar* obj = new MyCalendar();
+ * bool param_1 = obj->book(start,end);
+ */
