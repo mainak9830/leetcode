@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int gcd(int a, int b){
+        if(a == 0)return b;
+        if(a > b)return gcd(b,a);
+
+        return gcd(b%a,a);
+    }
+    long long int lcm(int a, int b){
+        return (1ll)*a*(b/gcd(a,b));
+    }
+    bool check(int d1, int d2, int count1, int count2, int n){
+
+        long long int u1 = n - n/d1;
+        long long int u2 = n - n/d2;
+        long long int inter = n - n/lcm(d1,d2);
+
+        return u1 >= count1 && u2 >= count2 && inter >= count1+count2;
+    }
+    int minimizeSet(int divisor1, int divisor2, int cnt1, int cnt2) {
+        
+        int l = 1;
+        int h = INT_MAX;
+        
+        while(l <= h){
+
+            int mid = l + (h-l)/2;
+
+            if(check(divisor1, divisor2, cnt1, cnt2, mid))
+                h = mid-1;
+            else
+                l = mid+1;
+
+        }
+
+        return l;
+    }
+};
