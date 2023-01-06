@@ -1,3 +1,4 @@
+//wasted time just because gave && instead of & as bit wise operation.
 class Solution {
 public:
     typedef long long int64;
