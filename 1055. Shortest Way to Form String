@@ -1,3 +1,4 @@
+//o(n*m)
 class Solution {
 public:
     int shortestWay(string source, string target) {
@@ -25,5 +26,44 @@ public:
             steps += s-j;
         //cout << steps << endl;
         return (steps+target.size())/s;
+    }
+};
+
+//o(nlog(m))
+class Solution {
+public:
+    int shortestWay(string source, string target) {
+        
+        vector<int> *sr = new vector<int>[26];
+        int cnt = 1;
+        for(int i = 0;i < source.length();i++){
+            sr[source[i]-'a'].push_back(i);
+        }
+        int j = 0;
+        for(int i = 0;i < target.length();i++){
+            int idx = target[i]-'a';
+            if(j == source.length()){
+                j = 0;
+                cnt++;
+            }
+            vector<int> indexList = sr[idx];
+            if(indexList.size() == 0)
+                return -1;
+            int foundIdx = lower_bound(indexList.begin(), indexList.end(), j)-indexList.begin();
+            
+            if(foundIdx == indexList.size()){
+                j = indexList[0];
+                cnt++;
+            }
+            else
+                j = indexList[foundIdx];
+            //cout << j << " count" << cnt << endl;
+            j++;
+            
+            
+        }
+
+
+        return cnt;
     }
 };
