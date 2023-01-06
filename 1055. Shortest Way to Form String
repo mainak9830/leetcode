@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int shortestWay(string source, string target) {
+        int s = source.size();
+        int steps = 0;
+        int j = 0;
+        for(int i = 0;i < target.size();i++){
+            int k = 0;
+            j %= s;
+            while(k <= s-1 && (target[i] != source[j])){
+                j++;
+                j %= s;
+                steps++;
+                k++;
+            }
+            if(target[i] != source[j])
+                return -1;
+            else{
+                cout << i << " "<< j << endl;
+                j++;
+            }
+            
+        }
+        if(j < s)
+            steps += s-j;
+        //cout << steps << endl;
+        return (steps+target.size())/s;
+    }
+};
