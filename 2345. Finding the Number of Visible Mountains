@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int visibleMountains(vector<vector<int>>& peaks) {
+        vector<vector<int>> intervals;
+        
+        for(vector<int> peak : peaks){
+            intervals.push_back({peak[0]-peak[1], peak[0]+peak[1]});
+        }
+        
+        sort(intervals.begin(), intervals.end());
+        for(vector<int> i : intervals)
+            cout << i[0] << " " << i[1] << endl;
+        int n = intervals.size();
+        int s = intervals[0][0];
+        int e = intervals[0][1];
+        int peakCnt = 1;
+        for(int i = 1;i < n;i++){
+            int st = intervals[i][0];
+            int en = intervals[i][1];
+
+            if(en > e){
+                if(st == s){
+                    e = en;
+                }
+                else{
+                    peakCnt++;
+                    s = st;
+                    e = en;
+                }
+            }else if(st == s && en == e){
+                peakCnt--;
+                peakCnt = max(peakCnt, 0);
+            }
+        }
+        return peakCnt;
+    }
+};
