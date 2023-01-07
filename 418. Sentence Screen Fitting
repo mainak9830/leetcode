@@ -1,0 +1,80 @@
+class Solution {
+public:
+    int R, C;
+    int total=0;
+    map<int, vector<int>> dp;
+    vector<int> fitLine(int c, vector<string> sentence){
+        int i = 1;
+        int j = c;
+        int k = 0;
+        
+        while(k < sentence.size()){
+            int wordLen = sentence[k].length();
+            
+            if(j + wordLen <= C){
+                k++;
+                j += wordLen+1;
+                
+            }else{
+                i++;
+                j = 0;
+            }
+
+            if(j >= C){
+                i++;
+                j = 0;
+            }
+            
+        }
+        //cout << i << " " << j << endl;
+        return {i,j};
+
+
+    }
+    int wordsTyping(vector<string>& sentence, int rows, int cols) {
+        R = rows;
+        C = cols;
+
+        for(string s : sentence){
+            total += s.length()+1;
+            if(s.length() > cols)
+                return 0;
+        }
+
+        int row = 1;
+        int col = 0;
+        int repeat = 0;
+        while(row <= rows){
+            //cout << col << endl;
+            if(total+col <= C){
+                // cout << total << C;
+                
+                repeat += (C-col)/total;
+                
+                col += ((C-col)/total)*total;
+                
+                if(col == C){
+                    col = 0;
+                    row++;
+                }
+                
+                continue;
+            }
+            vector<int> d;
+            if(dp.count(col)){
+                d = dp[col];
+            }else{
+                d = fitLine(col, sentence);
+                dp[col] = d;
+            }
+            
+            
+            row += d[0]-1;
+            col = d[1];
+            
+            repeat++;
+        }
+        
+        return row==rows ? repeat : (col == 0 && row-1 == rows) ? repeat : repeat-1;
+    }
+};
