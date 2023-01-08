@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int numMatchingSubseq(string s, vector<string>& words) {
+        
+        int ans = 0;
+        vector<vector<pair<string,int>>> buckets(26);
+        //cout << buckets.size();
+        for(string word : words)
+            buckets[word[0]-'a'].push_back({word,0});
+        
+        for(char c : s){
+            vector<pair<string,int>> oldBucket = buckets[c-'a'];
+            buckets[c-'a'] = {};
+            //cout << oldBucket.size() << endl;
+            for(auto item : oldBucket){
+                string word = item.first;
+                int idx = item.second+1;
+                if(idx == word.length()){
+                    ans++;
+                    //cout << word << " ";
+                }
+                else
+                    buckets[word[idx]-'a'].push_back({word,idx});
+
+            }
+            //oldBucket.clear();
+
+        }
+
+        return ans;
+    }
+};
