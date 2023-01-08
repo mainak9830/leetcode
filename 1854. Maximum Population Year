@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int maximumPopulation(vector<vector<int>>& logs) {
+        
+        map<int,int> population;
+        for(vector<int> log : logs){
+            population[log[0]]++;
+            population[log[1]]--;
+        }
+        int year = 0;
+        int sum = 0;
+        int maxi = 0;
+        for(auto [yearc, count] : population){
+            sum += count;
+            //cout << sum << " ";
+            if(sum > maxi){
+                year = yearc;
+                maxi = sum;
+            }
+        }
+        return year;
+    }
+};
