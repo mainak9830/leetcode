@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int subtractProductAndSum(int n) {
+        
+        int pr = 1;
+        int sum = 0;
+
+        while(n){
+
+            int r = n%10;
+            pr *= r;
+            sum += r;
+            n /= 10;
+        }
+        return pr-sum;
+    }
+};
