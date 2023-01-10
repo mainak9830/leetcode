@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int minimumSemesters(int n, vector<vector<int>>& relations) {
+        vector<int> indegree(n+1,0);
+        vector<vector<int>> outEdges(n+1);
+        for(vector<int> edge : relations){
+            indegree[edge[1]]++;
+            outEdges[edge[0]].push_back(edge[1]);
+        }
+        queue<int> queue;
+        for(int i = 1;i <= n;i++){
+            if(indegree[i] == 0)
+                queue.push(i);
+        }
+        int level = 0;
+        int count = 0;
+        while(!queue.empty()){
+            int len = queue.size();
+            for(int i = 0;i < len;i++){
+                int u = queue.front();
+                queue.pop();
+                count++;
+                for(int v : outEdges[u]){
+                    indegree[v]--;
+                    if(indegree[v] == 0)
+                        queue.push(v);
+                }
+            }
+
+            level++;
+            
+
+        }
+
+        return (count < n) ? -1 : level;
+    }
+};
