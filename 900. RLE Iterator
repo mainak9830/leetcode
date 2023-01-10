@@ -1,0 +1,36 @@
+//BruteForce
+class RLEIterator {
+public:
+    vector<int> encoded;
+    int len;
+    long long int track = 0;
+    int idx = 0;
+    long long int gn=0;
+    RLEIterator(vector<int>& encoding) {
+        encoded = encoding;
+        len = encoding.size();
+    }
+    
+    int next(int n) {
+        gn += n;
+        while(idx < len){
+            if(track + encoded[idx] < gn){
+                track += encoded[idx];
+                idx += 2;
+            }
+            else{
+                return encoded[idx+1];
+            }
+            
+        }
+        
+        return -1;
+        
+    }
+};
+
+/**
+ * Your RLEIterator object will be instantiated and called as such:
+ * RLEIterator* obj = new RLEIterator(encoding);
+ * int param_1 = obj->next(n);
+ */
