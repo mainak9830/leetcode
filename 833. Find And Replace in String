@@ -1,0 +1,42 @@
+class Solution {
+public:
+    bool find(string s, string source, int i){
+        int j = 0;
+        while(i < s.length() && j < source.length()){
+            if(s[i] != source[j])return false;
+            i++;
+            j++;
+        }
+
+
+        return j == source.length();
+    }
+    string findReplaceString(string s, vector<int>& indices, vector<string>& sources, vector<string>& targets) {
+        int len = s.length();
+        vector<pair<int,pair<string,string>>> info;
+        for(int i = 0;i < indices.size();i++)
+            info.push_back({indices[i], {sources[i], targets[i]}});
+        sort(info.begin(), info.end());
+        int n = info.size();
+        int maxIdx = 0;
+        
+        string res = "";
+        for(int i = 0;i < n;i++){
+            int idx = info[i].first;
+            string source = info[i].second.first;
+            string dest = info[i].second.second;
+            if(idx > maxIdx){
+                res += s.substr(maxIdx, idx-maxIdx);
+                maxIdx = idx;
+            }
+            if(find(s, source, idx)){
+                maxIdx = idx + (int)source.length();
+                res += dest;
+            }
+        }
+        if(maxIdx < len)
+            res += s.substr(maxIdx, len-maxIdx);
+        return res;
+
+    }
+};
