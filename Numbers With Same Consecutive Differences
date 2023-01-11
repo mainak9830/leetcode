@@ -1,0 +1,28 @@
+class Solution {
+public:
+    set<int> set;
+    void generate(int num, int n, int k){
+        if(n == 0){
+            set.insert(num);
+            return;
+        }
+        int d = num%10;
+        if(d+k <= 9)
+            generate(num*10+(d+k), n-1, k);
+        if(d-k >= 0)
+            generate(num*10+(d-k), n-1, k);
+
+        
+    }
+    vector<int> numsSameConsecDiff(int n, int k) {
+        vector<int> output;
+        for(int i = 1;i <= 9;i++){
+            generate(i,n-1,k);
+            for(auto it : set)
+                output.push_back(it);
+            set.clear();
+        }
+
+        return output;
+    }
+};
