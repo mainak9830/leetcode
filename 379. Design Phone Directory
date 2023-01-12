@@ -1,0 +1,63 @@
+struct Node{
+    int val;
+    Node* prev;
+    Node* next;
+    Node(int v){
+        val = v;
+        prev = NULL;
+        next = NULL;
+    }
+};
+class PhoneDirectory {
+public:
+    Node* head;
+    vector<bool> free;
+    PhoneDirectory(int maxNumbers) {
+        head = new Node(-1);
+        Node* t = head;
+        for(int i = 0;i < maxNumbers;i++){
+            free.push_back(true);
+            t->next = new Node(i);
+            t->next->prev = t;
+            t = t->next;
+        }
+    }
+    
+    int get() {
+        if(!head->next)
+            return -1;
+        int num = head->next->val;
+        free[num] = false;
+        
+        head->next = head->next->next;
+        if(head->next)
+            head->next->prev = head;
+        return num;
+    }
+    
+    bool check(int number) {
+        return free[number];
+    }
+    
+    void release(int number) {
+        if(free[number])
+            return;
+        Node *t = new Node(number);
+        t->next = head->next;
+        head->next = t;
+        if(t->next)
+            t->next->prev = t;
+        t->prev = head;  
+
+        free[number] = true;
+
+    }
+};
+
+/**
+ * Your PhoneDirectory object will be instantiated and called as such:
+ * PhoneDirectory* obj = new PhoneDirectory(maxNumbers);
+ * int param_1 = obj->get();
+ * bool param_2 = obj->check(number);
+ * obj->release(number);
+ */
