@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int maximumMinimumPath(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        priority_queue<vector<int>> pq;
+        vector<vector<int>> visited(m, vector<int>(n,0));
+        pq.push({grid[0][0],0,0});
+        visited[0][0] = 1;
+        int minVal = INT_MAX;
+        vector<vector<int>> directions = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+        while(!pq.empty()){
+            auto node = pq.top();
+            int x = node[1];
+            int y = node[2];
+            pq.pop();
+            if(grid[x][y] < minVal)
+                minVal = grid[x][y];
+            //cout << minVal << endl;
+            if(x == m-1 && y == n-1)
+                return minVal;
+
+            for(vector<int> d : directions){
+                int x1 = x + d[0];
+                int y1 = y + d[1];
+                if(x1 < 0 || y1 < 0 || x1 >= m || y1 >= n || visited[x1][y1])
+                    continue;
+                visited[x1][y1] = 1;
+                pq.push({grid[x1][y1],x1,y1});
+            }
+        }
+
+        return minVal;
+    }
+};
