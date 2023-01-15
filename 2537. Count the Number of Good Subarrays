@@ -1,0 +1,40 @@
+class Solution {
+public:
+    long long countGood(vector<int>& nums, int k) {
+        int n = nums.size();
+        long long count = 0;
+        
+        map<int,int> map;
+        long long good = 0;
+        int l = 0, h = 0;
+        while(h < n){
+            
+            map[nums[h]]++;
+            int m = map[nums[h]];
+            good += (m-1);
+            
+            if(good >= k){
+                
+                while(l < h && good >= k){
+                    map[nums[l]]--;
+                    int m = map[nums[l]];
+                    good -= m;
+                    
+                    l++;
+                }
+                if(good < k){
+                    l--;
+                    map[nums[l]]++;
+                    int m = map[nums[l]];
+                    good += (m-1);
+                }
+                //cout << good << endl;
+                count += l+1;
+                //cout << l << " " << h << " " << count << endl;
+            }
+            h++;
+        }
+        
+        return count;
+    }
+};
