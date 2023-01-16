@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<vector<int>> G;
+    vector<int> pr;
+    long long ans = 0;
+    vector<long long> dfs(int u, int prev) {
+        vector<long long> currMax = {pr[u], 0};
+        for(int v : G[u]){
+            if(v == prev)
+                continue;
+            vector<long long> subMax = dfs(v, u);
+            ans = max(ans, currMax[0] + subMax[1]);
+            ans = max(ans, currMax[1] + subMax[0]);
+            currMax[0] = max(currMax[0], subMax[0] + pr[u]);
+            currMax[1] = max(currMax[1], subMax[1] + pr[u]);
+        }
+
+        return currMax;
+    }
+    long long maxOutput(int n, vector<vector<int>>& edges, vector<int>& price) {
+        vector<vector<int>> graph(n);
+        G = graph;
+        pr = price;
+
+        for(vector<int> edge : edges){
+            G[edge[0]].push_back(edge[1]);
+            G[edge[1]].push_back(edge[0]);
+        }
+        dfs(0,-1);
+
+        return ans;
+    }
+};
