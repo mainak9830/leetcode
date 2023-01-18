@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int accomodate(vector<int> people, int limit){
+        int l = 0;
+        int h = people.size()-1;
+        int boats = 0;
+        while(l <= h){
+            
+            if(h-l == 0){
+                h--;
+                l++;
+            }
+            else if(people[h] + people[h-1] <= limit){
+                h -= 2;
+            }
+            else if(people[h] + people[l] <= limit){
+                h--;
+                l++;
+            }else{
+                h--;
+            }
+            boats++;
+        }
+
+        return boats;
+    }
+    int numRescueBoats(vector<int>& people, int limit) {
+
+        sort(people.begin(), people.end());
+
+        return accomodate(people, limit);
+    }
+};
