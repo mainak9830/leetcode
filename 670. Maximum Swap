@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int maximumSwap(int num) {
+        vector<int> digits;
+        int t = num;
+        while(num){
+            digits.push_back(num%10);
+            num /= 10;
+        }
+        num = t;
+        reverse(digits.begin(), digits.end());
+        int n = digits.size();
+        int i;
+        for(i = 1;i < n;i++){
+            if(digits[i-1] < digits[i])
+                break;
+        }
+        if(i == n)
+            return num;
+        
+        int maxi = INT_MIN;
+        int indexMax = i;
+        for(int j = i;j < n;j++){
+            if(digits[j] >= maxi){
+                maxi = digits[j];
+                indexMax = j;
+            }
+        }
+        
+        for(int j = 0;j < i;j++){
+            if(digits[j] < digits[indexMax]){
+                //cout << digits[j] << endl;
+                //cout << digits[indexMax] << endl;
+                int t = digits[j];
+                digits[j] = digits[indexMax];
+                digits[indexMax] = t;
+                break;
+            }
+        }
+        int newNum = 0;
+
+        for(int j = 0;j < n;j++)
+            newNum = newNum*10 + digits[j];
+        
+        return newNum;
+    }
+};
