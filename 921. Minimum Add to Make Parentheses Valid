@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int minAddToMakeValid(string s) {
+        int bracket = 0;
+        int add = 0;
+        for(char c : s){
+            bracket += (c == '(') ? 1 : -1;
+            if(bracket < 0){
+                add++;
+                bracket = 0;
+            }
+        }
+
+        return add + bracket;
+    }
+};
