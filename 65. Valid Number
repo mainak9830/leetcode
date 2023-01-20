@@ -1,0 +1,47 @@
+class Solution {
+public:
+    map<int, map<string, int>> map;
+    void constructDFA(){
+        map[0]["digit"] = 1;
+        map[0]["sign"] = 2;
+        map[0]["dot"] = 3;
+        map[1]["digit"] = 1;
+        map[1]["dot"] = 4;
+        map[1]["exp"] = 5;
+        map[2]["digit"] = 1;
+        map[2]["dot"] = 3;
+        map[3]["digit"] = 4;
+        map[4]["digit"] = 4;
+        map[4]["exp"] = 5;
+        map[5]["sign"] = 6;
+        map[5]["digit"] = 7;
+        map[6]["digit"] = 7;
+        map[7]["digit"] = 7;
+
+    }
+    set<int> final = {1, 4, 7};
+
+    bool isNumber(string s) {
+        constructDFA();
+        int state = 0;
+        string group = "";
+        for(char c : s){
+            if(isdigit(c))
+                group = "digit";
+            else if(c == '+' || c == '-')
+                group = "sign";
+            else if(c == '.')
+                group = "dot";
+            else if(c == 'e' || c == 'E')
+                group = "exp";
+            else
+                return false;
+            if(map[state].count(group) == 0)
+                return false;
+            state = map[state][group];
+
+        }
+
+        return final.count(state) == 1;
+    }
+};
