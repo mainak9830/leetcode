@@ -1,0 +1,22 @@
+class Solution {
+public:
+    bool isToeplitzMatrix(vector<vector<int>>& matrix) {
+        deque<int> buffer;
+        int m = matrix.size();
+        int n = matrix[0].size();
+
+        for(int j = 0;j < n;j++)
+            buffer.push_back(matrix[0][j]);
+
+        for(int i = 1;i < m;i++){
+
+            for(int j = 1;j < n;j++)
+                if(matrix[i][j] != buffer[j-1])return false;
+            
+            buffer.pop_back();
+            buffer.push_front(matrix[i][0]);
+        }
+
+        return true;
+    }
+};
