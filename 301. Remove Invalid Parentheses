@@ -1,0 +1,63 @@
+class Solution {
+public:
+    int count(string s){
+        int l = 0;
+        int cnt = 0;
+        for(char c : s){
+            if(c >= 'a' && c <= 'z')continue;
+            l += (c == '(') ? 1 : -1;
+            if(l < 0){
+                cnt++;
+                l = 0;
+            }
+        }
+
+        return cnt + l;
+    }
+    vector<string> removeInvalidParentheses(string s) {
+        int n = s.length();
+        int k = count(s);
+        queue<pair<vector<int>, string>> queue;
+        //queue state {bracket, string index, deleteLeft}
+        
+        queue.push({{0,-1,k}, ""});
+        set<string> ans;
+        set<pair<vector<int>, string>> visited;
+        while(!queue.empty()){
+            auto [fir, sec] = queue.front();
+            queue.pop();
+            if(visited.count({fir,sec})){
+                //cout << "repeat" << endl;
+                
+                continue;
+            }
+            if(fir[2] < 0 || fir[0] < 0)
+                continue;
+            int i = fir[1] + 1;
+            
+            if(i == n){
+                if(fir[0] == 0)
+                    ans.insert(sec);
+                continue;
+            }
+            visited.insert({fir,sec});
+            //cout << sec << endl;
+            if(s[i] == '('){
+                queue.push({{fir[0]+1, i, fir[2]}, sec+'('});
+                queue.push({{fir[0], i, fir[2]-1}, sec});
+            }else if(s[i] == ')'){
+                queue.push({{fir[0]-1, i, fir[2]}, sec+')'});
+                queue.push({{fir[0], i, fir[2]-1}, sec});
+            }else{
+                queue.push({{fir[0], i, fir[2]}, sec+s[i]});
+            }
+
+        }
+        vector<string> res;
+        for(auto str : ans)
+            res.push_back(str);
+        if(res.size() == 0)
+            res.push_back("");
+        return res;
+    }
+};
