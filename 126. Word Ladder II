@@ -1,0 +1,79 @@
+class Solution {
+public:
+    vector<vector<string>> ans;
+    unordered_map<string, vector<string>> graph;
+    
+    vector<string> findNeighbors(string node, unordered_set<string> wordList){
+        vector<string> neighbors;
+
+        for(int i = 0;i < node.length();i++){
+            char oc = node[i];
+            for(char c = 'a';c <= 'z';c++){
+                if(oc == c)
+                    continue;
+                node[i] = c;
+                if(wordList.count(node))
+                    neighbors.push_back(node);
+
+                
+            }
+            node[i] = oc;
+        }
+
+        return neighbors;
+    }
+    void bfs(string beginWord, string endWord, unordered_set<string> wordList){
+        queue<string> queue;
+        if(wordList.count(endWord) == 0)
+            return;
+        
+        queue.push(beginWord);
+        set<string> visited;
+        visited.insert(beginWord);
+        if(wordList.count(beginWord))
+            wordList.erase(beginWord);
+        while(!queue.empty()){
+            int len = queue.size();
+            unordered_set<string> temp;
+            for(int i = 0;i < len;i++){
+                string word = queue.front();
+                queue.pop();
+
+                vector<string> neighbors = findNeighbors(word, wordList);
+                for(auto neighbor : neighbors){
+                    graph[neighbor].push_back(word);
+
+                    if(visited.count(neighbor))
+                        continue;
+                    temp.insert(neighbor);
+                    visited.insert(neighbor);
+                    queue.push(neighbor);
+                }
+            }
+            
+            for(string w : temp)
+                wordList.erase(w);
+            
+        }
+    }
+    void backtrack(string u, string destination, vector<string>& path){
+        if(u == destination){
+            ans.push_back(vector<string>(path.rbegin(), path.rend()));
+        }
+        for(string v : graph[u]){
+            path.push_back(v);
+            backtrack(v, destination, path);
+            path.pop_back();
+        }
+    }
+    vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
+        
+        unordered_set<string> wordDict(wordList.begin(), wordList.end());
+
+        bfs(beginWord, endWord, wordDict);
+        vector<string> path = {endWord};
+        backtrack(endWord, beginWord, path);
+
+        return ans;
+    }
+};
