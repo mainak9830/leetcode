@@ -1,0 +1,85 @@
+class Solution {
+public:
+    string alienOrder(vector<string>& words) {
+        int n = words.size();
+        unordered_map<int, set<int>> adjList;
+        if(n == 1){
+            for(int j = 0;j < words[0].length();j++)
+                adjList[words[0][j]-'a'] = set<int>();
+        }
+        for(int i = 1;i < n;i++){
+            string s1 = words[i-1];
+            string s2 = words[i];
+            
+            int j = 0;
+            int m = max(s1.length(), s2.length());
+            int found = false;
+            for(j = 0;j < m;j++){
+                if(!found && j == s2.length() && s1.length() > s2.length())
+                    return "";
+                if(j < s1.length()){
+                    if(adjList.count(s1[j]-'a') == 0)
+                        adjList[s1[j]-'a'] = set<int>();
+                }
+                if(j < s2.length()){
+                    if(adjList.count(s2[j]-'a') == 0)
+                        adjList[s2[j]-'a'] = set<int>();
+                }
+                if(!found && j < s1.length() && j < s2.length()){
+                    if(s1[j] != s2[j]){
+                        //cout << "Rule" << " " << s1[j] << "->" <<  s2[j] << endl;
+                        adjList[s1[j]-'a'].insert(s2[j]-'a');
+                        found = true;
+                    }
+                }
+                
+            }
+            
+
+        }
+        int V = adjList.size();
+        
+        vector<int> ans;
+        queue<int> queue;
+	    map<int,int> indegree;
+        for(auto item : adjList){
+            indegree[item.first] = 0;
+	    }
+	    for(auto item : adjList){
+            int key = item.first;
+            
+            auto val = item.second;
+            
+	        for(auto j : val)
+	            indegree[j]++;
+	    }
+	    
+	    for(auto item : adjList){
+            
+	        if(indegree[item.first] == 0)
+	            queue.push(item.first);
+	    }
+	    //cout << queue.size();
+        if(queue.size() == 0)
+            return "";
+	    while(!queue.empty()){
+	        
+	        int node = queue.front();
+	        queue.pop();
+	        ans.push_back(node);
+            
+	        for(auto i : adjList[node]){
+	            indegree[i]--;
+	            if(indegree[i] == 0)
+	                queue.push(i);
+	        }
+	        
+	    }
+        if(!queue.empty() || ans.size() != V)
+            return "";
+        string language = "";
+        for(int i : ans)
+            language += i+'a';
+        return language;
+    }
+};
