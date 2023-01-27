@@ -1,0 +1,63 @@
+class Trie {
+    public:
+        map<char, Trie*> nodes;
+        bool isEnd = false;
+    
+
+        void insert(string word){
+            Trie* root = this;
+            for(char c : word){
+                if(root->nodes.count(c) == 0)
+                    root->nodes[c] = new Trie();
+                
+                root = root->nodes[c];
+                
+            }
+            root->isEnd = true;
+        }
+};
+class Solution {
+public:
+    vector<vector<char>> B;
+    vector<string> ans;
+    void dfs(int x, int y, string word,Trie* root){
+        int m = B.size();
+        int n = B[0].size();
+        if(x < 0 || y < 0 || x >= m || y >= n)
+            return;
+        char c = B[x][y];
+        if(c == '#' || root->nodes[c] == NULL)
+            return;
+        B[x][y] = '#';
+        string newWord = word + c;
+        Trie* curr = root->nodes[c];
+        if(curr->isEnd){
+            ans.push_back(newWord);
+            curr->isEnd = false;
+        }
+        dfs(x+1,y,newWord,curr);
+        dfs(x,y+1,newWord,curr);
+        dfs(x-1,y,newWord,curr);
+        dfs(x,y-1,newWord,curr);
+
+        B[x][y] = c;
+        if(curr->nodes.size() == 0){
+            root->nodes.erase(c);
+        }
+    }
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        Trie *root = new Trie();
+        for(string word : words)
+            root->insert(word);
+        int m = board.size();
+        int n = board[0].size();
+        B = board;
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                dfs(i,j,"",root);
+            }
+        }
+
+        return ans;
+    }
+};
