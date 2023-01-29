@@ -1,0 +1,37 @@
+class Solution {
+public:
+    vector<vector<int>> res;
+    int time = 0;
+    void dfs(vector<vector<int>> &graph, int u, vector<int> &parents, vector<int> &disc, vector<int> &low){
+        if(disc[u] != -1)
+            return;
+        low[u] = disc[u] = time++;
+        for(int v: graph[u]){
+            if(disc[v] == -1){
+                parents[v] = u;
+                dfs(graph, v, parents, disc, low);
+                low[u] = min(low[u], low[v]);
+                if(disc[u] < low[v])
+                    res.push_back({u,v});
+            }else if(v != parents[u]){
+                low[u] = min(low[u], disc[v]);
+            }
+        }
+
+    }
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+        vector<vector<int>> graph(n);
+        vector<int> parents(n,-1);
+        vector<int> disc(n,-1);
+        vector<int> low(n,-1);
+
+
+        for(vector<int> edge : connections){
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
+        }
+        dfs(graph, 0, parents, disc, low);
+
+        return res;
+    }
+};
