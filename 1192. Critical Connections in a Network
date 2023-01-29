@@ -14,7 +14,7 @@ public:
                 if(disc[u] < low[v])
                     res.push_back({u,v});
             }else if(v != parents[u]){
-                low[u] = min(low[u], disc[v]);
+                low[u] = min(low[u], low[v]);
             }
         }
 
