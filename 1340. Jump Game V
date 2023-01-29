@@ -1,29 +1,31 @@
-//BruteForce dfs
 class Solution {
 public:
-    int ans = -1;
-    void jump(vector<int>& arr, int i, int d, set<int>& seen){
+    
+    int jump(vector<int>& arr, int i, int d, vector<int>& dp){
         int n = arr.size();
-        if(seen.count(i))
-            return;
-        seen.insert(i);
-        ans = max(ans,(int)seen.size());
+        if(dp[i] != -1){
+            //cout << "cahced" << endl;
+            return dp[i];
+        }
         //cout << "( " << i << " | " << seen.size() << ")-->";
+        int ans = 0;
         for(int k = 1;k <= d;k++){
             if(i + k >= n || arr[i+k] >= arr[i])break;
-            jump(arr, i+k, d, seen);
+            ans = max(ans, jump(arr, i+k, d, dp));
         }
         for(int k = 1;k <= d;k++){
             if(i - k < 0 || arr[i-k] >= arr[i])break;
-            jump(arr, i-k, d, seen);
+            ans = max(ans, jump(arr, i-k, d, dp));
         }
-        seen.erase(i);
+        dp[i] = ans + 1;
+        return dp[i];
     }
     int maxJumps(vector<int>& arr, int d) {
         int n = arr.size();
-        set<int> set;
+        int ans = 0;
+        vector<int> dp(n,-1);
         for(int i = 0;i < n;i++){
-            jump(arr, i, d, set);
+            ans = max(ans, jump(arr, i, d, dp));
             //cout << endl;
         }
         return ans;
