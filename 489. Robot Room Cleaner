@@ -1,0 +1,57 @@
+/**
+ * // This is the robot's control interface.
+ * // You should not implement it, or speculate about its implementation
+ * class Robot {
+ *   public:
+ *     // Returns true if the cell in front is open and robot moves into the cell.
+ *     // Returns false if the cell in front is blocked and robot stays in the current cell.
+ *     bool move();
+ *
+ *     // Robot will stay in the same cell after calling turnLeft/turnRight.
+ *     // Each turn will be 90 degrees.
+ *     void turnLeft();
+ *     void turnRight();
+ *
+ *     // Clean the current cell.
+ *     void clean();
+ * };
+ */
+
+class Solution {
+public:
+    int directions[4][2] = {{-1,0},{0,1},{1,0},{0,-1}};
+    set<vector<int>> visited;
+    void clean(int x, int y, int direction, Robot& robot){
+
+        if(visited.count({x,y}))
+            return;
+        robot.clean();
+        visited.insert({x,y});
+        int d = direction;
+        for(int i = 0;i < 4;i++){
+
+            int xn = x + directions[d][0];
+            int yn = y + directions[d][1];
+
+            if(robot.move()){
+                clean(xn,yn,d,robot);
+
+                robot.turnLeft();
+                robot.turnLeft();
+                robot.move();
+                robot.turnRight();
+                robot.turnRight();
+
+            }
+            robot.turnRight();
+            d = (d+1)%4;
+
+        }
+
+    }
+    void cleanRoom(Robot& robot) {
+        
+        int d = 0;
+        clean(0,0,d,robot);
+    }
+};
