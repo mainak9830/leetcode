@@ -1,0 +1,95 @@
+class DSU {
+public:
+    int *parent, *rank;
+    DSU(int size){
+        parent = new int[size];
+        rank = new int[size];
+        for(int i = 0;i < size;i++){
+            parent[i] = i;
+            rank[i] = 1;
+        }
+    }
+
+    int Union(int x, int y){
+        int v1 = find(x);
+        int v2 = find(y);
+        if(v1 == v2)
+            return rank[v1];
+        if(rank[v1] < rank[v2]){
+            parent[v1] = v2;
+            rank[v2] += rank[v1];
+            return rank[v2];
+        }
+        
+        parent[v2] = v1;
+        rank[v1] += rank[v2];
+        return rank[v1];
+
+    }
+
+    int find(int x){
+        if(x != parent[x])
+            parent[x] = find(parent[x]);
+        return parent[x];
+    }
+
+    int getRank(int v){
+        return rank[v];
+    }
+};
+class Solution {
+public:
+    int largestIsland(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        DSU dsu(m*n);
+        int d[4][2] = {{1,0},{0,1},{-1,0},{0,-1}};
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                if(grid[i][j] == 0)continue;
+                for(int k = 0;k < 4;k++){
+                    
+                    int x = i + d[k][0];
+                    int y = j + d[k][1];
+
+                    if(x < 0 || y < 0 || x >= m || y >= n || grid[x][y] == 0)
+                        continue;
+                    
+                    dsu.Union(i*n+j, x*n+y);
+                }
+
+            }
+        }
+        int maxSize = 0;
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                
+                if(grid[i][j] == 0){
+                    set<int> set;
+                    int size = 0;
+                    for(int k = 0;k < 4;k++){
+                        int x = i + d[k][0];
+                        int y = j + d[k][1];
+
+                        if(x < 0 || y < 0 || x >= m || y >= n || grid[x][y] != 1)
+                            continue;
+                        int v = dsu.find(n*x+y);
+                        if(set.count(v) == 0){
+
+                            set.insert(v);
+                            size += dsu.getRank(v);
+                            
+                        }
+                    }
+
+                    maxSize = max(maxSize, size + 1);
+                }else{
+                    maxSize = max(maxSize, dsu.getRank(dsu.find(n*i+j)));
+                }
+                
+            }
+        }
+
+        return maxSize;
+    }
+};
