@@ -1,0 +1,83 @@
+class Edge{
+public:
+    int p1;
+    int p2;
+    int cost;
+    Edge(int p1, int p2, int cost){
+        this->p1 = p1;
+        this->p2 = p2;
+        this->cost = cost;
+    }
+};
+
+class DSU {
+public:
+    int *parent, *rank;
+    DSU(int size){
+        parent = new int[size];
+        rank = new int[size];
+        for(int i = 0;i < size;i++){
+            parent[i] = i;
+            rank[i] = 1;
+        }
+    }
+
+    int Union(int x, int y){
+        int v1 = find(x);
+        int v2 = find(y);
+        if(v1 == v2)
+            return rank[v1];
+        if(rank[v1] < rank[v2]){
+            parent[v1] = v2;
+            rank[v2] += rank[v1];
+            return rank[v2];
+        }
+        
+        parent[v2] = v1;
+        rank[v1] += rank[v2];
+        return rank[v1];
+
+    }
+
+    int find(int x){
+        if(x != parent[x])
+            parent[x] = find(parent[x]);
+        return parent[x];
+    }
+    bool connected(int x, int y) {
+        return find(x) == find(y);
+    }
+};
+
+class Solution {
+public:
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        int n = points.size();
+        DSU dsu(n);
+        auto comparator = [](const Edge& e1, const Edge& e2){
+            return e1.cost > e2.cost;
+        };
+        priority_queue<Edge, vector<Edge>, decltype(comparator)> pq(comparator);
+        for(int i = 0;i < n;i++){
+            for(int j = 0;j < i;j++){
+                int cost = abs(points[i][0] - points[j][0]) + 
+                    abs(points[i][1] - points[j][1]);
+                pq.push(Edge(i,j,cost)); // see
+            }
+        }
+        int count = n-1;
+        int cost = 0;
+        while(pq.size() && count){
+            Edge edge = pq.top();
+            pq.pop();
+
+            if(!dsu.connected(edge.p1, edge.p2)){
+                dsu.Union(edge.p1, edge.p2);
+                cost += edge.cost;
+                count--;
+            }
+        }
+
+        return cost;
+    }
+};
