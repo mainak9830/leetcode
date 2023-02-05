@@ -1,0 +1,39 @@
+class Solution {
+public:
+
+    vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges) {
+        
+        vector<int> sum(n,0), count(n,0);
+        vector<vector<int>> graph(n);
+        for(vector<int> e : edges){
+            graph[e[0]].push_back(e[1]);
+            graph[e[1]].push_back(e[0]);
+        }
+        postorder(graph, 0, -1, sum, count);
+        preorder(graph, 0, -1, sum, count);
+        return sum;
+    }
+
+    void postorder(vector<vector<int>>& graph, int u, int parent, vector<int>& sum, vector<int>& count){
+        
+        for(int v : graph[u]){
+            if(v == parent)continue;
+            postorder(graph, v, u, sum, count);
+            sum[u] += sum[v]+ count[v];
+            count[u] += count[v];
+        }
+        count[u] += 1;
+    }
+
+    void preorder(vector<vector<int>>& graph, int u, int parent, vector<int>& sum, vector<int>& count){
+
+        for(int v : graph[u]){
+            if(v == parent)continue;
+
+            sum[v] = sum[u] - count[v] + (sum.size()-count[v]);
+            preorder(graph, v, u, sum, count);
+            
+        }
+
+    }
+};
