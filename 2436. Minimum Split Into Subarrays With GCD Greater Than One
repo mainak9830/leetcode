@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int gcd(int a, int b){
+        //a > b
+        if(a < b)return gcd(b,a);
+        if(b == 0)return a;
+        return gcd(b,a%b);
+    }
+    int minimumSplits(vector<int>& nums) {
+        int n = nums.size();
+        int g = nums[0];
+        int split = 1;
+        for(int i = 1;i < n;i++){
+            g = gcd(g, nums[i]);
+            if( g == 1){
+                g = nums[i];
+                split++;
+            }
+        }
+
+        return split;
+    }
+};
