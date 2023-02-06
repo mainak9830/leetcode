@@ -1,0 +1,20 @@
+class Solution {
+public:
+    map<int,int> dp;
+    int maxSum(vector<int>& arr, int i, int k){
+        int n = arr.size();
+        if(i == n)return 0;
+        if(dp.count(i))return dp[i];
+        int maxi = INT_MIN;
+        int maxNum = INT_MIN;
+        for(int j = 0;j < k && i+j < n;j++){
+            maxNum = max(maxNum, arr[i+j]);
+            maxi = max(maxi, maxSum(arr,i+j+1,k) + maxNum*(j+1));
+        }
+        dp[i] = maxi;
+        return maxi;
+    }
+    int maxSumAfterPartitioning(vector<int>& arr, int k) {
+        return maxSum(arr, 0, k);
+    }
+};
