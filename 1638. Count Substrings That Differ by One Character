@@ -1,0 +1,62 @@
+class Trie{
+    public:
+        map<char, Trie*> next;
+        int count = 0;
+        int end = false;
+};
+class Solution {
+public:
+    int search(Trie* head, string& s){
+        for(char c : s){
+            if(head->next.count(c) == 0)return 0;
+            head = head->next[c];
+        }
+        //cout  << "Found" << s << endl;
+        return head->count;
+    }
+    int countSubstrings(string s, string t) {
+        Trie* root = new Trie();
+        int n = s.length();
+        int m = t.length();
+        set<char> set;
+        for(int i = 0;i < m;i++){
+            set.insert(t[i]);
+            Trie* head = root;
+            for(int j = i;j < m;j++){
+                if(head->next.count(t[j]) == 0)
+                    head->next[t[j]] = new Trie();
+                
+                head = head->next[t[j]];
+                head->end = true;
+                head->count++;
+                
+            }
+        }
+        int count = 0;
+        for(int i = 0;i < n;i++){
+            string s_sub = "";
+            for(int j = i;j < n;j++){
+                s_sub += s[j];
+                int len = j-i+1;
+                //cout << s_sub << endl;
+                //cout << "----------" << endl;
+                for(int k = 0;k < len;k++){
+                    char temp = s_sub[k];
+                    for(char c = 'a';c <= 'z';c++){
+                        if(temp == c || set.count(c) == 0)continue;
+                        s_sub[k] = c;
+                        // cout << "-->" << s_sub << endl;
+                        count += search(root, s_sub);
+                    }
+                    s_sub[k] = temp;
+                }
+                //if()
+                //cout << "----------" << endl;
+            }
+            //cout << "-------------------" << endl;
+        }
+
+        return count;
+
+    }
+};
