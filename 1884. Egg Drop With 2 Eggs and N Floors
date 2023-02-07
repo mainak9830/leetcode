@@ -1,0 +1,20 @@
+class Solution {
+public:
+    
+    int calculate(int n, vector<int>& dp){
+        if(n == 0)return 0;
+        
+        if(dp[n] != -1)return dp[n];
+        dp[n] = INT_MAX;
+        for(int floor = 1;floor <= n;floor++){
+            dp[n] = min(dp[n], (1 + 
+            max(floor-1, calculate(n-floor, dp))));
+
+        } 
+        return dp[n];
+    }
+    int twoEggDrop(int n) {
+        vector<int> dp(n+1,-1);
+        return calculate(n, dp);
+    }
+};
