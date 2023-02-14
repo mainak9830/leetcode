@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int goodBinaryStrings(int minLength, int maxLength, int oneGroup, int zeroGroup) {
+        vector<long long> dp(maxLength+1, 0);
+        dp[0] = 1;
+        long long count = 0;
+        int mod = 1000'000'007;
+        for(int i = 1;i <= maxLength;i++){
+            if(i-zeroGroup >= 0)
+                dp[i] += dp[i-zeroGroup];
+            if(i-oneGroup >= 0)
+                dp[i] += dp[i-oneGroup];
+
+            if(i >= minLength)
+                count = (count + dp[i] % mod)%mod;
+            dp[i] = dp[i] % mod;
+        }
+
+        return count;
+
+
+    }
+};
