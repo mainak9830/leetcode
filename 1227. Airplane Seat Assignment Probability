@@ -1,0 +1,45 @@
+class Solution {
+public:
+    // double ways = 0, correctWays = 0;
+    // void helper(int people, vector<bool>& seats){
+    //     int n = seats.size();
+    //     if(people == n-1){
+    //         ways++;
+    //         if(!seats[n-1])
+    //             correctWays++;
+    //         return;
+    //     }
+
+    //     if(!seats[people]){
+    //         seats[people] = 1;
+    //         helper(people+1, seats);
+    //         seats[people] = 0;
+    //     }
+    //     else{
+    //         for(int i = 0;i < n;i++){
+    //             if(seats[i] == 0){
+    //                 seats[i] = 1;
+    //                 helper(people+1, seats);
+    //                 seats[i] = 0;
+    //             }
+    //         }
+    //     }
+    // }
+    double nthPersonGetsNthSeat(int n) {
+        
+        // vector<bool> seats(n,0);
+
+        // for(int i = 0;i < n;i++){
+        //     seats[i] = 1;
+        //     helper(1, seats);
+        //     seats[i] = 0;
+        // }
+        // //cout << correctWays << " " << ways;
+        // return (correctWays/ways);
+        if(n == 1)
+            return 1;
+        
+
+        return 0.5;
+    }
+};
