@@ -1,0 +1,27 @@
+class Solution {
+public:
+    
+    bool match(int i, int j, string &s, string &p, vector<vector<int>> &dp){
+        
+        
+        int m = s.size();
+        int n = p.size();
+        if(j >= n)return i >= m;
+        
+        if(dp[i][j] != -1)return dp[i][j];
+
+        
+        bool mat = i < m && (s[i] == p[j] || p[j] == '?');
+        if(p[j] == '*'){
+            return dp[i][j] = match(i,j+1,s,p,dp) || (i < m && match(i+1,j,s,p,dp));
+        }
+        
+     
+        return dp[i][j] = (mat && match(i+1,j+1,s,p,dp));
+    }
+    bool isMatch(string s, string p) {
+        
+        vector<vector<int>> dp(s.size()+1, vector<int>(p.size()+1,-1));
+        return match(0,0,s,p,dp);
+    }
+};
