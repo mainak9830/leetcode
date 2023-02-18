@@ -1,0 +1,27 @@
+class Solution {
+public:
+    map<pair<int,int>,bool> dp;
+    bool match(int i, string& s, int j, string& p){
+        int n = s.length();
+        int m = p.length();
+        
+        if(i >= n && j >= m) return true;
+        if(j >= m)return false;
+        if(dp.count({i,j}))return dp[{i,j}];
+        
+        if(j < m-1 && p[j+1] == '*'){
+            dp[{i,j}] = (i < n && (s[i] == p[j] || p[j] == '.') && match(i+1,s,j,p)) 
+            || match(i,s,j+2,p);
+            
+        }
+
+        else if(i < n && (s[i] == p[j] || p[j] == '.'))
+            dp[{i,j}] = match(i+1,s,j+1,p);
+
+    
+        return dp[{i,j}];
+    }
+    bool isMatch(string s, string p) {
+        return match(0,s,0,p);
+    }
+};
