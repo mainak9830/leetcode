@@ -1,0 +1,32 @@
+class Solution {
+public:
+    typedef pair<string, int> pa; 
+    vector<string> topKFrequent(vector<string>& words, int k) {
+        unordered_map<string, int> map;
+
+        for(string word : words)
+            map[word]++;
+        auto comp = [](const auto& a, const auto& b){
+            return (a.second == b.second) ? a.first < b.first : a.second > b.second;
+        };
+        priority_queue<pa, vector<pa>, decltype(comp)> pq(comp);
+        vector<string> output;
+        for(auto it : map){
+            if(pq.size() < k)pq.push(it);
+            else{
+                if(pq.top().second < it.second || (pq.top().second == it.second && pq.top().first > it.first)){
+                    pq.pop();
+                    pq.push(it);
+                }
+            }
+        }
+
+        while(!pq.empty()){
+            output.push_back(pq.top().first);
+            pq.pop();
+        }
+
+        reverse(output.begin(), output.end());
+        return output;    
+    }
+};
