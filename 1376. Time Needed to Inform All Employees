@@ -1,0 +1,24 @@
+class Solution {
+public:
+    unordered_map<int, vector<int>> graph;  
+    int dfs(int u, vector<int>& informTime){
+
+
+        int time = 0;
+        for(auto v : graph[u]){
+            time = max(time, informTime[u] + dfs(v, informTime));
+        }
+
+        return time;
+    }
+    int numOfMinutes(int n, int headID, vector<int>& manager, vector<int>& informTime) {
+        
+        int time = 0;
+        for(int i = 0;i < manager.size();i++){
+            graph[manager[i]].push_back(i);
+        }
+
+        return dfs(headID, informTime);
+        
+    }
+};
