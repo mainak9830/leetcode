@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int atmost(vector<int>& nums, int k){
+        int n = nums.size();
+        int l = 0;
+        map<int,int> map;
+        int res = 0;
+        int unique = 0;
+        for(int h = 0;h < n;h++){
+            map[nums[h]]++;
+            if(map[nums[h]] == 1){
+                unique++;
+            }
+            while(unique > k){
+                map[nums[l]]--;
+                if(map[nums[l]] == 0)
+                    unique--;
+                l++;
+            }
+            res += (h-l+1);    
+        }
+
+        return res; 
+    }
+    int subarraysWithKDistinct(vector<int>& nums, int k) {
+        return atmost(nums, k) - atmost(nums,k-1);
+    }
+};
