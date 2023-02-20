@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int maxPoints(vector<vector<int>>& points) {
+        
+        int n = points.size();
+        
+        int maximum = 1;
+        for(int i = 0;i < n;i++){
+            unordered_map<float, int> slopes;
+            for(int j = i+1;j != i && j < n;j++){
+                
+                float slope = MAXFLOAT;
+                if(points[i][0] != points[j][0]){
+                    slope = (float)(points[i][1]-points[j][1])/(float)(points[i][0]-points[j][0]);
+                }
+                
+                slopes[slope]++;
+                maximum = max(maximum, slopes[slope]+1);
+            }
+        }
+
+        return  maximum;
+    }
+};
