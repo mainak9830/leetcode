@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int dist(vector<int>& heaters, int target, int x){
+        return abs(heaters[x]-target);
+    }
+    int search(vector<int>& heaters, int house){
+        int n = heaters.size();
+        int idx = lower_bound(heaters.begin(), heaters.end(), house)-heaters.begin();
+
+        
+        int d = INT_MAX;
+
+        if(idx-1 >= 0){
+            d = min(d, dist(heaters, house, idx-1));
+            
+        }
+        if(idx != n)
+        d = min(d, dist(heaters, house, idx));
+        if(idx+1 < n)
+            d = min(d, dist(heaters, house, idx+1));
+        
+
+        return d;
+    }
+    int findRadius(vector<int>& houses, vector<int>& heaters) {
+        int n = houses.size();
+        sort(heaters.begin(), heaters.end());
+        int d = 0;
+        for(int i = 0;i < n;i++){
+            int x = search(heaters, houses[i]);
+           
+            d = max(d, x);
+            //cout << d << endl;
+        }
+
+        return d; 
+    }
+};
