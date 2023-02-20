@@ -16,8 +16,6 @@ public:
         }
         if(idx != n)
         d = min(d, dist(heaters, house, idx));
-        if(idx+1 < n)
-            d = min(d, dist(heaters, house, idx+1));
         
 
         return d;
