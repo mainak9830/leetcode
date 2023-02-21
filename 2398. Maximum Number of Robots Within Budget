@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int maximumRobots(vector<int>& chargeTimes, vector<int>& runningCosts, long long budget) {
+        
+        int n = chargeTimes.size();
+        deque<int> deque;
+        
+        int maxLen = 0;
+        long long int sum = 0;
+        int j = 0;
+        for(int i = 0;i < n;i++){
+            sum += runningCosts[i];
+            while(!deque.empty() && chargeTimes[deque.back()] < chargeTimes[i]){
+                deque.pop_back();
+            }
+
+            deque.push_back(i);
+            
+            while(!deque.empty() && (i-j+1)*sum + chargeTimes[deque.front()] > budget){
+                if(deque.front() == j)
+                    deque.pop_front();
+                sum -= runningCosts[j];
+                //cost = ;
+                j++;
+            }
+            maxLen = max(maxLen, i-j+1);
+        }
+
+        return maxLen;
+    }
+};
