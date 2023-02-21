@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int longestPalindrome(string s) {
+        map<char, int> map;
+
+        for(char c : s)
+            map[c]++;
+        bool first = false;
+        int len = 0;
+        for(auto it : map){
+            int count = it.second;
+            if(count % 2 == 1){
+                first = true;
+                len += count-1;
+            }else
+                len += count;
+
+        }
+        return len + (1 ? first : 0);
+    }
+};
