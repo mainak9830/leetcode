@@ -1,0 +1,28 @@
+class Solution {
+public:
+    string clean(string email){
+
+        string s = "";
+        for(char c : email){
+            if(c == '.')continue;
+            if(c == '+')return s;
+            s += c;
+        }
+
+        return s;
+    }
+    int numUniqueEmails(vector<string>& emails) {
+        set<string> uniqueEmails;
+        for(string email : emails){
+            int divider = email.find('@');
+            string local = email.substr(0, divider);
+            string host = email.substr(divider+1);
+            string refined = clean(local);
+            //cout << local << " " << refined << endl;
+
+            uniqueEmails.insert(refined+"@"+host);
+        }
+        return uniqueEmails.size();
+        
+    }
+};
