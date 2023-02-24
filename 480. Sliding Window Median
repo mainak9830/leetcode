@@ -1,0 +1,66 @@
+class Solution {
+public:
+    priority_queue<int> maxhp;
+    priority_queue<int, vector<int>, greater<int>> minhp;
+    void adjust(int el){
+        maxhp.push(el);
+        
+        if(maxhp.size() > minhp.size() + 1){
+            minhp.push(maxhp.top());
+            maxhp.pop();
+        }
+
+        if(minhp.size() && maxhp.top() > minhp.top()){
+            minhp.push(maxhp.top());
+            maxhp.pop();
+            maxhp.push(minhp.top());
+            minhp.pop();
+        }
+    }
+
+    double findMedian(){
+        if(maxhp.size() > minhp.size())
+            return (double)maxhp.top();
+        return ((double)maxhp.top() + (double)minhp.top())/2.0;
+    }
+
+    vector<double> medianSlidingWindow(vector<int>& nums, int k) {
+        int n = nums.size();
+        vector<double> medians;
+        
+        for(int i = 0;i < n;i++){
+            
+            if(i-k >= 0){
+                //delete the first element
+                int el = nums[i-k];
+                if(el > maxhp.top()){
+                    //in min heap
+                    vector<int> temp;
+                    while(minhp.top() != el){
+                        temp.push_back(minhp.top());
+                        minhp.pop();
+                    }
+                    minhp.pop();
+                    for(int num : temp)
+                        minhp.push(num);
+                }
+                else{
+                    //in max heap
+                    vector<int> temp;
+                    while(maxhp.top() != el){
+                        temp.push_back(maxhp.top());
+                        maxhp.pop();
+                    }
+                    maxhp.pop();
+                    for(int num : temp)
+                        maxhp.push(num);
+                }
+            }
+            adjust(nums[i]);
+            if(i >= k-1)
+                medians.push_back(findMedian());
+            
+        }
+        return medians;
+    }
+};
