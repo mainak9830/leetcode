@@ -1,0 +1,30 @@
+class Solution {
+public:
+    typedef vector<int> vi;
+    int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital) {
+        
+        int n = profits.size();
+
+        priority_queue<vi, vector<vi>, greater<vi>> minheap;
+        priority_queue<vi> maxheap;
+
+        for(int i = 0;i < n;i++){
+            minheap.push({capital[i], profits[i]});
+        }
+        
+        while(k--){
+            while(!minheap.empty() && minheap.top()[0] <= w){
+                maxheap.push({minheap.top()[1],  minheap.top()[0]});
+                minheap.pop();
+
+            }
+            if(!maxheap.empty()){
+                w += maxheap.top()[0];
+                maxheap.pop();
+            }
+        }
+
+        return w;
+        
+    }
+};
