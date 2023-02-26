@@ -1,0 +1,32 @@
+class Solution {
+public:
+    
+    bool check(string& word, set<string>& set, int i, vector<int>& dp){
+        if(i == word.length())return true;
+        if(dp[i] != -1)return dp[i];
+        for(int j = i;j < word.length();j++){
+            if(i == 0 && j == word.length()-1)continue;
+            string prefix = word.substr(i,j-i+1);
+            if(set.count(prefix)){
+                //cout << prefix << " " << endl;
+                bool res = check(word, set, j+1, dp);
+                dp[i] = res;
+                if(res)return true;
+            }
+        }
+        dp[i] = false;
+        return false;
+    }
+    vector<string> findAllConcatenatedWordsInADict(vector<string>& words) {
+        set<string> set(words.begin(), words.end());
+        vector<string> result;
+        
+        for(int i = 0;i < words.size();i++){
+            vector<int> dp(30,-1);
+            if(check(words[i], set, 0, dp))
+                result.push_back(words[i]);
+        }
+        return result;
+
+    }
+};
