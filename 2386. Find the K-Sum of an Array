@@ -1,0 +1,28 @@
+class Solution {
+public:
+    long long kSum(vector<int>& nums, int k) {
+        long long maxValue = 0;
+        for(int num : nums){
+            maxValue += max(num,0);
+        }
+
+        sort(nums.begin(), nums.end(), [](const int& a, const int& b){
+            return abs(a) < abs(b);
+        });
+        //negative number are not included in sum
+        priority_queue<pair<long long,int>> maxheap;
+        maxheap.push({maxValue-abs(nums[0]), 0});
+        while(k-1){
+            auto [sum, i] = maxheap.top();
+            maxValue = sum;
+            maxheap.pop();
+            if(i+1 < nums.size()){
+                maxheap.push({sum+abs(nums[i])-abs(nums[i+1]), i+1});
+                maxheap.push({sum-abs(nums[i+1]), i+1});
+            }
+            k--;
+        }
+
+        return maxValue;
+    }
+};
