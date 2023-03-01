@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int appendCharacters(string s, string t) {
+        int j = 0, i = 0;
+        for(;j < t.length() && i < s.length();){
+            if(t[j] == s[i]){
+                j++;
+                i++;
+            }else
+                i++;
+        }
+
+        return t.length()-j;
+    }
+};
