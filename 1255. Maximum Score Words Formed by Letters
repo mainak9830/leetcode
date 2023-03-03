@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) {
+        int n = words.size();
+        vector<int> scores;
+        map<char, int> count;
+        for(char c : letters){
+            count[c]++;
+        }
+        int ans = 0;
+        for(int i = 1;i <= (1<<n)-1;i++){
+            int mask = i;
+            int maxscore = 0; 
+            map<char, int> tcount = count;
+            bool can = true;
+            for(int j = n-1;j >= 0;j--){
+                if(mask & 1){
+                    int lscore = 0;
+                    for(char c : words[j]){
+                        if(tcount[c] <= 0){
+                            can = false;
+                            break;
+                        }
+                        tcount[c]--;
+                        
+                        lscore += score[c-'a'];
+                    }
+                    if(!can)break;
+                    maxscore += lscore;
+                }
+                mask >>= 1;
+                if(mask == 0)
+                    break;
+
+            }
+            //cout << maxscore << " " << endl;
+            ans = max(ans, maxscore);
+
+        }
+
+        return ans;
+    }
+};
