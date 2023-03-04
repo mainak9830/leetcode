@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<vector<int>> dp;
+    int maxScore(vector<int>& arr, int i, int time){
+        int n = arr.size();
+        if(i >= n)return 0;
+        if(dp[i][time] != -1)return dp[i][time];
+
+        return dp[i][time] =  max(arr[i]*time + maxScore(arr,i+1,time+1), maxScore(arr, i+1, time));
+    }
+    int maxSatisfaction(vector<int>& satisfaction) {
+        int n = satisfaction.size();
+        sort(satisfaction.begin(), satisfaction.end());
+        dp.resize(n+1, vector<int>(n+1,-1));
+        return maxScore(satisfaction,0,1);
+    }
+};
