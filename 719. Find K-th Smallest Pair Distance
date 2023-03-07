@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int getcount(int diff, vector<int>& nums){
+        int n = nums.size();  
+        int h;
+        int l = 0;
+        int count = 0;
+        for(h = 0;h < n;h++){
+            while(l < h && nums[h]-nums[l] > diff){
+                l++;
+            }
+            count += (h-l);
+
+        }
+
+        return count;
+    }
+    int smallestDistancePair(vector<int>& nums, int k) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        
+        int l = 0;
+        int h = nums[n-1]-nums[0];
+        
+        while(l < h){
+            int mid = l + (h-l)/2;
+            if(getcount(mid, nums) >= k)
+                h = mid;
+            else
+                l = mid+1;
+        }
+
+        return l;
+    }
+};
