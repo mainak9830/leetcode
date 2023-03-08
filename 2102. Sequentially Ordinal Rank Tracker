@@ -1,0 +1,58 @@
+typedef pair<int, string> pa;
+struct comp{
+    public:
+    bool operator()(pa& a, pa& b){
+        return (a.first == b.first ? a.second > b.second : 
+                a.first < b.first);
+    }
+};
+struct comp1{
+    public:
+    bool operator()(pa& a, pa& b){
+        return (a.first == b.first ? a.second < b.second : 
+                a.first > b.first);
+    }
+};
+class SORTracker {
+public:
+    
+    priority_queue<pa, vector<pa>, comp> maxpq;
+    priority_queue<pa, vector<pa>, comp1> minpq;
+    int q = 1;
+    SORTracker() {
+        
+    }
+    
+    void add(string name, int score) {
+        
+        if(!minpq.empty() && (score > minpq.top().first || (score == minpq.top().first && minpq.top().second > name))){
+            
+            minpq.push({score,name});
+            if(minpq.size() > q){
+                maxpq.push(minpq.top());
+                minpq.pop();
+            }
+        }
+        else{
+            maxpq.push({score,name});
+        }
+    }
+    
+    string get() {
+        
+        if(minpq.size() == q++)
+            return minpq.top().second;
+        
+        minpq.push(maxpq.top());
+        maxpq.pop();
+        //cout << maxpq.top().second << " " << minpq.top().second << endl;
+        return minpq.top().second;
+    }
+};
+
+/**
+ * Your SORTracker object will be instantiated and called as such:
+ * SORTracker* obj = new SORTracker();
+ * obj->add(name,score);
+ * string param_2 = obj->get();
+ */
