@@ -1,0 +1,34 @@
+
+class FreqStack {
+public:
+    
+    map<int,int> freq;
+    map<int, vector<int>, greater<int>> seq;
+    FreqStack() {
+        
+    }
+    
+    void push(int val) {
+        freq[val]++;
+        seq[freq[val]].push_back(val);
+    }
+    
+    int pop() {
+        int key = seq.begin()->first;
+        vector<int> most = seq.begin()->second;
+        int num = most[most.size()-1];
+        seq.begin()->second.pop_back();
+        freq[num]--;
+        if(seq.begin()->second.size() == 0)
+            seq.erase(key);
+
+        return num;
+    }
+};
+
+/**
+ * Your FreqStack object will be instantiated and called as such:
+ * FreqStack* obj = new FreqStack();
+ * obj->push(val);
+ * int param_2 = obj->pop();
+ */
