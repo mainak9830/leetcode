@@ -1,0 +1,77 @@
+//Good Application of Tries
+
+class Solution {
+public:
+    struct Trie{
+        Trie *childs[26];
+        int count = 0;
+
+    };
+
+    string encode(string& word){
+        if(word.length() <= 3)return word;
+        return word[0] + to_string(word.length()-2) + word[word.length()-1];
+    }
+
+    void addWord(Trie* root, string& word){
+
+        for(char c : word){
+            if(root->childs[c-'a'] == NULL){
+                root->childs[c-'a'] = new Trie();
+            }
+            root = root->childs[c-'a'];
+            root->count++;
+            
+        }
+    }
+
+    void getAbbr(vector<int>& v, vector<string>& result, vector<string>& words){
+        
+        Trie *trie = new Trie(), *root;
+        for(int i : v){
+            addWord(trie, words[i]);
+        }
+        
+        for(int i : v){
+            root = trie;
+            string word = words[i];
+            int len = 0;
+            for(char c : word){
+                root = root->childs[c-'a'];
+                if(root->count == 1)break;
+                
+                len++;
+            }
+            //cout << words[i] << " " << word.substr(0,len+1);
+            if(word.length()-len-2 > 1)
+                result[i] = word.substr(0,len+1) + to_string(word.length()-len-2) + word[word.length()-1];
+            else
+                result[i] = word;
+        }
+        
+    }
+
+    vector<string> wordsAbbreviation(vector<string>& words) {
+        map<string, vector<int>> abbr;
+        int i = 0;
+        for(string word : words){
+            string en = encode(word);
+            abbr[en].push_back(i);
+            i++;
+        }
+
+        vector<string> result(words.size());
+
+        for(auto [k,v] : abbr){
+            if(v.size() > 1)
+                getAbbr(v, result, words);
+            else
+                result[v[0]] = k;
+        }
+
+        return result;
+    }
+
+    
+
+};
