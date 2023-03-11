@@ -1,0 +1,55 @@
+class Unit{
+public:
+    int x,y,h;
+    Unit(int x, int y, int h){
+        this->x = x;
+        this->y = y;
+        this->h = h;
+    }
+};
+
+class Solution {
+public:
+    int trapRainWater(vector<vector<int>>& heightMap) {
+        int m = heightMap.size();
+        int n = heightMap[0].size();
+        auto compare = [](Unit& a, Unit& b){
+            return a.h > b.h;
+        } ;
+        priority_queue<Unit, vector<Unit>, decltype(compare)> queue(compare);
+        vector<vector<bool>> visited(m,vector<bool>(n,false));
+        for(int i = 0;i < m;i++){
+            queue.push(Unit(i,0,heightMap[i][0]));
+            queue.push(Unit(i,n-1,heightMap[i][n-1]));
+            visited[i][0] = true;
+            visited[i][n-1] = true;
+        }
+        for(int j = 1;j < n-1;j++){
+            queue.push(Unit(0,j,heightMap[0][j]));
+            queue.push(Unit(m-1,j,heightMap[m-1][j]));
+            visited[0][j] = true;
+            visited[m-1][j] = true;
+        }
+
+        int water = 0;
+        vector<vector<int>> directions = {{0,1}, {0,-1}, {-1,0}, {1,0}};
+        while(!queue.empty()){
+            Unit cur = queue.top();
+            queue.pop();
+            water += max(0, cur.h-heightMap[cur.x][cur.y]);
+
+            for(auto d : directions){
+
+                int r = cur.x + d[0];
+                int c = cur.y + d[1];
+                if(r < 0 || c < 0 || r >= m || c >= n || visited[r][c])continue;
+
+                queue.push(Unit(r,c, max(heightMap[r][c], cur.h)));
+                visited[r][c] = true;
+            }
+            
+        }
+        return water;
+
+    }
+};
