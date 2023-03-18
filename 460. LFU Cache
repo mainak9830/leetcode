@@ -1,0 +1,123 @@
+class Node{
+public:
+    int val;
+    Node *left, *right;
+    Node(int val, Node *left, Node * right){
+        this->val = val;
+        this->left = left;
+        this->right = right;
+    }
+    Node(int val){
+        this->val = val;
+    }
+};
+class LinkedList{
+    Node *head,*tail;
+    map<int, Node*> map;
+    int count;
+public:
+    LinkedList(){
+        head = new Node(0);
+        tail = new Node(0);
+        head->right = tail;
+        tail->left = head;
+        count = 0;
+    }
+    void addKeyToTail(int key){
+        Node *node = new Node(key);
+        Node *l = tail->left;
+        l->right = node;
+        node->right = tail;
+        tail->left = node;
+        node->left = l;
+        
+        map[key] = node;
+        count++;
+    }
+
+    void removeKey(int key){
+        Node *node = map[key];
+        node->left->right = node->right;
+        
+        node->right->left = node->left;
+        map.erase(key);
+        count--;
+    }
+
+    int removeFromFront(){
+        Node *node = head->right;
+        head->right = node->right;
+        
+        node->right->left = head;
+        count--;
+        return node->val;
+    }
+
+    int getCount(){
+        return count;
+    }
+
+};
+class LFUCache {
+public:
+    map<int, LinkedList*> freqlist; //freq to node address
+    map<int, int> dictionary;
+    map<int, int> count;
+    int cap;
+    LFUCache(int capacity) {
+        cap = capacity;
+    }
+    
+    int get(int key) {
+        if(!dictionary.count(key))
+            return -1;
+        
+        changeList(key);
+        
+        return dictionary[key];
+    }
+    void changeList(int key){
+        freqlist[count[key]]->removeKey(key);
+        if(freqlist[count[key]]->getCount() == 0)
+            freqlist.erase(count[key]);
+        count[key]++;
+        if(freqlist.count(count[key]) == 0)
+            freqlist[count[key]] = new LinkedList();
+        freqlist[count[key]]->addKeyToTail(key);
+    }
+    void put(int key, int value) {
+        
+        
+        if(dictionary.count(key)){
+            dictionary[key] = value;
+
+            
+            changeList(key);
+            
+            return;
+        }
+
+        if(dictionary.size() == cap){
+            auto [k,v] = *freqlist.begin();
+            int k1 = v->removeFromFront();
+            if(freqlist[k]->getCount() == 0)
+                freqlist.erase(k);
+            dictionary.erase(k1);
+            count.erase(k1);
+        }
+
+        dictionary[key] = value;
+        if(!freqlist.count(0))
+            freqlist[0] = new LinkedList();
+        freqlist[0]->addKeyToTail(key);
+        count[key] = 0;
+
+    }
+};
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache* obj = new LFUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
