@@ -1,0 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* newRoot;
+    TreeNode* temp;
+    void invert(TreeNode *root){
+        if(!root)
+            return;
+            
+        TreeNode* left = root->left;
+        TreeNode* right = root->right;
+        if(left && !left->left && !left->right){
+            if(!temp)
+                newRoot = left;
+            temp = left;
+            //cout << "newRoot" << temp->val << endl;
+        }
+        invert(root->left);
+        invert(root->right);
+        if(left){
+            if(!right || !right->left)
+                left->left = right;
+            else
+                left->left = temp;
+            left->right = root;
+        }
+        // if(left && right){
+        //     cout << root->val  << " " << left->val << " " << right->val << endl;
+        //     cout << left->val << "left " << left->left->val << "right" << left->right->val << endl;}
+    }
+
+    TreeNode* upsideDownBinaryTree(TreeNode* root) {
+        newRoot = root;
+        if(!root)return root;
+        invert(root);
+        root->left = NULL;
+        root->right = NULL;
+        return newRoot;
+    }
+};
