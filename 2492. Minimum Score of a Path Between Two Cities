@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<vector<int>> *graph;
+    int mini = INT_MAX;
+    void dfs(int u, vector<bool>& visited){
+        if(visited[u])
+            return;
+
+        visited[u] = true;
+        for(vector<int> v : graph[u]){
+
+            mini = min(mini, v[1]);
+            dfs(v[0], visited);
+        }
+    }
+    int minScore(int n, vector<vector<int>>& roads) {
+        graph = new vector<vector<int>>[n+1];
+
+        for(vector<int> road : roads){
+            graph[road[0]].push_back({road[1], road[2]});
+            graph[road[1]].push_back({road[0], road[2]});
+        }
+        vector<bool> visited(n, false);
+        dfs(1, visited);
+
+        return mini;
+    }
+};
