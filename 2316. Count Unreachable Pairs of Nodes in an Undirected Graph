@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<int> *graph;
+    void dfs(int u, vector<int>& visited, int com){
+        if(visited[u] != -1)return;
+        visited[u] = com;
+        for(int v : graph[u]){
+            dfs(v, visited, com);
+        }
+    }
+    long long countPairs(int n, vector<vector<int>>& edges) {
+        graph = new vector<int>[n];
+        vector<int> visited(n, -1);
+        for(vector<int> edge : edges){
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
+        }
+        int com = 0;
+        for(int i = 0;i < n;i++){
+            if(visited[i] == -1){
+                dfs(i, visited, com);
+                com++;
+            }
+
+        }
+        map<int,int> map;
+        for(int i = 0;i < n;i++){
+            map[visited[i]]++;
+        }
+        long long untracked = 0;
+        for(auto item : map){
+            untracked += (1ll)*(n - item.second)*item.second;
+        }
+
+        return untracked/2;
+
+
+        
+    }
+};
