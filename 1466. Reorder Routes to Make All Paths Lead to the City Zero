@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<int> *inedges, *outedges;
+    void dfs(int u, int parent, int &reorder){
+
+
+        for(int v : outedges[u]){
+            if(v != parent){
+                reorder++;
+                dfs(v, u, reorder);
+            }
+        }
+
+        for(int v : inedges[u]){
+            if(v != parent){
+                dfs(v, u, reorder);
+            }
+        }
+    }
+    int minReorder(int n, vector<vector<int>>& connections) {
+        
+        inedges = new vector<int>[n];
+        outedges = new vector<int>[n];
+
+        for(vector<int> connec : connections){
+            inedges[connec[1]].push_back(connec[0]);
+            outedges[connec[0]].push_back(connec[1]);
+        }
+        int reorder = 0;
+
+        dfs(0, -1, reorder);
+        return reorder;
+    }
+};
