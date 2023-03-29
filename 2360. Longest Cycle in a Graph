@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int ans = -1;
+    vector<bool> visited;
+    vector<int> distance;
+
+    void dfs(int u, int k, vector<int> &edges){
+
+        if(!visited[u]){
+            visited[u] = true;
+            distance[u] = k;
+            
+            int v = edges[u];
+            if(v != -1){
+                
+                if(!visited[v]){
+                    
+                    dfs(v, k+1, edges);
+                }
+                else if(distance[v] != -1){
+                    ans = max(ans, distance[u] - distance[v] + 1);
+                }
+            }
+            distance[u] = -1;
+        }
+    }
+    int longestCycle(vector<int>& edges) {
+        int n = edges.size();
+        distance.resize(n, -1);
+        visited.resize(n, false);
+        for(int i = 0;i < n;i++){
+            set<int> path;
+            dfs(i, 0, edges);
+        }
+
+        return ans;
+    }
+};
