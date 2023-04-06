@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool check(int targetMaxi, vector<int>& nums){
+        int n = nums.size();
+        long long carry = 0;
+        for(int i = n-1;i >= 1;i--){
+            carry = nums[i] + carry - targetMaxi;
+            carry = max(carry, (long long)0);
+            
+        }
+        
+        return (nums[0] + carry) <= targetMaxi;
+    }
+    int minimizeArrayValue(vector<int>& nums) {
+        
+        int l = 0;
+        int h = INT_MIN;
+        int mid;
+        for(int num : nums)
+            h = max(h, num);
+
+        while(l < h){
+            int mid = l + (h-l)/2;
+            if(check(mid, nums))
+                h = mid;
+            else
+                l = mid+1;
+        }
+        
+        
+        return l;
+    }
+};
