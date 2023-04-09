@@ -1,0 +1,63 @@
+class Solution {
+public:
+    vector<int> *graph;
+    vector<int> *colorMap;
+    vector<bool> visited;
+    int dfs(int u, set<int>& path, string& colors){
+        if(path.count(u))
+            return -1;
+        if(visited[u])return 1;
+        path.insert(u);
+        visited[u] = true;
+        int maxres = 0;
+        vector<int> count(26,0);
+        for(int v : graph[u]){
+            if(dfs(v, path, colors) == -1)
+                return -1;
+            for(int i = 0;i < 26;i++){
+                count[i] = max(count[i], colorMap[v][i]);
+                
+            }
+            
+        }
+        for(int i = 0;i < 26;i++){
+            colorMap[u][i] = colorMap[u][i] + count[i];
+            maxres = max(maxres, colorMap[u][i]);
+        }
+        colorMap[u][colors[u]-'a'] += 1; 
+        maxres = max(maxres, colorMap[u][colors[u]-'a']);
+        path.erase(u);
+
+        return maxres;
+
+    }
+    int largestPathValue(string colors, vector<vector<int>>& edges) {
+        int n = colors.length();
+        int m = edges.size();
+        
+        graph = new vector<int>[n];
+        colorMap = new vector<int>[n];
+
+        for(int i = 0;i < n;i++){
+            colorMap[i].resize(26, 0);
+        }
+        visited.resize(n, false);
+        for(int i = 0;i < m;i++){
+            graph[edges[i][0]].push_back(edges[i][1]);
+        }
+        
+        int ans = 0;
+        for(int i = 0;i < n;i++){
+            set<int> path;
+            if(visited[i])continue;
+            int res = dfs(i, path, colors);
+            if(res == -1)
+                return res;
+            ans = max(ans, res);
+        }
+        
+
+        return ans;
+
+    }
+};
