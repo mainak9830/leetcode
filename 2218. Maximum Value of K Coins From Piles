@@ -1,0 +1,30 @@
+class Solution {
+public:
+    map<pair<int,int>, int> cache;
+    int helper(vector<vector<int>> &piles, int nPiles, int k){
+        int n = piles.size();
+        if(nPiles == n || k == 0)
+            return 0;
+        if(cache.count({nPiles, k}))
+            return cache[{nPiles, k}];
+        int res = helper(piles, nPiles+1, k);
+        int m = piles[nPiles].size();
+        for(int i = 0;i < min(k, m);i++){
+            res = max(res, piles[nPiles][i] + helper(piles, nPiles+1, k-i-1));
+        }
+
+        return cache[{nPiles, k}] = res;
+    }
+    int maxValueOfCoins(vector<vector<int>>& piles, int k) {
+        
+        int n = piles.size();
+
+        for(int i = 0;i < n;i++){
+            int m = piles[i].size();
+            for(int j = 1;j < min(k, m);j++)
+                piles[i][j] += piles[i][j-1];
+        }
+
+        return helper(piles, 0, k);
+    }
+};
