@@ -1,0 +1,45 @@
+//Was giving TLE in lot of cases and ultimately breaking the loop inside the recursion to a normal recursion skip call helped.
+//Stll not sure why it happened!! But this is some lesson, always will skip the for loop inside the recurison and focus on recursion skip calls
+
+class Solution {
+public:
+    int MOD = 1000000007;
+    int dp[1002][1002];
+    int l;
+    vector<vector<int>> charMap;
+    int countWays(string& target, int i, int lastIdx){
+        int n = target.length();
+        if(i == n)
+            return 1;
+        if(lastIdx+1 == l)
+            return 0;
+        if(lastIdx >= 0 && dp[i][lastIdx] != -1)
+            return dp[i][lastIdx];
+        int ways = 0;
+        
+        ways = (ways + ((1ll) * charMap[target[i]-'a'][lastIdx+1] * countWays(target, i+1, lastIdx+1))%MOD)%MOD;
+        ways = (ways + countWays(target, i, lastIdx+1))%MOD;
+        if(lastIdx >= 0)
+            dp[i][lastIdx] = ways;
+        return ways;
+
+    }
+    int numWays(vector<string>& words, string target) {
+        l = words[0].length();
+        charMap.resize(26, vector<int>(l,0));
+        memset(dp, -1, sizeof(dp));
+        
+
+        for(string word : words){
+            for(int j = 0;j < word.length();j++){
+                char c = word[j];
+                charMap[c-'a'][j]++;
+            }
+        }
+
+        return countWays(target, 0, -1);
+
+
+        
+    }
+};
