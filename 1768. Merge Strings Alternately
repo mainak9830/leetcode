@@ -1,0 +1,28 @@
+class Solution {
+public:
+    string mergeAlternately(string word1, string word2) {
+        int n1 = word1.length();
+        int n2 = word2.length();
+        int i = 0, j = 0;
+        int turn = 1;
+        string ans = "";
+        while(i < n1 || j < n2){
+
+            if(turn){
+                if(i < n1)
+                    ans += word1[i++];
+                else
+                    ans += word2[j++];
+            }else{
+                if(j < n2)
+                    ans += word2[j++];
+                else
+                    ans += word1[i++];
+            }
+
+            turn = 1 - turn;
+        }
+
+        return ans;
+    }
+};
