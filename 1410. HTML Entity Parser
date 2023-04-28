@@ -1,0 +1,54 @@
+class Solution {
+public:
+    string parse(string s){
+        if(s == "&quot;")
+            return "\"";
+        else if(s == "&apos;")
+            return "'";
+        else if(s == "&amp;")
+            return "&";
+        else if(s == "&gt;")
+            return ">";
+        else if(s == "&lt;")
+            return "<";
+        else if(s == "&frasl;")
+            return "/";
+        return s;
+    }
+    string entityParser(string text) {
+        string ans;
+        bool start = false;
+        string prev = "", curr = "";
+        int n = text.length();
+        for(int i = 0;i < n;i++){
+            char c = text[i];
+            if(i < n && c == '&'){
+                if(start){
+                    prev += curr;
+                    curr = "";
+                }else{
+                    start = true;
+                    // curr = "";
+                }
+            }
+            
+            if(!start){
+                ans += c;
+                continue;
+            }
+
+            curr += c;
+            
+            if(c == ';' && start){
+                ans += prev + parse(curr);
+                curr = "";
+                prev = "";
+                start = false;
+            }
+
+            
+        }
+
+        return ans + prev + curr;
+    }
+};
