@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        
+        vector<vector<int>> output(n, vector<int>(n));
+        int cnt = 1;
+        for(int l = 0;l <= n/2;l++){
+            
+            for(int y = l;y < n-l;y++)
+                output[l][y] = cnt++;
+            
+            for(int x = l+1;x < n-l;x++)
+                output[x][n-l-1] = cnt++;
+            
+            for(int y = n-l-2;y >= l;y--)
+                output[n-l-1][y] = cnt++;
+
+            for(int x = n-l-2; x > l;x--)
+                output[x][l] = cnt++;
+        }
+
+        return output;
+    }
+};
