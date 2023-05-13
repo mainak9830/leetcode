@@ -1,0 +1,24 @@
+class Solution {
+public:
+    map<pair<int,int>, int> dp;
+    int helper(vector<int>& nums1, vector<int> nums2, int i, int j){
+        int m = nums1.size();
+        int n = nums2.size();
+
+        if(i == m || j == n)
+            return 0;
+        if(dp.count({i,j}))
+            return dp[{i,j}];
+        if(nums1[i] == nums2[j]){
+            return 1 + helper(nums1, nums2, i+1, j+1);
+        }
+
+        dp[{i,j}] = max(helper(nums1, nums2,i+1,j), helper(nums1,nums2,i,j+1));
+
+        return dp[{i,j}];
+    }
+    int maxUncrossedLines(vector<int>& nums1, vector<int>& nums2) {
+        
+        return helper(nums1,nums2,0,0);
+    }
+};
