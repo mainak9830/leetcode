@@ -1,0 +1,48 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    int pairSum(ListNode* head) {
+        
+        // find the mid point, reverse the 2nd part, iterate
+
+        ListNode* slow = head, *fast = head;
+        ListNode* prevSlow = NULL;
+        while(slow && fast){
+            prevSlow = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+            
+        }
+        prevSlow->next = NULL;
+
+        int maxi = 0;
+        ListNode* prev = NULL;
+        
+        while(slow){
+            // 1<-2 3
+            ListNode* t = slow->next;
+            slow->next = prev;
+            prev = slow;
+            slow = t;
+        }
+        ListNode* curr = head;
+        while(curr){
+            maxi = max(maxi, curr->val+prev->val);
+            curr = curr->next;
+            prev = prev->next;
+        }
+
+
+
+        return maxi;
+    }
+};
