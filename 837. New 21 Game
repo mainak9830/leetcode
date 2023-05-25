@@ -1,0 +1,50 @@
+//TLE error
+
+class Solution {
+public:
+    map<int,double> cache;
+    double dfs(int n, int k, int maxPts, int point){
+        
+        if(point >= k)
+            return point <= n ? 1.0 : 0.0;
+        if(cache.count(point))
+            return cache[point];
+        double prob = 0;
+        for(int p = 1;p <= maxPts;p++)
+            prob += (double)(1.0/(double)maxPts)*dfs(n,k,maxPts,point+p);
+        cache[point] = prob;
+
+        return prob;
+    }
+    double new21Game(int n, int k, int maxPts) {
+        
+        return dfs(n, k, maxPts, 0);
+    }
+};
+
+
+//Sliding sum 
+// Google is Google, Its proved
+class Solution {
+public:
+    double new21Game(int n, int k, int maxPts) {
+        if(k == 0)
+            return 1.0;
+
+        double windowSum = (min(k + maxPts-1, n) - k + 1);
+        map<int, double> cache;
+        for(int i = k;i <= k + windowSum - 1;i++)
+            cache[i] = 1.0;
+
+        
+
+        for(int i = k-1;i >= 0;i--){
+            cache[i] = windowSum / maxPts;
+            windowSum += cache[i];
+            if(k+windowSum-i >= maxPts)
+                windowSum -= cache[i + maxPts];
+        }
+
+        return cache[0];
+    }
+};
