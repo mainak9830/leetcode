@@ -1,0 +1,38 @@
+class Solution {
+public:
+    map<int, int> dp;
+    int helper(int i, vector<int>& stoneValue){
+        int n = stoneValue.size();
+        if(i >= n)
+            return 0;
+        if(dp.count(i))
+            return dp[i];
+        int score = 0;
+        int maxScore = INT_MIN;
+        for(int j = 0;j < 3;j++){
+            if(i+j < n){
+                score += stoneValue[i+j];
+                maxScore = max(maxScore, score - helper(i+j+1, stoneValue));
+            }
+        }
+        dp[i] = maxScore;
+        return maxScore;
+    }
+    string stoneGameIII(vector<int>& stoneValue) {
+        int amb = helper(0,stoneValue);
+
+        // int apb = 0;
+
+        // for(int p : stoneValue)
+        //     apb += p;
+
+        // int al = amb+apb;
+        // int bob = apb-amb;
+        if(amb > 0)
+            return "Alice";
+        else if(amb < 0)
+        return "Bob";
+
+        return "Tie";
+    }
+};
