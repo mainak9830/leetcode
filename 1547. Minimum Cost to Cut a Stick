@@ -1,0 +1,37 @@
+class Solution {
+public:
+    map<pair<int,int>, int> cache;
+    set<int> cutset;
+    int costCalc(int l, int h){
+        if(h-l <= 1){
+            //cout << "hey" << endl;
+            return 0;
+        }
+        if(cache.count({l,h}))
+            return cache[{l,h}];
+        int minCost = INT_MAX;
+        int flag = 0;
+        //cout << cuts.size() << endl;
+      
+        for(int cut : cutset){
+            
+            if(cut > l && cut < h){
+                
+                minCost = min(minCost, h-l + costCalc(l, cut) + costCalc(cut, h));
+                flag = 1;
+                
+            }
+            
+        }
+
+        cache[{l,h}] = flag == 0 ? 0 : minCost;
+
+        return flag == 0 ? 0 : minCost;
+    }
+    int minCost(int n, vector<int>& cuts) {
+        
+        for(int i : cuts)
+            cutset.insert(i);
+        return costCalc(0, n);
+    }
+};
