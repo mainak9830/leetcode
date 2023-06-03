@@ -1,0 +1,64 @@
+class Solution {
+public:
+    bool check(char x){
+        return x != '#';
+    }
+    bool match(string word, vector<vector<char>>& board, int x, int y, bool horizontal){
+        int m = board.size();
+        int n = board[0].size();
+
+        if(horizontal){
+
+            for(int j = 0;j < word.length();j++){
+                if(board[x][j+y] == '#')
+                    return false;
+                if((board[x][j+y] != ' ') && (board[x][j+y] != word[j]))
+                    return false;
+            }
+        }else{
+            // cout << x << " " << y << " " << endl;
+            for(int j = 0;j < word.length();j++){
+                if(board[x+j][y] == '#')
+                    return false;
+                if((board[x+j][y] != ' ') && (board[x+j][y] != word[j]))
+                    return false;
+            }
+
+        }
+
+        return true;
+    }
+    bool placeWordInCrossword(vector<vector<char>>& board, string word) {
+        
+        int m = board.size();
+        int n = board[0].size();
+        int l = word.length();
+        string rword = word;
+        reverse(rword.begin(), rword.end());
+        //horizontal check
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j <= n-l;j++){
+                if(j+l < n && check(board[i][j+l]))
+                    continue;
+                if(j-1 >= 0 && check(board[i][j-1]))
+                    continue;
+
+                if(match(word, board, i, j, true) || match(rword, board, i, j, true))
+                    return true;
+            }
+        }
+        for(int j = 0;j < n;j++){
+            for(int i = 0;i <= m-l;i++){
+                if(i+l < m && check(board[i+l][j]))
+                    continue;
+                if(i-1 >= 0 && check(board[i-1][j]))
+                    continue;
+
+                if(match(word, board, i, j, false) || match(rword, board, i, j, false))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+};
