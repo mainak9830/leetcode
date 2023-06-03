@@ -1,0 +1,52 @@
+class Solution {
+public:
+    bool canTransform(string start, string end) {
+        
+        int n = start.length();
+        if(start.length() != end.length())
+            return false;
+
+        for(int i = 0;i < n;i++){
+           
+            if(end[i] == start[i])
+                continue;
+
+            if(start[i] == 'L' && end[i] == 'R')
+                return false;
+            if(start[i] == 'R' && end[i] == 'L')
+                return false;
+            if(end[i] == 'R' && start[i] == 'X')
+                return false;
+            if(start[i] == 'L')
+                return false;
+            //start will be R
+            else{
+                int found = 0;
+                int j = i+1;
+                cout << start[i] << " " << end[i] <<  endl;
+                char temp = (end[i] == 'L') ? 'R' : 'L';
+                for(;j < n;j++){
+                    if(start[j] == temp)
+                        return false;
+                    if(start[j] == end[i]){
+                        found = 1;
+                        break;
+                    }
+                }
+                 
+                if(found == 0)
+                    return false;
+
+                char t = start[i];
+                start[i] = start[j];
+                start[j] = t;
+            }
+
+            
+            
+
+        }
+
+        return true;
+    }
+};
