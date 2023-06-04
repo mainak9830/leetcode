@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int start, move, push, target;
+    int findCost(int minute, int second){
+        //cout << minute << " " << second << endl;
+        string c = "";
+        if(minute > 0){
+            if(second >= 10)
+                c = to_string(minute) + to_string(second);
+            else
+                c = to_string(minute) + "0" + to_string(second);
+        }else{
+            c = to_string(second);
+           
+        }
+        int state = start;
+        int cost = 0;
+        for(int i = 0;i < c.length();i++){
+            if(c[i]-'0' != state){
+                cost += move;
+                state = c[i]-'0';
+            }
+            cost += push;
+        }
+        cout << cost << endl;
+        return cost;
+    }
+    int minCostSetTime(int startAt, int moveCost, int pushCost, int targetSeconds) {
+        start = startAt;
+        push = pushCost;
+        move = moveCost;
+        target = targetSeconds;
+
+        int cost = INT_MAX;
+
+        for(int m = 0;m <= 99;m++){
+            int ms = m*60;
+            if(ms > target)
+                break;
+            int ss = target-ms;
+            if(ss > 99)
+                continue;
+            cost = min(cost, findCost(m,ss));
+        }
+
+        return cost;
+
+    }
+};
