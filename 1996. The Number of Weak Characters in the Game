@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool static mycomp(vector<int>& a, vector<int>& b){
+        if(a[0] == b[0])
+            return a[1] < b[1];
+        return a[0] > b[0];
+    }
+    int numberOfWeakCharacters(vector<vector<int>>& properties) {
+        
+        sort(properties.begin(), properties.end(), mycomp);
+        stack<vector<int>> stack;
+
+        int count = 0;
+        for(auto p : properties){
+            
+            while(!stack.empty() && stack.top()[1] <= p[1])
+                stack.pop();
+            if(!stack.empty())
+                count++;
+
+            stack.push(p);
+            //cout << p[0] << " " << p[1] << " " << count << endl;
+        }
+
+        return count;
+    }
+};
