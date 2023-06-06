@@ -1,0 +1,62 @@
+class Solution {
+public:
+   
+    
+    
+    /**
+    long long pointCalc(int r, int pc){
+        if(r == m)
+            return 0;
+        
+        if(dp.count({r,pc}))
+            return dp[{r,pc}];
+        
+        long long maxScore = 0;
+        for(int c = 0;c < n;c++){
+
+            long long score = board[r][c] + pointCalc(r+1, c);
+            if(pc >= 0)
+                score -= abs(c-pc);
+            maxScore = max(maxScore, score);
+        }
+        dp[{r,pc}] = maxScore;
+        return maxScore;
+    }
+    **/
+    long long maxPoints(vector<vector<int>>& points) {
+        int m,n;
+        m = points.size();
+        n = points[0].size();
+        vector<long long> curr(n, 0), prev(n, 0);
+
+        for(int c = 0;c < n;c++)
+            prev[c] = points[0][c];
+        
+        for(int i = 1;i < m;i++){
+            vector<long long> left(n, 0), right(n, 0);
+            left[0] = prev[0];
+            right[n-1] = prev[n-1];
+
+            for(int j = 1;j < n;j++){
+                left[j] = max(left[j-1]-1, prev[j]);
+            }
+
+            for(int j = n-2;j >= 0;j--){
+                right[j] = max(right[j+1]-1, prev[j]);
+            }
+
+            for(int j = 0;j < n;j++){
+                curr[j] = points[i][j] + max(left[j], right[j]);
+            }
+
+            prev = curr;
+        }
+
+        long long maxScore = 0;
+        for(int j = 0;j < n;j++){
+            maxScore = max(maxScore, prev[j]);
+        }
+
+        return maxScore;
+    }
+};
