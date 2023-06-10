@@ -1,0 +1,47 @@
+class Solution {
+public:
+    long long int getSum(int value, int length){
+        if(length == 0)
+            return 0;
+        int l1 = value-length;
+        long long int res = ((1ll)*value*(value+1))/2;
+        
+        if(l1 < 0){
+            
+            res += -l1;
+        }else{
+            res -= ((1ll)*l1*(l1+1))/2; 
+        }
+        // cout << res << " ";
+        return res;
+    }
+    long long int helper(int n, int index, int value){
+
+        int l1 = index;
+        int l2 = n-index-1;
+
+        return value + getSum(value-1, l1) + getSum(value-1, l2);
+
+    }
+    int maxValue(int n, int index, int maxSum) {
+        
+
+        int l = 1, h = maxSum;
+
+        while(l <= h){
+            
+            
+            int mid = l + (h-l)/2;
+            long long int val = helper(n, index, mid);
+
+            //cout << l << " " << h << " "  << mid << " " << val << endl;
+            if(val <= maxSum)
+                l = mid+1;
+            else
+                h = mid-1;
+        }
+        if(helper(n, index, l) <= maxSum)
+            return l;
+        return h;
+    }
+};
