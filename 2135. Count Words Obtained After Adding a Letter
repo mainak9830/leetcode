@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int transform(string word){
+
+        int value = 0;
+
+        for(char c : word)
+            value |= 1 << (c-'a');
+        return value;
+    }
+   
+    int wordCount(vector<string>& startWords, vector<string>& targetWords) {
+        
+      
+
+        unordered_set<int> start;
+        int count = 0;
+        for(string word : startWords){
+            start.insert(transform(word));
+        }
+
+        
+        
+        for(int i = 0;i < targetWords.size();i++){
+            int tlength = targetWords[i].length();
+            if(tlength == 1)
+                continue;
+            int tmask = transform(targetWords[i]);
+            // cout << tlength << endl;
+            for(int j = 0;j < 26;j++){
+                if((tmask & (1 << j))){
+                    int nmask = tmask - (1 << j);
+                    if(start.count(nmask)){
+                        count++;
+                        break;
+                    }
+                }
+            }
+        }
+
+
+        return count;
+    }
+};
