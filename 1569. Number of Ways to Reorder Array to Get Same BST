@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<vector<long long>> dp;
+    long long MOD = 1e9 + 7;
+    long long solve(vector<int> &nums){
+        if(nums.size() <= 2)return 1;
+        vector<int> left, right;
+
+        for(int i = 1;i < nums.size();i++){
+            if(nums[i] > nums[0])
+                right.push_back(nums[i]);
+            else
+                left.push_back(nums[i]);
+        }
+        int l = left.size();
+        int r = right.size();
+
+        return solve(left) * solve(right) % MOD * dp[l+r][r] % MOD;
+    }
+    int numOfWays(vector<int>& nums) {
+        dp = vector<vector<long long>> (nums.size()+1, vector<long long>(nums.size()+1,0));
+
+        for(int i=1;i <= nums.size();i++){
+            dp[i][0] = 1;
+            dp[i][1] = i;
+        }
+        for(int r = 2;r <= nums.size();r++){
+            for(int n = r;n <= nums.size();n++){
+                dp[n][r] = (dp[n-1][r-1] % MOD + dp[n-1][r] % MOD)%MOD;
+            }
+        }
+        return solve(nums) - 1;
+    }
+};
