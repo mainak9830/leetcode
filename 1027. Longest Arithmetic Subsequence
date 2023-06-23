@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int seq[1002][1004];
+    int longestArithSeqLength(vector<int>& nums) {
+        
+        // sort(nums.begin(), nums.end());
+        int n = nums.size();
+        int length = 0;
+        
+
+
+        for(int i = 1;i < n;i++){
+            
+            for(int j = 0;j < i;j++){
+                int d = nums[i] - nums[j];
+                seq[i][d+500] = max(seq[i][d+500], seq[j][d+500]+1);
+                length = max(length, seq[i][d+500]);
+            }
+        }
+
+        return length+1;
+    }
+};
