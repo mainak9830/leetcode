@@ -1,0 +1,32 @@
+class Solution {
+public:
+    bool compare(string prev, string curr, vector<int> &order){
+        int i = 0;
+        while(i < min(curr.size(), prev.size())){
+            if(order[curr[i]-'a'] < order[prev[i]-'a'])
+                return false;
+            if(order[curr[i]-'a'] > order[prev[i]-'a'])
+                return true;
+            i++;
+        }
+
+        if(i < prev.size())
+            return false;
+
+        return true;
+
+    }
+    bool isAlienSorted(vector<string>& words, string order) {
+        vector<int> map(26);
+
+        for(int i = 0;i < 26;i++)
+            map[order[i]-'a'] = i;
+        
+        for(int i = 1;i < words.size();i++){
+            if(!compare(words[i-1], words[i], map))
+                return false;
+        }
+
+        return true;
+    }
+};
