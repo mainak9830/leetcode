@@ -1,0 +1,53 @@
+class Solution {
+public:
+    long long totalCost(vector<int>& costs, int k, int candidates) {
+                
+        int n = costs.size();
+        auto compare = [](const vector<int> &a, const vector<int> &b){
+            if(a[0] == b[0])
+                return a[1] > b[1];
+            return a[0] > b[0];
+        };
+        priority_queue<vector<int>, vector<vector<int>>, decltype(compare)> pq(compare);
+        int left = candidates-1;
+        int right = n-candidates;
+        long long cost = 0;
+
+        if(left >= right){
+          for (int i = 0;i < n;i++)
+              pq.push({costs[i], i});
+          
+        }else{
+            for (int i = 0;i <= left;i++)
+              pq.push({costs[i], i});
+            
+
+            for (int i = n-1;i >= right;i--)
+              pq.push({costs[i], i});
+            
+        }
+        while(k--){
+            vector<int> hire = pq.top();
+            pq.pop();
+            cost += hire[0];
+            // cout << hire[0] << endl;
+            if(left < right){
+                if(hire[1] <= left){
+                    left++;
+                    if(left < right)
+                        pq.push({costs[left], left});
+                }
+                
+                else if(hire[1] >= right){
+                    right--;
+                    if(left < right)
+                        pq.push({costs[right], right});
+                
+            }
+            }
+        }
+
+
+        return cost;
+    }
+};
