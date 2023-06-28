@@ -1,0 +1,29 @@
+class Solution {
+public:
+    string sortSentence(string s) {
+        size_t pos = s.find(' ');
+        string ans;
+        int i = 0;
+        vector<pair<int, string>> arr;
+        while(pos != string::npos){
+            string word = s.substr(i, pos-i);
+            arr.push_back({word[word.length()-1]-'0', word.substr(0, word.length()-1)});
+            i = pos+1;
+            pos = s.find(' ', i);
+        }
+        if(i < s.length()){
+            string word = s.substr(i, s.length()-i);
+            arr.push_back({word[word.length()-1]-'0', word.substr(0, word.length()-1)});
+        }
+
+        sort(arr.begin(), arr.end());
+        
+        
+        for(pair<int, string> p : arr){
+            // cout << p.second << " " << p.first << endl;
+            ans += " " + p.second;
+        }
+        return ans.substr(1);
+        
+    }
+};
