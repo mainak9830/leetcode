@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<string> commonChars(vector<string>& words) {
+        
+        vector<int> freq(26,INT_MAX);
+
+        for(string word : words){
+            vector<int> tfreq(26,0);
+            for(char c : word){
+                tfreq[c-'a']++;
+                
+            }
+
+            for(int i = 0;i < 26;i++){
+                freq[i] = min(freq[i], tfreq[i]);
+            }
+
+
+            
+        }
+        vector<string> out;
+        for(int i = 0;i < 26;i++){
+            for(int j = 0;j < freq[i];j++){
+                char c = 'a' + i;
+                string s = "";
+                s += c;
+                // string s = c;
+                out.push_back(s);
+            }
+        }
+
+        return out;
+    }
+};
