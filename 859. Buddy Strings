@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool buddyStrings(string s, string goal) {
+        if(s.length() != goal.length())return false;
+        int n = s.length();
+        int res = 0;
+        
+        bool flag = false;
+        int track = 0;
+        bool equal = false;
+        int count = 0;
+        char a,b;
+        for(int i = 0;i < n;i++){
+
+            if(s[i] == goal[i]){
+                if(track & (1 << (s[i]-'a'))){
+                    equal = true;
+                }
+                track |= (1 << (s[i]-'a'));
+            }else{
+                if(count == 2)
+                    return false;
+                else if(count == 1){
+                    if(s[i] != a || goal[i] != b)
+                        return false;
+                }else{
+                    a = goal[i];
+                    b = s[i];
+                }
+                count++;
+            }
+            
+
+        }
+        // cout << flag << res << endl;
+        return count == 2 ? true : (count == 0 ? equal : false);
+    }
+};
