@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int l;
+    int ans = INT_MAX;
+    void backtrack(vector<int>& cookies, int k, vector<int> &bag, int used){
+        int n = cookies.size();
+        int all = (1 << n) - 1;
+        if(k == l && used == all){
+            int tans = 0;
+            for(int c : bag)
+                tans = max(tans, c);
+            ans = min(ans, tans);
+            return;
+        }
+        if(k == l || used == all)
+            return;
+        for(int i = 0;i < n;i++){
+            if((used & (1 << i)) == 0){
+                bag[k] += cookies[i];
+                backtrack(cookies, k, bag, used | (1 << i));
+                backtrack(cookies, k+1, bag, used | (1 << i));
+                bag[k] -= cookies[i];
+
+                // bag[k] += cookies[i];
+                // backtrack(cookies, k+1, bag, used | (1 << i));
+                // bag[k] -= cookies[i];
+                // backtrack(cookies, k+1, bag, used);
+
+            }
+        }
+        
+    }
+    int distributeCookies(vector<int>& cookies, int k) {
+        
+        int n = cookies.size();
+        l = k;
+        vector<int> bag(k,0);
+        backtrack(cookies, 0, bag, 0);
+
+        return ans;
+    }
+};
