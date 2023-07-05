@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int minSwaps(vector<int>& nums) {
+        
+        int n = nums.size();
+        vector<int> right(n,0);
+        int ones = 0;
+        for(int i = n-1;i >= 0;i--){
+            
+            right[i] = ones + ((nums[i] == 1) ? 1 : 0);
+            ones = right[i];
+        }
+        if(ones == 0)
+            return 0;
+        int i = 0,j = 0;
+        int ans = ones;
+        int sones = 0;
+        
+        while(j < n){
+            sones += nums[j] == 1 ? 1 : 0;
+            j++;
+
+            if(j-i == ones){
+                ans = min(ans, ones-sones);
+                sones -= nums[i] == 1 ? 1 : 0;
+                i++;
+            }else{
+                ans = min(ans, ones-sones-right[n-ones+j]);
+            }
+        }
+
+        return ans;
+
+    }
+};
