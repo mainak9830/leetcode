@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int totalFruit(vector<int>& fruits) {
+        int n = fruits.size();
+
+        int i = 0, j = 0;
+        int ans = 0;
+        map<int, int> treeLocation;
+        while(j < n){
+            treeLocation[fruits[j]] = j;
+            
+            if(treeLocation.size() > 2){
+                int x;
+                
+                
+                int t = n;
+                for(auto it : treeLocation){
+                    if(it.first != fruits[j] && it.second < t){
+                        
+                        t = it.second;
+                        x = it.first;
+                    }
+                }
+                treeLocation.erase(x);
+                i = t+1;
+            }
+            
+            ans = max(ans, j-i+1);
+            j++;
+        }
+        return ans;
+    }
+};
