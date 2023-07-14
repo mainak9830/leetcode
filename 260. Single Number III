@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        
+        int n = nums.size();
+        long long xorv = 0;
+        for(int i = 0;i < n;i++){
+            xorv ^= nums[i];
+        }
+
+        int right_most_mask = xorv & (-xorv); 
+        int x = 0;
+
+        for(int num : nums){
+            if(num & right_most_mask)
+                x ^= num;
+        }
+        return {x,x^(int)xorv};
+    }
+};
