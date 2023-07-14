@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int longestSubsequence(vector<int>& arr, int difference) {
+        
+        int n = arr.size();
+        map<int, int> seqLen;
+        int maxLength = 0;
+        for(int num : arr){
+            seqLen[num] = 1 + seqLen[num-difference];
+            maxLength = max(maxLength, seqLen[num]);
+        }
+
+        return maxLength;
+    }
+};
