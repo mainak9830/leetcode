@@ -1,0 +1,26 @@
+class Solution {
+public:
+    map<pair<int, int>, int> dp;
+    int next(vector<vector<int>>& event, int i){
+        int n = event.size();
+        vector<int> target = {event[i][1], INT_MAX, INT_MAX};
+        auto it = lower_bound(event.begin()+i+1, event.end(), target);
+        // cout << "next of " << i << "--" << event[i][0] << "is"<< it-event.begin() << endl;
+        return it-event.begin();
+    }
+    int dfs(vector<vector<int>>& event, int i, int k){
+        int n = event.size();
+        if(i == n || k == 0)return 0;
+        if(dp.count({i,k}))return dp[{i,k}];
+        int j = next(event, i);
+        dp[{i,k}] = max(event[i][2] + dfs(event, j, k-1), dfs(event, i+1, k));
+        return dp[{i,k}];
+    }
+    int maxValue(vector<vector<int>>& events, int k) {
+        
+        sort(events.begin(), events.end());
+
+        return dfs(events, 0, k);
+
+    }
+};
