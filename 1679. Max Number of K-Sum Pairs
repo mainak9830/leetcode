@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int maxOperations(vector<int>& nums, int k) {
+        
+        map<int, int> freq;
+
+        for(int num : nums)
+            freq[num]++;
+        
+        int op = 0;
+        for(auto it : freq){
+            if(k-it.first >= it.first){
+                if(k-it.first != it.first){
+                    op += min(freq[k-it.first], it.second);
+                }else{
+                    op += it.second/2;
+                }
+            }
+        }
+        return op;
+    }
+};
