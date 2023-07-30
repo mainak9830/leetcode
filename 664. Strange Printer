@@ -1,0 +1,34 @@
+class Solution {
+public:
+// aaaabaaad
+    vector<vector<int>> dp;
+    int dfs(string& s, int l, int h){
+        int n = s.length();
+        if(dp[l][h] != -1)return dp[l][h];
+
+        dp[l][h] = n;
+        
+        int j = -1;
+        for(int i = l;i < h;i++){
+            if(s[i] != s[h] && j == -1){
+                j = i;
+            }
+            if(j != -1){
+                dp[l][h] = min(dp[l][h], 1 + dfs(s, j, i) + dfs(s, i+1, h));
+            }
+            
+        }
+        if(j == -1)dp[l][h] = 0;
+
+        return dp[l][h];
+    }
+    int strangePrinter(string s) {
+        if(s == "")return 0;
+        int n = s.length();
+        if(n == 0)return 0;
+        // cout << n << endl;
+        dp.resize(n, vector<int>(n, -1));
+
+        return dfs(s, 0, n-1)+1;
+    }
+};
