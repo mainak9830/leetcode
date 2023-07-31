@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<vector<int>> dp;
+    int dfs(string& s1, string& s2, int i, int j){
+        int n1 = s1.length();
+        int n2 = s2.length();
+        if(i == n1 && j == n2)return 0;
+        if(i == n1){
+            int sum = 0;
+            for(int k = j;k < n2;k++)sum += s2[k];
+            return sum;
+        }
+        if(j == n2){
+            int sum = 0;
+            for(int k = i;k < n1;k++)sum += s1[k];
+            return sum;
+        }
+        if(dp[i][j] != -1)return dp[i][j];
+
+        if(s1[i] == s2[j]){
+            return dfs(s1,s2,i+1,j+1);
+        }
+        dp[i][j] = min(s1[i] + dfs(s1, s2, i+1, j), s2[j] + dfs(s1, s2, i, j+1));
+        return dp[i][j];
+    }
+    int minimumDeleteSum(string s1, string s2) {
+        dp.resize(1000, vector<int>(1000,-1));
+
+        return dfs(s1, s2, 0, 0);
+    }
+};
