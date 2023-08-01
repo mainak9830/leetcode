@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<vector<int>> res;
+    void backtrack(int index, int n, int k, vector<int>& buffer) {
+        if(buffer.size() == k){
+            res.push_back(buffer);
+            return;
+        }
+        for(int i = index;i <= n;i++){
+            
+            buffer.push_back(i);
+            backtrack(i+1, n, k, buffer);
+            buffer.pop_back();
+            
+        }
+    }
+    vector<vector<int>> combine(int n, int k) {
+        vector<int> t;
+        backtrack(1, n, k, t);
+        
+       
+        return res;
+    }
+};
