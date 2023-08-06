@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int k;
+    int n;
+    int goal;
+    int mod = 1e9 + 7;
+    map<pair<int, int>, int> dp;
+    int dfs(int total, int unique){
+        if(total == goal && unique == n)return 1;
+        if(total == goal)return 0;
+
+        if(dp.count({total, unique}))return dp[{total, unique}];
+
+        int ways = 0;
+        ways += (1ll * dfs(total+1, unique+1) * (n-unique)) % mod;
+        if(unique > k)
+            ways += (1ll * dfs(total+1, unique) * (unique-k)) % mod;
+        dp[{total, unique}] = ways;
+        // cout << ways  << " " << total << " " << unique << endl;
+        return ways;
+
+    }
+    int numMusicPlaylists(int n1, int g, int k1) {
+        k = k1;
+        n = n1;
+        goal = g;
+        return dfs(0, 0);    
+    }
+};
