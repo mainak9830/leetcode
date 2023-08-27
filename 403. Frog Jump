@@ -1,0 +1,29 @@
+class Solution {
+public:
+    map<pair<int, int>, bool> dp;
+    bool reach(vector<int>& stones, int prevStep, int pos){
+        if(stones.size()-1 == pos)return true;
+        if(dp.count({prevStep, pos}))
+            return dp[{prevStep, pos}];
+        bool possible = false;
+
+        
+        
+        for(int k = prevStep-1;k <= prevStep+1;k++){
+            if(k <= 0)continue;
+
+            int nextPos = lower_bound(stones.begin()+pos+1, stones.end(), stones[pos]+k) - stones.begin();
+            if(nextPos < stones.size() && stones[nextPos] == stones[pos]+k){
+                // cout << k << " " << stones[nextPos] << endl;
+                possible = possible | reach(stones, k, nextPos);
+            }
+            if(possible)
+                break;
+        }
+        dp[{prevStep, pos}] = possible;
+        return possible;
+    }
+    bool canCross(vector<int>& stones) {
+        return reach(stones, 0, 0);
+    }
+};
