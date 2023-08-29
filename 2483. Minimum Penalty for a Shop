@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int bestClosingTime(string customers) {
+        int n = customers.length();
+        int cus = 0, no_cus = 0;
+        for(char c : customers){
+            if(c == 'Y')
+                cus += 1;
+            else
+                no_cus += 1;
+        }
+        int foward_cus = 0;
+        int forward_no_cus = 0;
+        int penalty = INT_MAX;
+        int time = customers.length();
+        for(int t = 0;t <= customers.length();t++){
+            if(forward_no_cus + cus < penalty){
+                penalty = forward_no_cus + cus;
+                time = t;
+            }
+            if(t == customers.length())break;
+            char c = customers[t];
+            if(c == 'Y'){
+                foward_cus += 1;
+                cus -= 1;
+            }
+            else{
+                forward_no_cus += 1;
+                no_cus -= 1;
+            }
+            
+             
+        }
+
+        return time;
+
+    }
+};
