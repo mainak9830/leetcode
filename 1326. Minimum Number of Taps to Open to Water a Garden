@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int minTaps(int n, vector<int>& ranges) {
+        // 0 1 2 3 4
+
+        vector<vector<int>> periods;
+        
+        for(int i = 0;i < ranges.size();i++){
+            periods.push_back({max(0, i-ranges[i]), min(i+ranges[i], n)});
+        }
+
+        sort(periods.begin(), periods.end(), [](auto& a, auto& b) {
+            return a[0] == b[0] ? a[1] > b[1] : a[0] < b[0];
+        });
+
+        int N = periods.size();
+        int i = 1;
+        int start = periods[0][0];
+        int end = periods[0][1];
+        int minMoves = 1;
+        while(i < N){
+            int j = i; 
+            int tend = end;
+            if(end == n)
+                break;
+            bool flag = false;
+            while(j < N && periods[j][0] <= tend){
+                if(periods[j][1] > end){
+                    end = periods[j][1];
+                    flag = true;
+                }
+                j++;
+            }
+            if(end == tend)return -1;
+            // if(!flag)return -1;
+
+            i = j;
+            
+            minMoves++;
+  
+            
+        }
+        
+        return minMoves;
+    }
+};
