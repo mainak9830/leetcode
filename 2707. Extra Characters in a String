@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> dp;
+    int minBreak(string& s, set<string>& dictionary, int i){
+        int n = s.length();
+        if(i == n)return 0;
+        if(dp[i] != -1){
+            return dp[i];
+        }
+        int partition = n;
+        for(int j = i;j < n;j++){
+            if(dictionary.count(s.substr(i, j-i+1))){
+                partition = min(partition, minBreak(s, dictionary, j+1));
+            }else{
+                partition = min(partition, j-i+1 + minBreak(s, dictionary, j+1));
+            }
+        }
+        return dp[i] = partition;
+    }
+    int minExtraChar(string s, vector<string>& dictionary) {
+        set<string> dict(dictionary.begin(), dictionary.end());
+        dp.resize(51, -1);
+        return minBreak(s, dict, 0);
+    }
+};
