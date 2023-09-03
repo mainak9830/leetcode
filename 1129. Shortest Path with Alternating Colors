@@ -1,0 +1,39 @@
+class Solution {
+public:
+    vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& redEdges, vector<vector<int>>& blueEdges) {
+        vector<int> ans(n, -1);
+        vector<pair<int, int>> *graph = new vector<pair<int,int>>[n];
+
+        for(auto edge : redEdges){
+            graph[edge[0]].push_back({edge[1], 0});
+        } 
+
+        for(auto edge : blueEdges){
+            graph[edge[0]].push_back({edge[1], 1});
+        }
+
+        vector<vector<int>> visited(n, vector<int>(2, false));
+
+        visited[0][0] = true;
+        visited[0][1] = true;
+        queue<vector<int>> queue;
+        ans[0] = 0;
+        queue.push({0, 0, -1});
+
+        while(!queue.empty()){
+            vector<int> node = queue.front();
+            queue.pop();
+            int u = node[0], steps = node[1], prevColor = node[2];
+            // cout << u << endl;
+            for(auto [v, color] : graph[u]){
+                if(!visited[v][color] && (color != prevColor)){
+                    visited[v][color] = true;
+                    queue.push({v, 1 + steps, color});
+                    if(ans[v] == -1)
+                        ans[v] = 1 + steps;
+                }
+            }
+        }
+        return ans;
+    }
+};
