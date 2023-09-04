@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int nodes = 0;
+    int nedges = 0;
+    void dfs(vector<int> *graph, int u, vector<bool>& visited){
+
+        visited[u] = true;
+        nedges += graph[u].size();
+        nodes++;
+        for(int v : graph[u]){
+            if(!visited[v]){
+                dfs(graph, v, visited);
+            }
+        }
+    }
+    int countCompleteComponents(int n, vector<vector<int>>& edges) {
+        
+        vector<int> *graph = new vector<int>[n];
+
+        for(auto edge : edges){
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
+        }
+        vector<bool> visited(n, false);
+        int count = 0;
+
+        for(int i = 0;i < n;i++){
+            if(visited[i])continue;
+            nodes = 0;
+            nedges = 0;
+            dfs(graph, i, visited);
+            // cout << nodes << " " << nedges << endl;
+            if(nedges == nodes*(nodes-1))count++;
+        }
+        return count;
+    }
+};
