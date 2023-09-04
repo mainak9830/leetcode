@@ -1,0 +1,34 @@
+class Solution {
+public:
+    typedef pair<int, int> pa;
+    int minimumCost(int n, vector<vector<int>>& connections) {
+        priority_queue<pa, vector<pa>,greater<pa>> pq;
+        vector<pa> *graph = new vector<pa>[n+1];
+
+        for(vector<int> c : connections){
+            graph[c[0]].push_back({c[1], c[2]});
+            graph[c[1]].push_back({c[0], c[2]});
+        }
+        
+        pq.push({0, 1});
+        set<int> visited;
+        int cost = 0;
+        
+        while(!pq.empty()){
+            auto [u_cost, u] = pq.top();
+            pq.pop();
+            // cout << u << " " << endl;
+            if(visited.count(u))continue;
+            visited.insert(u);
+            cost += u_cost;
+            
+            for(auto [v, uv_cost] : graph[u]){
+                if(visited.count(v) == 0){
+                    pq.push({uv_cost, v});
+                }
+            }
+        }
+
+        return visited.size() < n ? -1 : cost;
+    }
+};
