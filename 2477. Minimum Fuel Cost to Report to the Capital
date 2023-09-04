@@ -1,0 +1,41 @@
+class Solution {
+public:
+    map<int, vector<int>> graph;
+    
+    long long ans = 0;
+    long long dfs(int u, int seats, vector<bool>& visited){
+        
+        visited[u] = true;
+        long long subtreeCount = 0;
+        // cout << u << "parent" << endl;
+        for(int v : graph[u]){
+            // cout << v << endl;
+            if(!visited[v]){
+                
+                int subtree = dfs(v, seats, visited);
+                // cout << subtree << " " << v << endl;
+                ans += (subtree+seats-1)/seats;
+                subtreeCount += subtree;
+            }
+        }
+        // cout << subtreeCount <<  " " << "node " << u << endl;
+        
+        return subtreeCount + 1;
+
+    }
+    long long minimumFuelCost(vector<vector<int>>& roads, int seats) {
+        vector<bool> visited;
+        int n = 0;
+        for(auto road : roads){
+            graph[road[0]].push_back(road[1]);
+            graph[road[1]].push_back(road[0]);
+            n = max({n, road[0], road[1]});
+            // cout << road[0] << " " << road[1] << endl;
+        }
+        // cout << n;
+        visited.resize(n+1, false);
+        dfs(0, seats, visited);
+
+        return ans;
+    }
+};
