@@ -1,0 +1,47 @@
+#define INF 100000
+class Solution {
+public:
+    
+    int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
+        vector<vector<int>> dist(n, vector<int>(n, INF));
+
+        for(int i = 0;i < n;i++){
+            for(int j = 0;j < n;j++){
+                dist[i][i] = 0;
+            }
+        }
+
+        for(auto edge : edges){
+            dist[edge[0]][edge[1]] = edge[2];
+            dist[edge[1]][edge[0]] = edge[2];
+        }
+
+        for(int  k = 0;k < n;k++){
+            for(int i = 0;i < n;i++){
+                for(int j = 0;j < n;j++){
+                    if((dist[i][k] != INF) && 
+                        (dist[j][k] != INF) &&
+                        (dist[i][j] > dist[i][k] + dist[k][j])){
+                            dist[i][j] = dist[i][k] + dist[k][j];
+                        }
+                }
+            }
+        }
+        int ans = n+1;
+        int city_index = 0;
+        for(int i = 0;i < n;i++){
+            int count = 0;
+            for(int j = 0;j < n;j++){
+                if((dist[i][j] <= distanceThreshold) && (i != j)){
+                    count++;
+                }
+            }
+            if(count <= ans){
+                ans = count;
+                city_index = i;
+            }
+        }
+
+        return city_index;
+    }
+};
