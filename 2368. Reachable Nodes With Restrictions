@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<int> *graph;
+    int ans = 0;
+    void dfs(int u, vector<bool>& visited){
+        visited[u] = true;
+        ans++;
+        for(int v : graph[u]){
+            if(!visited[v]){
+                dfs(v, visited);
+            }
+        }
+    }
+    int reachableNodes(int n, vector<vector<int>>& edges, vector<int>& restricted) {
+        graph = new vector<int>[n];
+
+        for(auto edge : edges){
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
+        }
+        vector<bool> visited(n, false);
+
+        for(int u : restricted)
+            visited[u] = true;
+
+        dfs(0, visited);
+        return ans;
+    }
+};
