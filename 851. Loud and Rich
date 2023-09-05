@@ -1,0 +1,52 @@
+class Solution {
+public:
+    vector<int> loudAndRich(vector<vector<int>>& richer, vector<int>& quiet) {
+        
+        int n = quiet.size();
+
+        vector<vector<int>> inEdges(n), outEdges(n);
+        vector<int> inDegree(n, 0);
+    
+        vector<int> quieter(n, -1);
+
+        for(auto edge : richer){
+            inDegree[edge[1]]++;
+
+            inEdges[edge[1]].push_back(edge[0]);
+            outEdges[edge[0]].push_back(edge[1]);
+        }
+        queue<int> queue;
+        for(int i = 0;i < n;i++){
+            if(inDegree[i] == 0){
+                queue.push(i);
+                // quieter[i] = i;
+            }
+        }
+
+
+        while(!queue.empty()){
+            int u = queue.front();
+            queue.pop();
+            int u_quiet = quiet[u];
+            int node = u;
+
+            for(int parent : inEdges[u]){
+                if(quiet[quieter[parent]] < u_quiet){
+                    u_quiet = quiet[quieter[parent]];
+                    node = quieter[parent];
+                }
+            }
+            quieter[u] = node;
+
+            for(int v : outEdges[u]){
+                inDegree[v]--;
+                if(inDegree[v] == 0)
+                    queue.push(v);
+            }
+
+
+        }
+
+        return quieter;
+    }
+};
