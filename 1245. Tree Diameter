@@ -1,0 +1,42 @@
+class Solution {
+public:
+    map<int, vector<int>> graph;
+    int length = 0;
+    int dfs(int u, vector<bool>& visited){
+
+        visited[u] = true;
+
+        int l = 0;
+        int r = 0;
+        for(int v : graph[u]){
+            if(!visited[v]){
+                int sub = dfs(v, visited);
+                
+                if(sub >= r){
+                    l = r;
+                    r = sub;
+                }else if(sub >= l){
+                    l = sub;
+                }
+            }
+        }
+
+        
+        length = max(length, l+r);
+
+        return 1 + max(l, r);
+
+    }
+    int treeDiameter(vector<vector<int>>& edges) {
+        
+
+        for(auto edge : edges){
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
+        }
+        vector<bool> visited(graph.size()+1);
+        dfs(0, visited);
+
+        return length;
+    }
+};
