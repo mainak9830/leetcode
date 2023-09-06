@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<pair<int, int>> *graph; 
+    int minimumDistance(int n, vector<vector<int>>& edges, int s, vector<int>& marked) {
+        graph = new vector<pair<int,int>>[n];
+
+        for(auto edge : edges){
+            graph[edge[0]].push_back({edge[1], edge[2]});
+        }
+
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int,int>>> pq;
+
+        pq.push({0, s});
+
+        vector<bool> visited(n, false);
+        set<int> mark(marked.begin(), marked.end());
+
+        while(!pq.empty()){
+            auto [cost, u] = pq.top();
+            pq.pop();
+            if(visited[u])continue;
+            visited[u] = true;
+            if(mark.count(u))return cost;
+            for(auto [v, cost_uv] : graph[u]){
+                if(!visited[v])
+                    pq.push({cost + cost_uv, v});
+
+            }
+
+        }
+        return -1;
+    }
+};
