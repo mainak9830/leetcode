@@ -1,0 +1,39 @@
+class Solution {
+public:
+    bool hasPath(vector<vector<int>>& maze, vector<int>& start, vector<int>& destination) {
+        int m = maze.size();
+        int n = maze[0].size();
+
+        queue<pair<int, int>> queue;
+        vector<vector<bool>> visit(m, vector<bool>(n, false));
+
+        int directions[4][2] = {{-1,0},{0,1},{0,-1},{1,0}};
+
+        queue.push({start[0], start[1]});
+        visit[start[0]][start[1]] = true;
+
+        while(!queue.empty()){
+            auto [x, y] = queue.front();
+            queue.pop();
+            if(x == destination[0] && y == destination[1])return true;
+            for(int i = 0;i < 4;i++){
+                int r = x;
+                int c = y;
+
+                while(r >= 0 && r < m && c >= 0 && c < n && maze[r][c] == 0){
+                    r += directions[i][0];
+                    c += directions[i][1];
+                } 
+
+                r -= directions[i][0];
+                c -= directions[i][1];
+                if(!visit[r][c])
+                    queue.push({r,c});
+                    visit[r][c] = true;
+            }
+        }
+
+        return false;
+
+    }
+};
