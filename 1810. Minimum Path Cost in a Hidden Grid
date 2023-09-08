@@ -1,0 +1,117 @@
+/**
+ * // This is the GridMaster's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * class GridMaster {
+ *   public:
+ *     bool canMove(char direction);
+ *     int move(char direction);
+ *     boolean isTarget();
+ * };
+ */
+
+
+class Solution {
+public:
+    char directions[4] = {'U','D','L','R'};
+    int directionsXY[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    
+    int target_x = -1;
+    int target_y = -1;
+    void dfs(int x, int y, GridMaster& master, int grid[][200]){
+        // if(x < 0 || y < 0 || x >= 200 || y >= 200)return INT_MAX;
+        if(master.isTarget()){
+            target_x = x;
+            target_y = y;
+            
+        }
+        
+        
+
+        // cout << x << " " << y << endl;
+
+        for(int i = 0;i < 4;i++){
+            char d = directions[i];
+            int x1 = x + directionsXY[i][0];
+            int y1 = y + directionsXY[i][1];
+
+            
+            // cout << x1 << " " << y1 <<  " " << visited[x1][y1] << endl;
+
+            if((grid[x1][y1] == -1) && master.canMove(d)){
+                
+                
+                int c, move_cost;
+                grid[x1][y1] = master.move(d);
+
+                // cout << "grid" << x1 << " " << y1 << " " << grid[x1][y1] << endl;
+                dfs(x1, y1, master, grid);
+                    
+                
+                if(d == 'L'){
+                    master.move('R');
+                }else if(d == 'R'){
+                    master.move('L');
+                }else if(d == 'D'){
+                    master.move('U');
+                }else if(d == 'U'){
+                    master.move('D');
+                }
+                // visited[x1][y1] = false;
+            }
+
+           
+        }
+        
+    }
+    int helper(int grid[][200]){
+        // fill(visited.begin(), visited.end(), vector<bool>(204, false));
+        auto visited = new bool[200][200];
+        memset(visited, false, sizeof(bool)*200*200);
+        auto cmp = [](const vector<int> a, const vector<int> b){
+            return a[0] > b[0];
+        };
+        priority_queue<vector<int>, vector<vector<int>>, decltype(cmp)> pq(cmp);
+        pq.push({0, 99, 99});
+        while(!pq.empty()){
+            // cout << pq.size() << endl;
+            auto node = pq.top();
+            pq.pop();
+            
+            int x = node[1];
+            int y = node[2];
+            // cout << "yes" << endl;
+            if(visited[x][y])continue;
+            
+            if((target_x == x) && (target_y == y))return node[0];
+
+            visited[x][y] = true;
+            cout << x << " " << y << " " << node[0] << endl;
+            for(int i = 0;i < 4;i++){
+                int x1 = x + directionsXY[i][0];
+                int y1 = y + directionsXY[i][1];
+                
+                if(x1 < 0 || y1 < 0 || x1 >= 200 || y1 >= 200)continue;
+                
+                if(!visited[x1][y1] && (grid[x1][y1] != -1)){
+                    // cout << x1 << " " << y1 << " " << endl;
+                    pq.push({node[0]+grid[x1][y1], x1, y1});
+                }
+            }
+        }
+
+        return -1;
+    }
+    int findShortestPath(GridMaster &master) {
+        
+        auto grid = new int[200][200];
+        memset(grid, -1, sizeof(int)*200*200);
+        
+        
+        dfs(99,99,master, grid);
+        // if(!cango)return -1;
+        if(target_x == -1)return -1;
+
+        cout << target_x << " " << target_y  << "target" << endl;
+        return helper(grid);
+    }
+};
