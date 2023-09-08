@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<set<int>> graph;
+    int cycles = 0;
+    int numberOfPaths(int n, vector<vector<int>>& corridors) {
+        graph.resize(n+1, set<int>());
+        
+        for(auto door : corridors){
+            graph[door[0]].insert(door[1]);
+            graph[door[1]].insert(door[0]);
+        }
+
+        for(int i = 1;i <= n;i++){
+            dfs(i, i, 1);
+        }
+
+        return cycles;
+        
+    }
+    void dfs(int u, int start, int count){
+        if(count == 3){
+            if(graph[u].count(start))
+                cycles++;
+            return;
+        }
+        cout << u << endl;
+        for(int v : graph[u]){
+            if(v < u)continue;
+        
+            dfs(v, start, count+1);
+        }
+    }
+};
