@@ -1,0 +1,44 @@
+class Solution {
+public:
+    long long minCost(vector<int>& nums, vector<int>& costs) {
+        stack<int> stack1, stack2;
+        int n = nums.size();
+        vector<int> ng(n, -1), lt(n, -1);
+
+        for(int i = n-1;i >= 0;i--){
+            
+
+            while(!stack1.empty() && nums[stack1.top()] < nums[i])
+                stack1.pop();
+
+            ng[i] = stack1.empty() ? -1 : stack1.top();
+            stack1.push(i);
+        }
+        
+
+        for(int i = n-1;i >= 0;i--){
+            while(!stack2.empty() && nums[stack2.top()] >= nums[i])
+                stack2.pop();
+
+            lt[i] = stack2.empty() ? -1 : stack2.top();
+            stack2.push(i);
+        }
+
+
+        //solving graph traversal problem
+
+        vector<long long> dp(n, LONG_MAX);
+        dp[0] = 0;
+        for(int i = 0;i < n;i++){
+            // cout << i << " " << ng[i] << " " << lt[i] << endl;
+            if(ng[i] != -1 && dp[i] != LONG_MAX){
+                dp[ng[i]] = min(dp[ng[i]], dp[i] + costs[ng[i]]);
+            }
+            if(lt[i] != -1 && dp[i] != LONG_MAX){
+                dp[lt[i]] = min(dp[lt[i]], dp[i] + costs[lt[i]]);
+            }
+        }
+
+        return dp[n-1];
+    }
+};
