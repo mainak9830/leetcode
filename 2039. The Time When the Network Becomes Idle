@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int networkBecomesIdle(vector<vector<int>>& edges, vector<int>& patience) {
+        int n = patience.size();
+        vector<vector<int>> graph(n);
+        for(auto edge : edges){
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
+        }
+        vector<int> completedTime(n, -1);
+        queue<pair<int, int>> queue;
+
+        queue.push({0, 0});
+        completedTime[0] = 0;
+
+        while(!queue.empty()){
+            auto [u, d] = queue.front();
+            queue.pop();
+            for(int v : graph[u]){
+                if(completedTime[v] == -1){
+                    completedTime[v] = d + 1;
+                    queue.push({v, d+1});
+                }
+            }
+        }
+        int ans = 0;
+
+        for(int u = 1;u < n;u++){
+            int time = 2*completedTime[u];
+            
+            if(2*completedTime[u] > patience[u]){
+                time += (2*completedTime[u] - (2*completedTime[u]-1)%patience[u]-1); 
+            }
+            // cout << time << endl;
+            ans = max(ans, time);
+        }
+        return ans+1;
+
+    }
+};
