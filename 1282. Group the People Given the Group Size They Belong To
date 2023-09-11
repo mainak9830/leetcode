@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<vector<int>> groupThePeople(vector<int>& groupSizes) {
+        vector<vector<int>> ans;
+        int n = groupSizes.size();
+        map<int, vector<int>> map;
+        for(int i = 0;i < n;i++){
+            map[groupSizes[i]].push_back(i);
+        }
+
+        for(auto [k,v] : map){
+            vector<int> temp;
+            for(int i = 0;i < v.size();i++){
+                temp.push_back(v[i]);
+                if(temp.size() == k){
+                    ans.push_back(temp);
+                    temp.clear();
+                }
+            }
+        }
+
+        return ans;
+    }
+};
