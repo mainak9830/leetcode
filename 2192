@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<int> *graph;
+    void dfs(int u, int source, int parent, vector<vector<int>>& anc){
+        if(u != source){
+            if(anc[u].size() && anc[u].back() == source)
+                return;
+            anc[u].push_back(source);
+        }
+         
+        for(int v : graph[u]){
+            dfs(v, source, u, anc);
+        }
+    }
+    vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
+        graph = new vector<int>[n];
+
+        for(auto edge : edges){
+            graph[edge[0]].push_back(edge[1]);
+        }
+
+        vector<vector<int>> anc(n);
+        for(int i = 0;i < n;i++){
+            dfs(i, i, i, anc);
+        }
+
+        return anc;
+    }
+};
