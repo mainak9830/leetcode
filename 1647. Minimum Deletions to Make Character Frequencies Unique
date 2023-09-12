@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int minDeletions(string s) {
+        map<char, int> counter;
+
+        for(char c : s)
+            counter[c]++;
+
+        vector<int> counts;
+        for(auto [u, v] : counter){
+            counts.push_back(v);
+        }  
+
+        sort(counts.begin(), counts.end(), greater<int>());
+        int deletes = 0;
+
+        for(int i = 1;i < counts.size();i++){
+            if(counts[i] >= counts[i-1]){
+                deletes += counts[i] - max(counts[i-1]-1, 0);
+                counts[i] = max(counts[i-1]-1, 0);
+                // cout << deletes << " " << counts[i] << endl;
+            }
+        }
+        return deletes;
+    }
+};
