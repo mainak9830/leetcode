@@ -1,0 +1,88 @@
+class Solution {
+public:
+    vector<int> *graph;
+    vector<int> ans;
+
+    void dfs(int u, vector<int>& colored, int color){
+        
+        colored[u] = color+1;
+        
+        
+
+
+        for(int v : graph[u]){
+            if(colored[v] == -1){
+                dfs(v, colored, color);
+            }else if(colored[v] == colored[u]){
+                dfs(v, colored, (color+1)%4);
+            }
+        }
+        
+        
+
+        
+    }
+    vector<int> gardenNoAdj(int n, vector<vector<int>>& paths) {
+        graph = new vector<int>[n+1];
+
+        for(auto path : paths){
+            graph[path[0]-1].push_back(path[1]-1);
+            graph[path[1]-1].push_back(path[0]-1);
+        }
+        vector<int> colored(n, -1);
+        for(int i = 0;i < n;i++){
+            if(colored[i] == -1)
+                dfs(i, colored, 0);
+        }
+        
+        
+        
+        return colored;
+    }
+};
+
+
+
+
+
+
+
+
+class Solution {
+public:
+ 
+    vector<int> gardenNoAdj(int n, vector<vector<int>>& paths) {
+        vector<int> *graph;
+        graph = new vector<int>[n+1];
+
+        for(auto path : paths){
+            graph[path[0]-1].push_back(path[1]-1);
+            graph[path[1]-1].push_back(path[0]-1);
+        }
+    
+        // for(int i = 0;i < n;i++){
+        //     if(colored[i] == -1)
+        //         dfs(i, colored, 0);
+        // }
+        
+
+
+        vector<int> colored(n, 0);
+        for(int u = 0;u < n;u++){
+            vector<int> colors(5, 0); 
+
+            for(int v : graph[u]){
+                colors[colored[v]] = 1;
+            }   
+
+            for(int c = 1;c <= 4;c++){
+                if(colors[c] != 1){
+                    colored[u] = c;
+                }
+            }
+        }
+        
+        
+        return colored;
+    }
+};
