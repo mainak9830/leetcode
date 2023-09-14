@@ -1,0 +1,28 @@
+class Solution {
+public:
+
+    vector<string> routes;
+    map<string, multiset<string>> graph;
+
+    void dfs(string u){
+
+        while(graph[u].size()){
+            string next = *graph[u].begin();
+            graph[u].erase(graph[u].begin());
+            dfs(next);
+        }
+
+        routes.push_back(u);
+    }
+    vector<string> findItinerary(vector<vector<string>>& tickets) {
+        
+
+        for(auto ticket : tickets){
+            graph[ticket[0]].insert(ticket[1]);
+        }
+
+        dfs("JFK");
+        reverse(routes.begin(), routes.end());
+        return routes;
+    }
+};
