@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<int> *graph;
+    vector<vector<bool>> dependCheck;
+    void dfs(int u, int start){
+
+        dependCheck[start][u] = true;
+
+        for(int v : graph[u]){
+            if(!dependCheck[start][v]){
+                dfs(v, start);
+            }
+        }
+    }
+    vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
+        
+        graph = new vector<int>[numCourses];
+        dependCheck.resize(numCourses, vector<bool>(numCourses, false));
+
+        for(auto prereq : prerequisites){
+            graph[prereq[0]].push_back(prereq[1]);
+        }
+
+        for(int i = 0;i < numCourses;i++){
+            
+            dfs(i, i);
+        }
+        vector<bool> ans;
+        for(auto query : queries){
+            ans.push_back(dependCheck[query[0]][query[1]]);
+        }
+
+        return ans;
+    }
+};
