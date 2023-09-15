@@ -1,0 +1,63 @@
+class Solution {
+public:
+    vector<int> bobVisited;
+    vector<int> *graph;
+    int ans = 0;
+    bool bobDFS(int target, int u, int d){
+        bobVisited[u] = d;
+        if(u == target)return true;
+        for(int v : graph[u]){
+            if(bobVisited[v] == -1){
+                if(bobDFS(target, v, d+1)){
+                    return true;
+                }
+            }
+        }
+        bobVisited[u] = -1;
+        return false;
+    }
+
+    int aliceDFS(int u, int parent, int d, vector<int>& amount){
+
+
+        int nodeCost = 0;
+
+        if(bobVisited[u] >= 0){
+            if(d == bobVisited[u]){
+                nodeCost = amount[u]/2;
+            }else if(d < bobVisited[u]){
+                nodeCost = amount[u];
+            }
+        }else{
+            nodeCost = amount[u];
+        }
+
+        int cost = INT_MIN;
+        
+        for(int v : graph[u]){
+            if(v != parent){
+                cost = max(cost, aliceDFS(v, u, d+1, amount) + nodeCost);
+            }
+
+        }
+
+        return cost == INT_MIN ? nodeCost : cost;
+    }
+    int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) {
+        int n = edges.size() + 1;
+        graph = new vector<int>[n];
+
+        for(auto edge : edges){
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
+        }
+
+        bobVisited.resize(n, -1);
+        bobDFS(0, bob, 0);
+        int ans = aliceDFS(0, -1, 0, amount);
+        
+        return ans;
+
+        
+    }
+};
