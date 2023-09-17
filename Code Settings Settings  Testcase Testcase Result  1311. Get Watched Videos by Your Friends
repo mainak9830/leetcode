@@ -1,0 +1,71 @@
+class Solution {
+public:
+    vector<vector<int>> graph;
+    int target;
+    map<string, int> videoCount;
+
+    void bfs(int id, vector<vector<string>>& watchedVideos){
+        vector<bool> visited(watchedVideos.size(), false);
+        queue<int> queue;
+        queue.push(id);
+        visited[id] = true;
+        int level = 0;
+        while(!queue.empty()){
+
+            int len = queue.size();
+            // cout << level << " " << len << endl;
+            while(len){
+                int u = queue.front();
+                
+                queue.pop();
+                if(level == target){
+                    for(string video : watchedVideos[u]){
+
+                        videoCount[video]++;
+                    }
+                }
+                if(level < target){
+                    for(int v  : graph[u]){
+                        if(!visited[v]){
+                            queue.push(v);
+                            visited[v] = true;
+                        }
+                    }
+                }
+                len--;   
+            }
+                
+            level++;
+        }
+            
+    }
+
+
+        
+        
+        
+    
+    vector<string> watchedVideosByFriends(vector<vector<string>>& watchedVideos, vector<vector<int>>& friends, int id, int level) {
+        int n = watchedVideos.size();
+        target = level;
+        graph = friends;
+
+
+        bfs(id, watchedVideos);
+        vector<pair<string, int>> inter;
+        for(auto it : videoCount){
+            inter.push_back({it.first, it.second});
+        }
+
+        sort(inter.begin(), inter.end(), [](auto a, auto b){
+            // if(a.second < b.second)return a.first < b.first;
+            return a.second == b.second ? a.first < b.first : a.second < b.second;
+        });
+
+        vector<string> output;
+
+        for(auto it : inter)
+            output.push_back(it.first);
+        return output;
+    }
+};
