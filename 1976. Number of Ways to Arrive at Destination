@@ -1,0 +1,51 @@
+class Solution {
+public:
+    typedef pair<long long, long long> pa;
+    int countPaths(int n, vector<vector<int>>& roads) {
+        vector<vector<pa>> graph(n);
+
+        for(auto road : roads){
+            graph[road[0]].push_back({road[1], road[2]});
+            graph[road[1]].push_back({road[0], road[2]});
+        }
+
+        priority_queue<pa, vector<pa>, greater<pa>> pq;
+        
+        long long MOD = 1e9 + 7;
+        long long INF = 1e15;
+
+        vector<long long> dp(n, 0);
+        vector<long long> dist(n, INF);
+
+        dist[0] = 0;
+        dp[0] = 1;
+        pq.push({0, 0});
+
+        while(!pq.empty()){
+            auto [cost, u] = pq.top();
+            pq.pop();
+
+            // cout << u << " " << cost << " " << dist[u] << endl;
+            if(dist[u] < cost)continue;
+
+            
+            for(auto [v, cost_uv] : graph[u]){
+                cout << dist[u] + cost_uv << " " << dist[v] << endl;
+                if(dist[v] == dist[u] + cost_uv){
+                    dp[v] = (dp[v] + dp[u])%MOD;
+                }
+                else if(dist[v] > dist[u] + cost_uv){
+                    // cout << "v " << v << endl;
+                    dp[v] = dp[u]%MOD;
+                    dist[v] = dist[u] + cost_uv;
+
+                    pq.push({dist[u] + cost_uv, v});
+                }
+                
+            }
+        }
+
+
+        return dp[n-1];
+    }
+};
