@@ -1,0 +1,56 @@
+class Solution {
+public:
+    int nodes = 0;
+    bool dfs(int u, vector<int>& left, vector<int>& right, vector<bool>& visited){
+        
+        // cout << u << endl;
+        visited[u] = true;
+        nodes++;
+        bool good = true;
+        
+        if(left[u] != -1){
+            if(visited[left[u]])return false;
+            if(!dfs(left[u], left, right, visited))
+                return false;
+        }
+
+        if(right[u] != -1){
+
+            if(visited[right[u]])return false;
+            if(!dfs(right[u], left, right, visited))
+                return false;
+        }
+
+        return true;
+    }
+
+    bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) {
+        vector<bool> hasparent(n, false);
+
+        for(int i = 0;i < n;i++){
+            if(leftChild[i] != -1)
+                hasparent[leftChild[i]] = true;
+            if(rightChild[i] != -1)
+                hasparent[rightChild[i]] = true;
+        }
+        int count = 0;
+        int root = 0;
+        vector<bool> visited(n, false);
+        for(int i = 0;i < n;i++){
+            if(!hasparent[i]){
+                count++;
+                root = i;
+            }
+        }
+        // cout << count << " " << root << endl;
+        if(count == 0 || count > 1)return false;
+
+
+        
+        bool val = dfs(root, leftChild, rightChild, visited);
+
+        if(nodes < n)return false;
+        return val;
+
+    }
+};
