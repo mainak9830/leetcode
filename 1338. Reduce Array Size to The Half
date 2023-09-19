@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int minSetSize(vector<int>& arr) {
+        
+        map<int, int> count;
+
+        for(int num : arr){
+            count[num]++;
+        }
+        int size = 0;
+
+        priority_queue<pair<int, int>> pq;
+        int target = arr.size()/2;
+
+        for(auto pa : count){
+            pq.push({pa.second, pa.first});
+        }
+        int counter = 0;
+        while(!pq.empty()){
+            if(size >= target)
+                break;
+            size += pq.top().first;
+            counter++;
+            pq.pop();
+        }
+
+        return counter;
+    }
+};
