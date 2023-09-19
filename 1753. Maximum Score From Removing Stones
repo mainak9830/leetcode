@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int maximumScore(int a, int b, int c) {
+        priority_queue<int, vector<int>, greater<int>> pq;
+        pq.push(a);
+        pq.push(b);
+        pq.push(c);
+        int score = 0;
+        while(!pq.empty()){
+            
+            if(pq.size() == 2){
+                score += pq.top();
+                pq.pop();
+                
+                pq.pop();
+            }else if(pq.size() == 3){
+                score++;
+                int a = pq.top();
+                pq.pop();
+                int b = pq.top();
+                pq.pop();
+                int c = pq.top();
+                pq.pop();
+                if(a > 1)
+                    pq.push(a-1);
+                pq.push(b);
+                if(c > 1)
+                    pq.push(c-1);
+            }else{
+                pq.pop();
+            }
+        }
+
+        return score;
+    }
+};
