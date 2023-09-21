@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums, int x) {
+        //prefix  + suffix
+        int n = nums.size();
+        int sum = 0;
+        for(int num : nums)
+            sum += num;
+        int maxsublen = 0;
+        map<int, int> map;
+        int target = sum - x;
+        if(target < 0)return -1;
+        
+        int running = 0;
+        // 2 2 3 4 6
+        map[0] = -1;
+        for(int i = 0;i < n;i++){
+            running += nums[i];
+            map[running] = i;
+            
+            if(map.count(running-target)){
+                
+                
+                maxsublen = max(maxsublen, i-map[running-target]);
+                
+                    
+            }
+        }
+        cout << maxsublen << endl;
+        if(target && maxsublen == 0)return -1;
+        return n-maxsublen;
+    }
+};
