@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int halveArray(vector<int>& nums) {
+        priority_queue<double> pq;
+        double sum = 0;
+        for(int num : nums){
+            pq.push(num);
+            sum += num;
+        }
+        int count = 0;
+        double current = sum;
+        while(!pq.empty()){
+            
+            double x = pq.top();
+            pq.pop();
+            current -= (double)x/2.0;
+            pq.push((double)x/2.0);
+            // cout << current << endl;
+            count++;
+            if(current <= (double)sum/2.0)
+                break; 
+            
+            
+        }
+
+        return count;
+
+        
+
+    }
+};
