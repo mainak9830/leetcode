@@ -1,0 +1,55 @@
+class Solution {
+public:
+    int maxStarSum(vector<int>& vals, vector<vector<int>>& edges, int k) {
+        int n = vals.size();
+        vector<vector<int>> graph(n);
+        vector<int> subGraph(vals);
+        vector<int> maxsubGraph(vals);
+        vector<priority_queue<int, vector<int>, greater<int>>> neighbors(n);
+        for(auto edge : edges){
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
+
+            
+            vector<vector<int>> eds = {{edge[0], edge[1]}, {edge[1], edge[0]}};
+            for(vector<int> e : eds){
+                
+                if(neighbors[e[0]].size() < k){
+                    
+                    if(vals[e[1]] > 0){
+                        neighbors[e[0]].push(vals[e[1]]);
+                        subGraph[e[0]] += vals[e[1]];
+                    }
+                    // maxsubGraph[e[0]] = max(maxsubGraph[e[0]], subGraph[e[0]]);
+                }else{
+                    
+                    if(!neighbors[e[0]].empty() && (neighbors[e[0]].top() < vals[e[1]])){
+                        
+                        if(vals[e[1]] > 0){
+                            subGraph[e[0]] -= neighbors[e[0]].top();
+                            neighbors[e[0]].pop();
+                            neighbors[e[0]].push(vals[e[1]]);
+                            subGraph[e[0]] += vals[e[1]];
+                        }
+                            
+                        // maxsubGraph[e[0]] = max(maxsubGraph[e[0]], subGraph[e[0]]);
+                    }
+                    
+                }
+            }
+            
+            
+        }
+
+
+        
+        
+        int ans = INT_MIN;
+        for(int i = 0;i < n;i++){
+            // cout << maxsubGraph[i] << " " << neighbors[i].size() << " " << endl;
+            ans = max(ans, subGraph[i]);
+        }
+
+        return ans;
+    }
+};
