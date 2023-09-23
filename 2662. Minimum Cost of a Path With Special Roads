@@ -1,0 +1,65 @@
+class Solution {
+public:
+    int minimumCost(vector<int>& start, vector<int>& target, vector<vector<int>>& specialRoads) {
+        
+        set<vector<int>> points;
+        map<vector<int>, vector<int>> special; 
+        points.insert({start[0], start[1]});
+        points.insert({target[0], target[1]});
+        for(vector<int> e : specialRoads){
+            points.insert({e[0], e[1]});
+            points.insert({e[2], e[3]});
+
+            special[{e[0], e[1], e[2], e[3]}].push_back(e[4]);
+
+            
+            // special[{e[2], e[3], e[0], e[1]}] = e[4];
+        }
+
+        map<vector<int>, vector<vector<int>>> graph;
+        for(auto src : points){
+            for(auto dest : points){
+                if(src == dest)continue;
+                if(special.count({src[0], src[1], dest[0], dest[1]})){
+                    for(auto d : special[{src[0], src[1], dest[0], dest[1]}])
+                        graph[src].push_back({dest[0], dest[1], d});
+                }
+
+                int d = abs(src[0]-dest[0]) + abs(src[1]-dest[1]);
+                graph[src].push_back({dest[0], dest[1], d});
+
+                
+            }
+
+
+        }
+    
+
+
+    priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> queue;
+    vector<int> node = {0, start[0], start[1]};
+    queue.push(node);
+    set<pair<int, int>> visited;
+    while(!queue.empty()){
+
+        auto u_node = queue.top();
+        queue.pop();
+        int cost = u_node[0];
+        int x = u_node[1];
+        int y = u_node[2];
+        if(x == target[0] && y == target[1])return cost;
+        if(visited.count({x, y}))continue;
+
+        visited.insert({x, y});
+
+        for(auto v_node : graph[{x, y}]){
+            if(visited.count({v_node[0], v_node[1]}) == 0){
+                queue.push({v_node[2] + cost, v_node[0], v_node[1]});
+            }
+        }
+
+
+    }
+    return -1;
+    }
+};
