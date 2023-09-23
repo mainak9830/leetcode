@@ -1,0 +1,61 @@
+class Solution {
+public:
+    typedef pair<int, int> pa;
+    map<int, int> map;
+    int MOD = 1e9+7;
+    int dfs(int u, vector<vector<pa>>& graph, vector<long long>& visited){
+        if(u == visited.size()-1){
+            cout << endl;
+            return 1;
+        }
+        if(map.count(u)){
+            return map[u];
+        }
+        // cout << u << " ";
+        int count = 0;
+        for(auto [v, cost] : graph[u]){
+            if(visited[v] < visited[u])
+                count = (count + dfs(v, graph, visited)) % MOD;
+        }
+
+        return map[u] = count;
+    }
+    int countRestrictedPaths(int n, vector<vector<int>>& edges) {
+        //shortest distance between n and 1 array
+        
+        vector<vector<pa>> graph(n+1, vector<pa>()); 
+        for(auto edge : edges){
+            graph[edge[0]].push_back({edge[1], edge[2]});
+            graph[edge[1]].push_back({edge[0], edge[2]});
+        }
+        priority_queue<pa, vector<pa>, greater<pa>> pq;
+        vector<long long> visited(n+1, -1);
+        pq.push({0, n});
+
+        while(!pq.empty()){
+
+            auto [cost, u] = pq.top();
+            pq.pop();
+            
+            if(visited[u] != -1)continue;
+            visited[u] = cost;
+            // 
+            for(auto [v, cost_uv] : graph[u]){
+                if(visited[v] == -1)
+                    pq.push({cost + cost_uv, v});
+            }
+        }
+
+
+        // for(int i = 1;i <= n;i++){
+        //     cout << visited[i] << " ";
+        // }
+        //distance array
+        // start from 1 to n
+        // 1 -> 2 -> 4 -> 5
+        // 1 -> 4 -> 3 -> 5
+        // 1 -> 4 -> 5
+
+        return dfs(1, graph, visited);
+    }
+};
