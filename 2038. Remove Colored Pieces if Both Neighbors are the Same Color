@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool winnerOfGame(string colors) {
+        
+        int alice = 0;
+        int bob = 0;
+        int length = 1;
+        for(int i = 1 ;i <= colors.length();i++){
+            if(i < colors.length() && colors[i] == colors[i-1]){
+                
+                length++;
+                
+            }else{
+                if(colors[i-1] == 'A')
+                    alice += (length >= 3 ? length-2 : 0);
+                else
+                    bob += (length >= 3 ? length-2 : 0);
+                length = 1;
+            }
+        }
+
+        return alice > bob;
+    }
+};
