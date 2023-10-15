@@ -1,0 +1,3 @@
+# Write your MySQL query statement below
+SELECT W1.id  FROM Weather AS W1 
+    JOIN WEATHER AS W2 ON TO_DAYS(W1.recordDate) = TO_DAYS(W2.recordDate)+1 WHERE W1.temperature > W2.temperature;
