@@ -1,0 +1,12 @@
+# Write your MySQL query statement below
+
+SELECT T.*, COUNT(CASE 
+        WHEN E.student_id THEN 1 ELSE NULL
+        END
+    ) AS attended_exams FROM
+    (SELECT * FROM Students as S, Subjects as SB) as T
+    LEFT JOIN Examinations as E
+    on (T.student_id = E.student_id 
+    AND T.subject_name = E.subject_name)
+    GROUP BY T.student_id, T.subject_name
+    ORDER BY T.student_id, T.subject_name;
