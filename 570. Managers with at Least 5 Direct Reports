@@ -1,0 +1,6 @@
+# Write your MySQL query statement below
+# id        managerId
+
+SELECT name FROM (SELECT COUNT(*) as sub, managerId FROM Employee WHERE managerId IS NOT NULL GROUP BY managerId) as E1 JOIN Employee as E2 on E1.managerId = E2.Id and E1.sub >= 5; 
+# AND E2.managerId IS NULL
+# (SELECT * FROM Employee WHERE managerId IS NULL);
