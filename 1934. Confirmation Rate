@@ -1,0 +1,18 @@
+# Write your MySQL query statement below
+SELECT user_id, ROUND(confirmed/(confirmed+timeout), 2) as confirmation_rate FROM 
+(SELECT S.user_id, SUM(
+    CASE 
+        WHEN C.action = "confirmed" THEN 1
+        ELSE 0
+    END
+    ) as confirmed,
+    SUM(
+        CASE 
+            WHEN C.action = "timeout" OR C.action IS NULL THEN 1
+            ELSE 0
+        END
+    ) as timeout 
+    FROM Signups as S LEFT Join Confirmations as C 
+    on S.user_id = C.user_id 
+    GROUP BY user_id) as F; 
+    
