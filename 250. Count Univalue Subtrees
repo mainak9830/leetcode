@@ -1,0 +1,35 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int count = 0;
+    map<int, int> dfs(TreeNode* root){
+        if(!root)return map<int, int>();
+
+        auto l = dfs(root->left);
+        auto r = dfs(root->right);
+        map<int, int> rmap;
+        for(auto it : l){
+            rmap[it.first] += it.second;
+        }
+        for(auto it : r){
+            rmap[it.first] += it.second;
+        }
+        rmap[root->val]++;
+        count += rmap.size() == 1;
+        return rmap;
+    }
+    int countUnivalSubtrees(TreeNode* root) {
+        dfs(root);
+        return count;
+    }
+};
