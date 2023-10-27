@@ -1,0 +1,39 @@
+/**
+ * Definition for a Node.
+ * struct Node {
+ *     int val;
+ *     Node *left;
+ *     Node *right;
+ *     Node *random;
+ *     Node() : val(0), left(nullptr), right(nullptr), random(nullptr) {}
+ *     Node(int x) : val(x), left(nullptr), right(nullptr), random(nullptr) {}
+ *     Node(int x, Node *left, Node *right, Node *random) : val(x), left(left), right(right), random(random) {}
+ * };
+ */
+
+class Solution {
+public:
+    map<Node*, NodeCopy*> mapping;
+    // mapping[NULL] = NULL;
+    NodeCopy* copyRandomBinaryTree(Node* root) {
+        if(!root)return NULL;
+
+        NodeCopy* newNode;
+        if(mapping.count(root) == 0){
+            newNode = new NodeCopy(root->val);
+            mapping[root] = newNode;
+        }else{
+            newNode = mapping[root];
+        }
+        
+        newNode->left = copyRandomBinaryTree(root->left);
+        newNode->right = copyRandomBinaryTree(root->right);
+        if(root->random){
+            if(mapping.count(root->random) == 0)
+                mapping[root->random] = new NodeCopy(root->random->val);
+            newNode->random = mapping[root->random];
+        }
+
+        return newNode;
+    }
+};
