@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int findNbits(int num){
+        int c = 0;
+        while(num){
+            c += num & 1;
+            num >>= 1; 
+        }
+        return c;
+    }
+    vector<int> sortByBits(vector<int>& arr) {
+        
+        sort(arr.begin(), arr.end(), [&](const int a, const int b){
+            int na = findNbits(a);
+
+            int nb = findNbits(b);
+            return na == nb ? (a < b) : (na < nb);
+        });
+
+        return arr;
+    }
+};
