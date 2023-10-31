@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int findDepth(int num){
+        return floor(log2(num)) + 1;
+    }
+
+    int findFirstLevel(int depth){
+        //depth starts at 1
+        return 1 << (depth-1);
+    }
+    vector<int> pathInZigZagTree(int label) {
+
+        vector<int> ans;
+        
+        int target = label;
+        while(target >= 1){
+            
+            ans.push_back(target);
+            int depth = findDepth(target);
+            if(depth % 2 == 0){
+                int forwardNum = findFirstLevel(depth) + 2*findFirstLevel(depth) - 1 - target;
+                
+                target = forwardNum/2;
+                cout << "even depth : "  << forwardNum << endl;
+            }else{
+                int l = target/2 - findFirstLevel(depth)/2;
+                target = findFirstLevel(depth) - 1 - l;
+                cout << "odd depth : "  << target << endl;
+            }
+            // target = 
+    
+        }
+        reverse(ans.begin(), ans.end());
+        return ans; 
+    }
+};
