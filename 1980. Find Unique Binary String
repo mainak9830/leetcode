@@ -1,0 +1,25 @@
+class Solution {
+public:
+    set<string> alreadyPresent;
+    string backtrack(string ans, int digits){
+        if(digits == 0 && alreadyPresent.count(ans) == 0){
+            return ans;
+        }
+
+        if(digits){
+            string comb1 = backtrack(ans+"0", digits-1);
+            if(comb1.length() > 0)return comb1;
+            string comb2 = backtrack(ans+"1", digits-1);
+            if(comb2.length() > 0)return comb2;
+        }
+        
+
+        return "";
+    }
+    string findDifferentBinaryString(vector<string>& nums) {
+        for(string num : nums){
+            alreadyPresent.insert(num);
+        }
+        return backtrack("", nums[0].length());
+    }
+};
