@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int getLastMoment(int n, vector<int>& left, vector<int>& right) {
+        int time = 0;
+        int left_pos = n+1;
+        int right_pos = -1;
+
+        for(int el : right){
+            left_pos = min(left_pos, el);
+        }
+
+        for(int el : left){
+            right_pos = max(right_pos, el);
+        }
+
+        cout << left_pos << " " << right_pos << endl; 
+        return max(n-left_pos, right_pos);
+    }
+};
