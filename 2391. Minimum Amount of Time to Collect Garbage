@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int garbageCollection(vector<string>& garbage, vector<int>& travel) {
+        
+        int n = garbage.size();
+        int travel_cost = 0;
+        map<char, int> cost;
+        vector<int> targetCost(n, 0);
+        for(int i = 1;i < n;i++){
+            targetCost[i] = targetCost[i-1] + travel[i-1];
+        }
+
+        map<char, int> garbages_seen;
+        
+
+
+        for(int i = 0;i < n;i++){
+            
+            for(char c : garbage[i]){
+                garbages_seen[c] = i;
+                cost[c] += 1;
+                // garbages_seen.insert({c, i});
+            } 
+             
+            
+        }
+
+        for(auto kv : garbages_seen){
+           cost[kv.first] += targetCost[kv.second];
+        }
+        // int time = INT_MAX;
+        // for(auto kv : cost){
+        //     cout << kv.first << " " << kv.second << endl;
+        // }
+
+        return cost['G'] + cost['P'] + cost['M'];
+
+    }
+};
