@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int firstDigit(int num){
+        return (num/100);
+    }
+    int secondDigit(int num){
+        return (num/10)%10-1;
+    }
+    int nodeId(int num){
+        return firstDigit(num)*10 + secondDigit(num);
+    }
+    int pathSum(vector<int>& nums) {
+        int i = 1;
+        int n = nums.size();
+        int cost = 0;
+        map<int, pair<int, int>> tree;
+        tree[0] = {0, 0};
+        for(int i = 0;i < n;i++){
+            int num = nums[i];
+            tree[nodeId(num)] = {num%10 + tree[(firstDigit(num)-1)*10+(secondDigit(num)/2)].first, 0};
+            tree[(firstDigit(num)-1)*10+(secondDigit(num)/2)].second++;
+        }
+
+        for(auto kv : tree){
+            // cout << kv.first << " " << kv.second.first << " " << kv.second.second << endl;
+            if(kv.second.second == 0)
+                cost += kv.second.first;
+        }
+        return cost;
+    }
+};
