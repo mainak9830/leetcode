@@ -1,0 +1,50 @@
+class Graph {
+public:
+    map<int, vector<pair<int, int>>> graph;
+    Graph(int n, vector<vector<int>>& edges) {
+        // graph = new vector<int>[n+1];
+        for(auto edge : edges){
+            graph[edge[0]].push_back({edge[1], edge[2]});
+        }
+    }
+    
+    void addEdge(vector<int> edge) {
+        graph[edge[0]].push_back({edge[1], edge[2]});
+    }
+    
+    int shortestPath(int node1, int node2) {
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+        // int cost = 0;
+        set<int> visited;
+
+        cout << endl;
+        pq.push({0, node1});
+        // visited.insert(node1);
+        while(!pq.empty()){
+            auto u_node = pq.top();
+            pq.pop();
+            // cost += u_node[0];
+            cout << u_node[0] << " ";
+            if(u_node[1] == node2)
+                return u_node[0];
+            if(visited.count(u_node[1])){
+                continue;
+            }    
+            visited.insert(u_node[1]);
+            for(auto v_node : graph[u_node[1]]){
+                pq.push({u_node[0] + v_node.second, v_node.first});
+            }
+
+        }
+
+
+        return -1;
+    }
+};
+
+/**
+ * Your Graph object will be instantiated and called as such:
+ * Graph* obj = new Graph(n, edges);
+ * obj->addEdge(edge);
+ * int param_2 = obj->shortestPath(node1,node2);
+ */
