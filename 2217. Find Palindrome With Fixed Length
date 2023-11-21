@@ -1,0 +1,60 @@
+class Solution {
+public:
+    string process(int query, int frontDigits){
+        int d = 1;
+        
+        string number = "";
+        // int permutations = pow(10, frontDigits-d);
+
+        // if(query/permutations)
+        //     number += '0' + query/permutations;
+        // else
+        //     number += '1' + (query/permutations);
+
+        while(d <= frontDigits){
+            int permutations = pow(10, frontDigits-d);
+            // if(query >= permutations)
+            // cout << permutations << " " << query/permutations << endl;
+          
+
+            // if(query%permutations)
+                number += '0' + (query/permutations) + (d == 1 ? 1 : 0);
+            //90
+            // 19
+            //20
+            query %= permutations;
+            d++;
+        }
+        cout << number << endl;
+        
+        return number;
+    }
+    vector<long long> kthPalindrome(vector<int>& queries, int intLength) {
+        vector<long long> answers;
+        int frontDigits = intLength%2 ? intLength/2+1 : intLength/2;
+        int limit = 9 * pow(10, frontDigits-1);
+        // cout << frontDigits << endl;
+
+        for(int query : queries){
+            if(query > limit)
+                answers.push_back(-1);
+            else{
+                string ans = process(query-1, frontDigits);
+                if(intLength % 2){
+                    string rev = ans;
+                    rev.pop_back();
+                    reverse(rev.begin(), rev.end());
+                    ans += rev;
+                }else{
+                    string rev = ans;
+                    // rev.pop_back();
+                    reverse(rev.begin(), rev.end());
+                    ans += rev;
+                }
+
+                answers.push_back(stoll(ans));
+            }
+        }
+        return answers;
+    }
+};
