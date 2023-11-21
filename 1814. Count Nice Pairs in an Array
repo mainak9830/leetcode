@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int reverse(int num){
+        int sum = 0;
+        while(num){
+            int r = num % 10;
+            sum = sum*10 + r;
+            num = num/10;
+        }
+        return sum;
+    }
+    int countNicePairs(vector<int>& nums) {
+        // x and y
+        int n = nums.size();
+        // nums[i] nums[j]
+        for(int i = 0;i < n;i++)
+            nums[i] -= reverse(nums[i]);
+
+        int count = 0;
+        map<int, int> map;
+        for(int i = 0;i < n;i++){
+            cout << nums[i] << " ";
+            map[nums[i]]++;
+            if(map[nums[i]] >= 2)
+                count = (count + map[nums[i]]-1) % 1000000007;
+        }
+        return count;
+    }
+};
