@@ -1,0 +1,58 @@
+class Solution {
+public:
+    map<int, vector<int>> graph;
+    int dfs(int u, vector<int> &counter){
+        int r = 0, l = 0;
+        if(graph[u].size() >= 1)
+            l = dfs(graph[u][0], counter);
+        if(graph[u].size() == 2)
+            r = dfs(graph[u][1], counter);
+
+        counter[u] = l + r + 1;
+        return counter[u];
+    }
+    int countHighestScoreNodes(vector<int>& parents) {
+        
+        int n = parents.size();
+        
+        
+        for(int i = 1;i < n;i++){
+            
+            graph[parents[i]].push_back(i);
+        }
+
+        vector<int> counter(n, 0);
+        int totalNumber = dfs(0, counter);
+        long long int maximumScore = 0;
+        int frequency = 0;
+        for(int i = 0;i < n;i++){
+            
+        
+            long long int score = 1;
+            int l = 0, r = 0;
+            
+            if(graph[i].size() >= 1){
+                score *= counter[graph[i][0]];
+                l = counter[graph[i][0]];
+            }
+            if(graph[i].size() == 2){
+                score *= counter[graph[i][1]];
+                r = counter[graph[i][1]];
+            }
+            if(totalNumber - l - r - 1 > 0)
+                score *= (totalNumber - l - r - 1);
+            // maximumScore = max(maximumScore, score);
+            if(score > maximumScore){
+                frequency = 0;
+                maximumScore = score;
+            }
+            if(score == maximumScore){
+                frequency++;
+            }
+            cout << score << endl;
+             
+        }
+
+        return frequency;
+    }
+};
