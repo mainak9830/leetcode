@@ -1,0 +1,37 @@
+/**
+ * Definition for a binary tree node.
+ * struct Node {
+ *     char val;
+ *     Node *left;
+ *     Node *right;
+ *     Node() : val(' '), left(nullptr), right(nullptr) {}
+ *     Node(char x) : val(x), left(nullptr), right(nullptr) {}
+ *     Node(char x, Node *left, Node *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    string calExpression(Node* root){
+        if(root == NULL)
+            return "";
+        
+        // cout << root->val << " ";
+        if(root->val == '+')
+            return calExpression(root->left) + calExpression(root->right);
+        
+        
+        return string(1, root->val); 
+
+    }
+    bool checkEquivalence(Node* root1, Node* root2) {
+        string expression1 = calExpression(root1);
+        string expression2 = calExpression(root2);
+
+        sort(expression1.begin(), expression1.end());
+        sort(expression2.begin(), expression2.end());
+
+        cout << expression1  << " " << expression2 << endl;
+        return expression1 == expression2;
+    }
+
+};
