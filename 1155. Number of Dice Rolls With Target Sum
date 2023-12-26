@@ -1,0 +1,17 @@
+class Solution {
+public:
+    map<pair<int, int>, int> dp;
+    int MOD = 1'000'000'007;
+    int numRollsToTarget(int n, int k, int target) {
+        if(n == 0 && target == 0)return 1;
+        if(n == 0 || target == 0)return 0;
+        if(dp.count({n,target}))return dp[{n, target}];
+        int combination = 0;
+        for(int d=1;d <= k;d++){
+            combination = (combination + numRollsToTarget(n-1, k, target-d))%MOD;
+        }
+
+        dp[{n, target}] = combination;
+        return combination;
+    }
+};
