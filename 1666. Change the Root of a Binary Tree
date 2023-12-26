@@ -1,0 +1,36 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* parent;
+};
+*/
+
+class Solution {
+public:
+    Node* originalRoot;
+    Node* flip(Node* root, Node* rParent){
+        
+        Node* parent = root->parent;
+        root->parent = rParent;
+        if(root->left == rParent)root->left = NULL;
+        if(root->right == rParent)root->right = NULL;
+        if(root == originalRoot)return root;
+        if(root->left)root->right = root->left;
+        
+        root->left = parent;
+        
+        
+        flip(parent, root);
+
+        return root;
+
+    }
+    Node* flipBinaryTree(Node* root, Node * leaf) {
+        originalRoot = root;
+        return flip(leaf, NULL);
+    }
+};
