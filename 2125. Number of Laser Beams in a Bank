@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int countDevices(string s){
+        int count = 0;
+
+        for(char c : s){
+            count += (c == '1');
+        }
+
+        return count;
+    }
+    int numberOfBeams(vector<string>& bank) {
+        int ways = 0;
+        int c1 = 0;
+        int c2 = 0;
+
+        for(string floor : bank){
+
+            int x = countDevices(floor);
+            if(x > 0){
+                c1 = c2;
+                c2 = x;
+                ways += c1 * c2;
+            }
+            
+        }
+
+        return ways;
+    }
+};
