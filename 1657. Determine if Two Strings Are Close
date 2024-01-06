@@ -1,0 +1,22 @@
+class Solution {
+public:
+    bool closeStrings(string word1, string word2) {
+        set<char> s1, s2;
+        vector<int> map1(26, 0), map2(26, 0);
+
+        for(char c : word1){
+            map1[c-'a']++;
+            s1.insert(c);
+        }
+
+        for(char c : word2){
+            map2[c-'a']++;
+            s2.insert(c);
+        }
+
+        sort(map1.begin(), map1.end());
+        sort(map2.begin(), map2.end());
+
+        return map1 == map2 && s1 == s2;
+    }
+};
