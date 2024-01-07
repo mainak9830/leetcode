@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int findShortestSubArray(vector<int>& nums) {
+        // degree calculated by map max element frequency
+        int n = nums.size();
+        map<int, int> count;
+        map<int, int> first, last;
+        int degree = 0;
+        for(int i = 0;i < n;i++){
+            int num = nums[i];
+            count[num]++;
+            degree = max(degree, count[num]);
+            first[num] = n;
+            last[num] = -1;
+        }
+
+        for(int i = 0;i < n;i++){
+            int num = nums[i];
+            first[num] = min(first[num], i);
+            last[num] = max(last[num], i);
+        }
+        int minLength = n;
+        for(auto num : count){
+            if(num.second == degree)
+                minLength = min(minLength, last[num.first]-first[num.first]+1);
+        }
+
+        return minLength;
+        
+    }
+};
