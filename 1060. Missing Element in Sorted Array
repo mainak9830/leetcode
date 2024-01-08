@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int binarySearch(vector<int>& nums, int k){
+        int n = nums.size();
+        int l = 0;
+        int h = n-1;
+
+        while(l <= h){
+            int mid = l + (h-l)/2;
+
+            int missing_numbers = (nums[mid]-nums[0] - mid);
+
+            if(missing_numbers < k)
+                l = mid+1;
+            else
+                h = mid-1;
+        }
+
+        return nums[0] + l-1 + k;
+
+    }
+    int missingElement(vector<int>& nums, int k) {
+        
+        return binarySearch(nums, k);
+    }
+};
