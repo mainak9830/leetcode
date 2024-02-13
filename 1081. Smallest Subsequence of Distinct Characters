@@ -1,0 +1,31 @@
+class Solution {
+public:
+    string smallestSubsequence(string s) {
+        stack<char> stack;
+        set<char> seen;
+        map<char, int> last_occurence;
+        for(int i = 0;i < s.length();i++){
+            last_occurence[s[i]] = i;
+        }
+
+        for(int i = 0;i < s.length();i++){
+            if(!seen.count(s[i])){
+
+
+                while(!stack.empty() && stack.top() > s[i] && last_occurence[stack.top()] > i){
+                    seen.erase(stack.top());
+                    stack.pop();
+                }
+                stack.push(s[i]);
+                seen.insert(s[i]);
+            }
+        }
+        string ans = "";
+        while(!stack.empty()){
+            ans += stack.top();
+            stack.pop();
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
