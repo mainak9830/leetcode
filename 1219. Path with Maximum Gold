@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int dfs(int i, int j, vector<vector<int>>& grid, vector<vector<bool>>& visited){
+        int m = grid.size();
+        int n = grid[0].size();
+
+        if(i < 0 || i >= m || j < 0 || j >= n || visited[i][j] || !grid[i][j])return 0;
+        visited[i][j] = true;
+        int gold = grid[i][j] + 
+            max({
+                dfs(i+1, j, grid, visited), 
+                dfs(i, j+1, grid, visited), 
+                dfs(i-1, j, grid, visited),
+                dfs(i, j-1, grid, visited)
+            });
+        visited[i][j] = false;
+        return gold;
+
+        
+    }
+    int getMaximumGold(vector<vector<int>>& grid) {
+        int maxGold = 0;
+        int m = grid.size();
+        int n = grid[0].size();
+
+
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                if(grid[i][j] > 0){
+                    vector<vector<bool>> visited(m, vector<bool>(n, false));
+                    auto gold = dfs(i, j, grid, visited);
+                    maxGold = max(maxGold, gold);
+                }
+            }
+        }
+        return maxGold;
+    }
+};
