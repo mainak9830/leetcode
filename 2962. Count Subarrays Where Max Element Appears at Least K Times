@@ -1,0 +1,39 @@
+class Solution {
+public:
+    long long countSubarrays(vector<int>& nums, int k) {
+        int n = nums.size();
+        long long ans = (1LL*n*(n+1))/2;
+
+        int l = 0;
+        int h = 0;
+        //calculate the number of subarrays where the max element appears atmost k-1
+
+        long long count = 0;
+        // int max_element = *max(nums.begin(), nums.end());
+        int max_element = 0;
+
+        for(int num : nums){
+            max_element = max(max_element, num);
+        }
+        // cout << max_element << endl;
+        int max_count = 0;
+        while(h < n){
+            if(nums[h] == max_element){
+                max_count++;
+            }
+
+            while(l < n && max_count >= k){
+                if(nums[l] == max_element){
+                    max_count--;
+                }
+                l++;
+            }
+            count += h-l+1;
+            h++;
+        }
+
+        return ans-count;
+        
+
+    }
+};
