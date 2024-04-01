@@ -1,0 +1,100 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class CBTInserter {
+public:
+    TreeNode *head;
+    int height = 0;
+    int total_nodes = 0;
+    int findHeight(TreeNode* root){
+        int h = 0;
+
+        while(root){
+            root = root->left;
+            h++;
+        }
+        return h;
+    }
+
+    int countNodes(TreeNode* root){
+        if(!root)return 0;
+        return 1 + countNodes(root->left) + countNodes(root->right);
+    }
+
+    CBTInserter(TreeNode* root) {
+        head = root;
+        // height = findHeight(root);
+        total_nodes = countNodes(root);
+    }
+    
+    int insert(int val) {
+        //perfect 2^n then 
+        int target_nodes = total_nodes + 1;
+        cout << val << " entry : target nodes " << target_nodes << endl;
+        
+        int height = floor(log2(target_nodes));
+        cout << "height " << height << endl;
+        int nodes = total_nodes;
+        TreeNode* root = head;
+        TreeNode* parent = head;
+
+        if(target_nodes == (1 << height)){
+            
+            while(root){
+                parent = root;
+                root = root->left;
+            }
+            parent->left = new TreeNode(val);
+            total_nodes++;
+            return parent->val;
+
+        }
+        while(height > 0){
+            //decide whether to go left or right
+            int lastLayerNodesCount = 1 << height;
+            cout << "last layer nodes " << lastLayerNodesCount << endl;
+            int placement = target_nodes - (1 << height)+1;
+            cout << "placement " << placement << endl;
+            parent = root;
+            if(placement > (lastLayerNodesCount/2)){
+                target_nodes = (target_nodes - 1 - placement)/2 + (placement - (lastLayerNodesCount/2));
+                root = root->right;
+
+            }else{
+                target_nodes = (target_nodes - 1 - placement)/2 + placement;
+                root = root->left;
+            }
+            height--;
+            
+        }
+        if(!parent->left){
+            parent->left = new TreeNode(val);
+        }else if(!parent->right){
+            parent->right = new TreeNode(val);
+        }
+
+        total_nodes++;
+
+        // cout << val << " exit" << endl;
+        return parent->val;
+    }
+    
+    TreeNode* get_root() {
+        return head;
+    }
+};
+
+/**
+ * Your CBTInserter object will be instantiated and called as such:
+ * CBTInserter* obj = new CBTInserter(root);
+ * int param_1 = obj->insert(val);
+ * TreeNode* param_2 = obj->get_root();
+ */
