@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int minCost(string colors, vector<int>& neededTime) {
+        
+        int n = colors.length();
+        int cost = neededTime[0];
+        int maxElement = neededTime[0];
+        int final_cost = 0;
+        for(int i = 1;i <= n;i++){
+            if(i == n || colors[i] != colors[i-1]){
+                final_cost += cost-maxElement;
+                if(i < n){
+                    cost = neededTime[i];
+                    maxElement = neededTime[i];
+                }
+                
+            }else if(colors[i] == colors[i-1]){
+                cost += neededTime[i];
+                maxElement = max(maxElement, neededTime[i]);
+            }
+        }
+
+        return final_cost;
+    }
+};
