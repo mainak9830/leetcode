@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<vector<int>> findMatrix(vector<int>& nums) {
+        
+        vector<set<int>> res = {};
+
+        for(int num : nums){
+            bool inserted = false;
+            for(int i = 0; i < res.size();i++){
+                if(!res[i].count(num)){
+                    inserted = true;
+                    res[i].insert(num);
+                    cout << num << endl;
+                    break;
+                }
+            }
+            if(!inserted){
+                res.push_back(set<int>{num});
+            }
+        }
+
+        vector<vector<int>> ans = {};
+        for(auto r : res){
+            ans.push_back(vector<int>(r.begin(), r.end()));
+        }
+
+        return ans;
+    }
+};
