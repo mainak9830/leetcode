@@ -1,0 +1,37 @@
+class Solution {
+public:
+    vector<int> restoreArray(vector<vector<int>>& adjacentPairs) {
+        
+        int n = adjacentPairs.size();
+        map<int, vector<int>> adjacentMap;
+
+        for(auto pair : adjacentPairs){
+            adjacentMap[pair[0]].push_back(pair[1]);
+            adjacentMap[pair[1]].push_back(pair[0]);
+        }
+        int root = 0;
+        for(auto kv : adjacentMap){
+            if(kv.second.size() == 1){
+                root = kv.first;
+                break;
+            }
+        }
+        vector<int> ans = {root};
+        set<int> visited = {root};
+        do{
+            for(int v : adjacentMap[root]){
+                if(!visited.count(v)){
+                    root = v;
+                    visited.insert(v);
+                    break;
+                }
+            }
+
+            ans.push_back(root);
+
+
+
+        }while(adjacentMap[root].size() != 1);
+        return ans;
+    }
+};
