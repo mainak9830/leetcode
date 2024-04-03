@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool check(vector<int> arr, int l, int r){
+        sort(arr.begin()+l, arr.begin()+r+1);
+        int d = arr[l+1] - arr[l];
+        int n = arr.size();
+        
+        for(int i = l+1;i <= r;i++){
+            
+            if(d != arr[i]-arr[i-1])
+                return false;
+        }
+        return true;
+    }
+    vector<bool> checkArithmeticSubarrays(vector<int>& nums, vector<int>& l, vector<int>& r) {
+        vector<bool> ans;
+        for(int i = 0;i < l.size();i++){
+            ans.push_back(check(vector<int>(nums), l[i], r[i]));
+        }
+
+        return ans;
+    }
+};
