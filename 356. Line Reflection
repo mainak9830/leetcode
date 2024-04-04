@@ -1,0 +1,39 @@
+class Solution {
+public:
+    bool isReflected(vector<vector<int>>& points) {
+        // int n = points.size();
+        map<int, set<int>> x_coordinates;
+        for(auto point  : points){
+            x_coordinates[point[1]].insert(point[0]);
+        }   
+        bool first = true;
+        int x = 0;
+        int count = 0;
+        for(auto [y, x_coordinate] : x_coordinates){
+            vector<int> x_vector(x_coordinate.begin(), x_coordinate.end());
+            int n = x_vector.size();
+            
+            // if(x_vector.size() == 1){
+            //     count++;
+
+            // }
+
+            int l = 0;
+            int h = n-1;
+            while(l <= h){
+                if(first){
+                    first = false;
+                    x = x_vector[l] + x_vector[h];
+                }
+                else if(x != x_vector[l] + x_vector[h])
+                    return false;
+                l++;
+                h--;
+            }
+        }
+        
+
+
+        return true;
+    }
+};
