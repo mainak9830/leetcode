@@ -1,0 +1,49 @@
+class Solution {
+public:
+    vector<string> parseTransaction(string transaction){
+        vector<string> output;
+        stringstream ss(transaction);
+        string word;
+        while(getline(ss, word, ',')){
+            // cout << word << endl;
+            output.push_back(word);
+        }
+        return output;
+    }
+    vector<string> invalidTransactions(vector<string>& transactions) {
+        set<int> answers;
+        map<string, vector<int>> same_place_map; 
+        for(int i = 0;i < transactions.size();i++){
+            auto transaction = transactions[i];
+            vector<string> decoded = parseTransaction(transaction);
+            same_place_map[decoded[0]].push_back(i);
+            if(stoi(decoded[2]) > 1000)
+                answers.insert(i);
+        }
+
+        for(auto kv : same_place_map){
+            auto name = kv.first;
+            auto txns = kv.second;
+            for(int i = 0;i < txns.size();i++){
+                if(answers.count(txns[i]))continue;
+                auto txn_i = parseTransaction(transactions[txns[i]]);
+                for(int j = 0;j < txns.size();j++){
+                    if(i == j)continue;
+                    auto txn_j = parseTransaction(transactions[txns[j]]);
+
+                    if(txn_j[3] != txn_i[3] and abs(stoi(txn_i[1])-stoi(txn_j[1])) <= 60){
+                        answers.insert(txns[i]);
+                        answers.insert(txns[j]);
+                        break;
+                    }
+                }
+            }
+        }
+
+        vector<string> ans;
+
+        for(int i : answers)
+            ans.push_back(transactions[i]);
+        return ans;
+    }
+};
