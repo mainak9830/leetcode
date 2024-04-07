@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool checkCondition(vector<int>& candies, int mid, long long k){
+        long long splits = 0;
+        for(int candy : candies){
+            splits += candy / mid;
+        }
+
+        return splits >= k;
+    }
+    int maximumCandies(vector<int>& candies, long long k) {
+        
+        int l = 1;
+        int h = 10000000;
+
+        while(l <= h){
+            int mid = l + (h-l)/2;
+
+            if(checkCondition(candies, mid, k)){
+                l = mid+1;
+            }else{
+                h = mid-1;
+            }
+        }
+
+        return l-1;
+    }
+};
