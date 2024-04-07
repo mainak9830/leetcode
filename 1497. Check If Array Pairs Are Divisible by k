@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool canArrange(vector<int>& arr, int k) {
+        
+        // how to handle negative values
+        int n = arr.size();
+
+        map<int, int> map;
+
+        for(int i = 0;i < n;i++){
+            map[((arr[i] % k) + k)%k]++;
+        }
+
+        for(auto [key, value] : map){
+            
+            if(key != 0 and map[key] != map[k-key])
+                return false;
+            if(key%k == 0 and map[key] % 2 != 0)
+                return false;
+        }
+
+        return true;
+    }
+};
