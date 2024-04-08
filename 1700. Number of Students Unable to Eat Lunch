@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int countStudents(vector<int>& students, vector<int>& sandwiches) {
+        queue<int> studentQueue;
+
+        int studentsMap[2] = {0,0};
+        for(int i = 0;i < sandwiches.size();i++){
+            studentsMap[students[i]]++;
+            studentQueue.push(students[i]);
+        }
+
+        int j = 0;
+
+        while(!studentQueue.empty()){
+            int student = studentQueue.front();
+            cout << student << " " << sandwiches[j] << " " << studentsMap[student] << endl;
+            
+            if(studentsMap[sandwiches[j]] == 0)break;
+            if(sandwiches[j] == student){
+                j++;
+                studentsMap[student]--;
+                studentQueue.pop();
+            }else{
+                studentQueue.pop();
+                studentQueue.push(student);
+            }
+            
+        }
+
+        return studentQueue.size();
+
+    }
+};
