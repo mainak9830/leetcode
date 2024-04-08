@@ -1,0 +1,54 @@
+class Solution {
+public:
+    struct Node{
+        map<int, Node*> childs;
+        bool end = false;
+    };
+    class Trie{
+    public:
+        Node* root;
+        Trie(){
+            root = new Node();
+        }
+
+        void insert(string arr){
+            Node* node = root;
+            for(char c : arr){
+                if(!node->childs.count(c)){
+                    node->childs[c] = new Node();
+                }
+                node = node->childs[c];
+            }
+            node->end = true;
+        }
+
+        int match(string arr){
+            int len = 0;
+            Node* node = root;
+            for(char c : arr){
+                if(!node or !node->childs.count(c))
+                    break;
+                len++;
+                node = node->childs[c];
+            }
+
+            return len;
+
+        }
+
+
+    };
+    int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2) {
+        Trie trie;
+        for(int number : arr1){
+            trie.insert(to_string(number));
+        }
+        int ans = 0;
+        for(int number : arr2){
+            int len = trie.match(to_string(number));
+            ans = max(ans, len);
+        }
+
+        return ans;
+    }
+};
