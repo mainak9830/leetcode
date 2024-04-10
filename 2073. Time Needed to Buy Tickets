@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int timeRequiredToBuy(vector<int>& tickets, int k) {
+        int time = 0;
+        while(tickets[k] != 0){
+            int minTickets = INT_MAX;
+            for(int i = 0;i < tickets.size();i++){
+                if(tickets[i] == 0)continue;
+                minTickets = min(minTickets, tickets[i]);
+            }
+            bool condition = minTickets == tickets[k];
+            int count_eq = 0, count = 0;
+            for(int i = 0;i < tickets.size();i++){
+                if(tickets[i] == 0)continue;
+
+                tickets[i] -= minTickets;
+                count++;
+                if(i <= k)
+                    count_eq++;
+                // if(tickets[k] == 0)
+                //     break;
+                
+            }
+            if(condition)
+                time += minTickets * count_eq + (minTickets-1)*(count-count_eq);
+            else
+                time += minTickets * count;
+            // cout << minTickets <<  " " << count << " " << count_eq << endl;
+        }
+
+        return time;
+    }
+};
