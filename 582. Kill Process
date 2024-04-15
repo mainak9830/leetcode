@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> output;
+    map<int, vector<int>> graph;
+    void dfs(int u){
+        output.push_back(u);
+
+        for(int v : graph[u])
+            dfs(v);
+    }
+    vector<int> killProcess(vector<int>& pid, vector<int>& ppid, int kill) {
+        int n = pid.size();
+        
+
+        for(int i = 0;i < n;i++){
+            graph[ppid[i]].push_back(pid[i]);
+        }
+
+        dfs(kill);
+
+        return output;  
+    }
+};
