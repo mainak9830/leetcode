@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int time = 0;
+    set<int> visited;
+    void dfs(int u, vector<vector<int>>& graph, stack<vector<int>>& path, vector<bool>& hasApple){
+        
+        cout << u << endl;
+        visited.insert(u);
+        if(hasApple[u]){
+            time += path.size();
+            while(path.size())
+                path.pop();
+        }
+        for(int v : graph[u]){
+            if(!visited.count(v)){
+                path.push({u,v});
+                dfs(v, graph, path, hasApple);
+                if(!path.empty())
+                    path.pop();
+            }
+        }
+
+
+    }
+    int minTime(int n, vector<vector<int>>& edges, vector<bool>& hasApple) {
+        vector<vector<int>> graph(n);
+
+        for(auto edge : edges){
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
+        }
+        stack<vector<int>> path;
+        dfs(0, graph, path, hasApple);
+
+        return time*2;
+
+    }
+};
