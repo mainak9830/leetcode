@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<vector<int>> ans;
+    pair<int, int> least, greatest;
+    void dfs(vector<vector<int>>& land, int x, int y){
+        int m = land.size();
+        int n = land[0].size();
+
+        if(x < 0 or y < 0 or x >= m or y >= n or land[x][y] <= 0)return;
+        land[x][y] = -1;
+        if(x <= least.first and y <= least.second){
+            least = {x,y};
+        }
+        if(x >= greatest.first and y >= greatest.second){
+            greatest = {x,y};
+        }
+        dfs(land, x+1, y);
+        dfs(land, x, y+1);
+        dfs(land, x, y-1);
+        dfs(land, x-1, y);
+    }
+    vector<vector<int>> findFarmland(vector<vector<int>>& land) {
+        int m = land.size();
+        int n = land[0].size();
+
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                if(land[i][j] > 0){
+                    least.first = m;
+                    least.second = n;
+                    greatest.first = -1;
+                    greatest.second = -1;
+                    dfs(land, i, j);
+                    ans.push_back({least.first, least.second, greatest.first, greatest.second});
+                }
+            }
+        }
+
+        return ans;
+    }
+};
