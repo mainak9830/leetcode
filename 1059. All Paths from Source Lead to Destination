@@ -1,0 +1,22 @@
+class Solution {
+public:
+    bool dfs(vector<vector<int>>& graph, int u, int destination, vector<int>& visited){
+        if(graph[u].size() == 0)return u == destination;
+
+        if(visited[u] != -1)return visited[u];
+        visited[u] = 0;
+
+        for(int v : graph[u]){
+            if(!dfs(graph, v, destination, visited))return false;
+        }
+        visited[u] = 1;
+
+        return true;
+    }
+    bool leadsToDestination(int n, vector<vector<int>>& edges, int source, int destination) {
+        vector<vector<int>> graph(n);
+        vector<int> visited(n,-1);
+        for(auto edge : edges)graph[edge[0]].push_back(edge[1]);
+        return dfs(graph, source, destination, visited);
+    }
+};
