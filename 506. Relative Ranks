@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<string> findRelativeRanks(vector<int>& score) {
+        int n = score.size();
+        vector<pair<int,int>> pscore;
+        for(int i = 0;i < n;i++){
+            pscore.push_back({score[i], i});
+        }
+        auto cmp = [&](const pair<int, int> &a, const pair<int, int> &b){
+            return a.first > b.first;
+        };
+        sort(pscore.begin(), pscore.end(), cmp);
+        vector<string> output(n, "");
+
+        for(int i = 0;i < n;i++){
+            int pos = pscore[i].second;
+            if(i == 0)
+                output[pos] = "Gold Medal";
+            else if(i == 1)
+                output[pos] = "Silver Medal";
+            else if(i == 2)
+                output[pos] = "Bronze Medal";
+            else
+                output[pos] = to_string(i+1);
+        }
+
+        return output;
+    }
+};
