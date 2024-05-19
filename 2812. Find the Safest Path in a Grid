@@ -1,0 +1,75 @@
+class Solution {
+public:
+    bool checkValid(int x, int y, vector<vector<int>> &grid){
+        int m = grid.size();
+        int n = grid[0].size();
+        if(x < 0 || y < 0 || x >= m || y >= n)return false;
+        return true;
+    }
+
+    int maximumSafenessFactor(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+
+
+        vector<vector<int>> safeness(m, vector<int>(n, -1));
+
+        queue<vector<int>> queue;
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                if(grid[i][j] == 1){
+                    queue.push({i,j, 0});
+                    safeness[i][j] = 0;
+                }
+            }
+        }
+        vector<vector<int>> directions = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+        while(!queue.empty()){
+            auto node = queue.front();
+            queue.pop();
+            int dis = node[2];
+            int x = node[0];
+            int y = node[1];
+
+            // safeness[x][y] = dis;
+
+
+            for(auto d : directions){
+                int x1 = x + d[0];
+                int y1 = y + d[1];
+                if(checkValid(x1, y1, safeness) && safeness[x1][y1] == -1){
+                    queue.push({x1,y1,dis+1});
+                    safeness[x1][y1] = dis+1;
+                }
+            }
+        }
+
+        
+        //dijkstra 
+        priority_queue<vector<int>> pq;
+        pq.push({safeness[0][0],0,0});
+        vector<vector<bool>> visited(m, vector<bool>(n, false));
+        visited[0][0] = true;
+        while(!pq.empty()){
+
+            auto node = pq.top();
+            pq.pop();
+
+            if(node[1] == m-1 && node[2] == n-1)
+                return node[0];
+
+            for(auto dir : directions){
+                int x1 = node[1] + dir[0];
+                int y1 = node[2] + dir[1];
+
+                if(checkValid(x1, y1, safeness) && !visited[x1][y1]){
+                    visited[x1][y1] = true;
+                    pq.push({min(node[0], safeness[x1][y1]), x1, y1});
+                }
+            }
+        }
+
+        return 0;
+
+    }
+};
