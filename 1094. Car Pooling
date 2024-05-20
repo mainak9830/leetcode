@@ -1,0 +1,17 @@
+class Solution:
+    def carPooling(self, trips: List[List[int]], capacity: int) -> bool:
+        line = []
+
+        for trip in trips:
+            line.append([trip[1], trip[0]])
+            line.append([trip[2], -trip[0]])
+        
+        line.sort()
+
+        load = 0
+        for point in line:
+            load += point[1]
+            if(load > capacity):
+                return False
+
+        return True
