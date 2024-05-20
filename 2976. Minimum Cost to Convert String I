@@ -1,0 +1,31 @@
+INF = 100001
+class Solution:
+    
+    def minimumCost(self, source: str, target: str, original: List[str], changed: List[str], cost: List[int]) -> int:
+        inf = 10 ** 18
+        total_cost = 0
+        shortestDist = [[inf for j in range(26)] for i in range(26)]
+        for i in range(26):
+            shortestDist[i][i] = 0
+        
+        print(len(shortestDist), len(shortestDist[0]))
+        for i in range(len(original)):
+            # print(ord(original[i])-ord('a'), " ", ord(changed[i])-ord('a'))
+            # print(shortestDist[ord(original[i])-ord('a')][ord(changed[i])-ord('a')])
+            shortestDist[ord(original[i])-ord('a')][ord(changed[i])-ord('a')] = min(shortestDist[ord(original[i])-ord('a')][ord(changed[i])-ord('a')], cost[i])
+        
+        for k in range(26):
+            for i in range(26):
+                for j in range(26):
+                    # if shortestDist[i][k] != float("inf") and shortestDist[k][j] != float("inf"):
+                    shortestDist[i][j] = min(shortestDist[i][j], 
+                                    shortestDist[i][k] + shortestDist[k][j])
+
+        for i in range(len(source)):
+            # if shortestDist[ord(source[i])-ord('a')][ord(target[i])-ord('a')] >= inf:
+            #     return -1
+            total_cost += shortestDist[ord(source[i])-ord('a')][ord(target[i])-ord('a')]
+
+            if total_cost >= inf:
+                return -1
+        return total_cost
