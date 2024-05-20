@@ -1,0 +1,34 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeInBetween(self, list1: ListNode, a: int, b: int, list2: ListNode) -> ListNode:
+        node = ListNode(-1, list1)
+        # what if a == b
+        prev = None
+        curr = node
+        length = -1
+        start = None
+        end = None
+        while curr:
+            if length == a:
+                start = prev
+            if length == b:
+                end = curr
+            prev = curr
+            curr = curr.next
+            length += 1
+
+        start.next = list2
+
+        list2_curr = list2
+
+        while list2_curr and list2_curr.next:
+            list2_curr = list2_curr.next
+
+        list2_curr.next = end.next
+        end.next = None    
+        return node.next
+            
