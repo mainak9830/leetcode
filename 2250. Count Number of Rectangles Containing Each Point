@@ -1,0 +1,22 @@
+class Solution:
+    def countRectangles(self, rectangles: List[List[int]], points: List[List[int]]) -> List[int]:
+        d = [[] for i in range(101)]
+
+        for x, y in rectangles:
+            d[y].append(x)
+        
+        for i in range(101):
+            d[i].sort()
+        
+        res = []
+
+        for x, y in points:
+            count = 0
+            for y_point in range(y, 101):
+                if len(d[y_point]) == 0:
+                    continue
+                count += len(d[y_point]) - bisect.bisect_left(d[y_point], x)
+            
+            res.append(count)
+        return res
+        
