@@ -1,0 +1,16 @@
+class Solution:
+    def longestIdealString(self, s: str, k: int) -> int:
+        n = len(s)
+        dp = [0]*26
+        ans = 0
+        for i in range(n):
+            length = 0
+            d = ord(s[i]) - ord('a')
+            for j in range(max(0, d-k), min(d+k+1, 26)):
+                    length = max(length, dp[j])
+            dp[d] = length + 1
+            
+            ans = max(ans, dp[d])
+        return ans
+
+        
