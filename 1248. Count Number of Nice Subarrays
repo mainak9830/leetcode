@@ -1,0 +1,16 @@
+class Solution:
+    def numberOfSubarrays(self, nums: List[int], k: int) -> int:
+        queue = deque([])
+        ans = 0
+        prev = -1
+        for i in range(len(nums)):
+            if nums[i]%2:
+                queue.append(i)
+            if(len(queue ) >= k):
+                
+                if(len(queue) > k):
+                    prev = queue[0]
+                    queue.popleft()
+                ans += queue[0]-prev
+                # prev = queue[0]
+        return ans
