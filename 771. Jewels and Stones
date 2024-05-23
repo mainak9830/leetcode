@@ -1,0 +1,10 @@
+class Solution:
+    def numJewelsInStones(self, jewels: str, stones: str) -> int:
+        
+        set_j = set(jewels)
+        count = 0
+        for s in stones:
+            if s in set_j:
+                count += 1
+        
+        return count
