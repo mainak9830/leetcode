@@ -1,0 +1,53 @@
+class Solution:
+    def diffWaysToCompute(self, expression: str) -> List[int]:
+        word = ""
+        words = []
+        n = len(expression)
+        for i in range(n):
+            if expression[i].isalnum():
+                word += expression[i]
+            else:
+                words.append(word)
+                words.append(str(expression[i]))
+                word = ""
+        words.append(word)
+        
+        print(words)
+
+        
+        return self.dfs(0, len(words)-1, words)
+       
+    def calculate(self, type: str, a: int, b:int)->int:
+        if type == "+":
+            return a + b
+        elif type == "*":
+            return a*b
+        elif type == "-":
+            return a-b
+        
+        return -1
+    def dfs(self, i: int, j: int, words: List[str])->List[int]:
+        # if 
+        n = len(words)
+        if i == j:
+            return [int(words[i])]
+        new_list = []
+
+        for k in range(i+1,j):
+            if not words[k].isdigit():
+                left = self.dfs(i, k-1, words)
+                right = self.dfs(k+1, j, words)
+                for l in left:
+                    for r in right:
+                        new_list.append(self.calculate(words[k], l, r))
+        return new_list
+
+
+
+            
+
+
+    
+
+
+
