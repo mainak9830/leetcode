@@ -1,0 +1,27 @@
+class Solution:
+    def checkRecord(self, n: int) -> int:
+        MOD = 1000000007
+        self.dp = [[[-1]*2 for late in range(3)] for _ in range(n+1)]
+        
+
+        def rec(n: int, consecutive_late: int, absent: int):
+            if consecutive_late >= 3 or absent >= 2:
+                return 0
+            if n == 0:
+                return 1
+            count = 0
+            if self.dp[n][consecutive_late][absent] != -1:
+                return self.dp[n][consecutive_late][absent]
+            
+            count = rec(n-1, 0, absent) # present
+            count = (count + rec(n-1, consecutive_late+1,absent)) % MOD
+            count = (count + rec(n-1, 0, absent+1)) % MOD #absent
+            self.dp[n][consecutive_late][absent] = count
+            return count
+
+        return rec(n, 0, 0)
+
+
+
+
+        
