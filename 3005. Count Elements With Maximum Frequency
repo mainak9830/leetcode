@@ -1,0 +1,16 @@
+class Solution:
+    def maxFrequencyElements(self, nums: List[int]) -> int:
+        d = {}
+        maxCount = 0
+        ans = 0
+        for num in nums:
+            d[num] = d.get(num, 0) + 1
+            if d[num] > maxCount:
+                ans = d[num]
+                maxCount = d[num]
+            elif d[num] == maxCount:
+                ans += d[num]
+        
+        return ans
+
+
