@@ -1,0 +1,43 @@
+class Solution:
+    
+    def createGraph(self, values: List[str])->List[List[int]]:
+        graph = [[] for i in range(len(values))]
+        for i in range(len(values)):
+            for j in range(len(values)):
+                if i == j:
+                    continue
+                if set(values[i]).intersection(set(values[j])):
+                    graph[i].append(j)
+        return graph    
+    
+    def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
+        d = defaultdict(list)
+
+        for account in accounts:
+            d[account[0]].append(account[1:])
+
+        output = []
+
+        for k, value in d.items():
+            graph = self.createGraph(value)
+            # print(graph)
+            visited = set()
+            emails_covered = set()
+            def dfs(u):
+                # print(u)
+                visited.add(u)
+                # global emails_covered
+                emails_covered.update(set(value[u]))
+                for v in graph[u]:
+                    if v not in visited:
+                        dfs(v)
+            
+            for u in range(len(value)):
+                if u not in visited:
+                    # visited.clear()
+                    emails_covered.clear()
+                    dfs(u)
+                    output.append([k]+sorted(list(emails_covered)))
+
+        return output
+        
