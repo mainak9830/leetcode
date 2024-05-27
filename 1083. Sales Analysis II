@@ -1,0 +1,15 @@
+# Write your MySQL query statement below
+WITH Joined AS (
+    SELECT buyer_id, product_name
+    FROM Sales AS S
+    JOIN Product AS P 
+    ON S.product_id = P.product_id
+    WHERE P.product_name IN ('S8', 'iPhone')
+)
+
+SELECT DISTINCT J1.buyer_id FROM Joined AS J1 
+LEFT JOIN 
+Joined AS J2 
+ON J1.buyer_id = J2.buyer_id  
+AND J1.product_name != J2.product_name
+WHERE J1.product_name = 'S8' AND J2.product_name IS NULL;
