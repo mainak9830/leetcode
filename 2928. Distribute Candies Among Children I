@@ -1,0 +1,15 @@
+class Solution:
+    def nc2(self, n: int)->int:
+        return (n*(n-1))//2
+    def distributeCandies(self, n: int, limit: int) -> int:
+        if n > 3*limit:
+            return 0
+        count = self.nc2(n+2)
+        if n > limit:
+            count -= 3*self.nc2(n-limit+1)
+        # x1 + x2 + x3 = n - 2*limit - 2 + 
+        if n > 2*limit + 1:
+            count += 3*self.nc2(n-2*limit)
+
+        return count  
+        
