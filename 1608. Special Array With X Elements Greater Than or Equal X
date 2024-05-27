@@ -1,0 +1,20 @@
+class Solution:
+    def helper(self, nums: List[int], x: int)->int:
+
+        return len(nums) - bisect.bisect_left(nums, x)
+    def specialArray(self, nums: List[int]) -> int:
+        nums.sort()
+        l = 0
+        h = len(nums)
+
+        while l <= h:
+            mid = l + (h-l)//2
+
+            count_greater_than_or_equal_x = self.helper(nums, mid)
+            if count_greater_than_or_equal_x == mid:
+                return mid
+            elif count_greater_than_or_equal_x > mid:
+                l = mid + 1
+            else:
+                 h = mid - 1
+        return -1
