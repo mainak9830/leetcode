@@ -1,0 +1,13 @@
+# Write your MySQL query statement below
+WITH Aggregated_Sales AS (
+    SELECT seller_id,
+    SUM(price) AS total_price
+    FROM Sales
+    GROUP BY seller_id
+)
+
+SELECT seller_id FROM 
+Aggregated_Sales
+WHERE total_price = (
+    SELECT MAX(total_price) FROM Aggregated_Sales
+);
