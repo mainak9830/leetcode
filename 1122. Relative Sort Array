@@ -1,0 +1,10 @@
+class Solution:
+    def relativeSortArray(self, arr1: List[int], arr2: List[int]) -> List[int]:
+        pos_mapping = defaultdict()
+
+        for i in range(len(arr2)):
+            pos_mapping[arr2[i]] = i
+
+        arr1.sort(key=lambda x: pos_mapping[x] if x in pos_mapping.keys() else len(arr2) + x)
+        # arr1.sort(key=lambda x: )
+        return arr1
