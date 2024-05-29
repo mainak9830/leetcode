@@ -1,0 +1,33 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def dfs(self, root: Optional[TreeNode], d: dict)->int:
+        if root and not root.left and not root.right:
+            d[root.val] = d.get(root.val, 0) + 1
+            c = 0
+            for k, v in d.items():
+                c += v%2
+            if c <= 1:
+                self.count += 1    
+            d[root.val] -= 1
+            if d[root.val] == 0:
+                del d[root.val]
+            return
+        if not root:
+            return
+        d[root.val] = d.get(root.val, 0) + 1
+        self.dfs(root.left, d)
+        self.dfs(root.right, d)
+        d[root.val] -= 1
+        if d[root.val] == 0:
+            del d[root.val]
+
+    def pseudoPalindromicPaths (self, root: Optional[TreeNode]) -> int:
+        self.count = 0
+        self.dfs(root, {})
+        
+        return self.count
