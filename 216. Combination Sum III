@@ -1,0 +1,21 @@
+class Solution:
+    def backtrack(self, index: int, k: int, n: int, temp: List[int])->None:
+        
+        if k == 0 and n == 0:
+            f = copy.deepcopy(temp)
+            # print(temp)
+            self.res.append(f)
+            return
+        elif k < 0 or n < 0:
+            return 
+        for num in range(index, 10):
+            temp.append(num)
+            # print(temp)
+            self.backtrack(num+1, k-1, n-num, temp)
+            temp.pop()
+
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        self.res = []
+        self.backtrack(1, k, n, [])
+        return self.res
+        
