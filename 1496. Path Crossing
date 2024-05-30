@@ -1,0 +1,25 @@
+class Solution:
+    def isPathCrossing(self, path: str) -> bool:
+        
+        visited = set()
+        point = (0, 0)
+        visited.add((point))
+        for p in path:
+            
+            x, y = point
+            if p == 'N':
+                point = (x, y+1)
+            elif p == 'S':
+                point = (x, y-1)
+                # visited.add()
+            elif p == 'E':
+                point = (x+1, y)
+                # visited.add()
+            else:
+                point = (x-1, y)
+                # visited.add()
+            if point in visited:
+                return True
+            visited.add(point)
+        return False
+            
