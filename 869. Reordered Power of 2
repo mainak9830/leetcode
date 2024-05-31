@@ -1,0 +1,22 @@
+class Solution:
+    def count(self, n: int) -> List[int]:
+        bit = [0]*31
+
+        while n:
+            d = n % 10
+            n //= 10
+            bit[d] += 1
+        
+        return bit
+
+
+    def reorderedPowerOf2(self, n: int) -> bool:
+        count1 = self.count(n)
+        # print(count1)
+        for i in range(31):
+            if count1 == self.count(1 << i):
+                return True
+
+        return False
+
+        
