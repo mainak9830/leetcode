@@ -1,0 +1,39 @@
+class Solution {
+public:
+    vector<int> assignTasks(vector<int>& servers, vector<int>& tasks) {
+        
+        priority_queue<vector<int>, vector<vector<int>>,greater<vector<int>>> run_queue;
+        priority_queue<vector<int>, vector<vector<int>>,greater<vector<int>>> wait_queue;
+        
+        for(int i = 0;i < servers.size();i++){
+            run_queue.push({servers[i], i});
+        }
+        vector<int> ans;
+        int t = 0;
+        for(int i = 0;i < tasks.size();i++){
+            t = max(t, i);
+            if(run_queue.empty()){
+                auto node = wait_queue.top();
+                t = node[0];
+            }
+            while(!wait_queue.empty() && wait_queue.top()[0] <= t){
+                auto node = wait_queue.top();
+                // cout << "popping size " << wait_queue.size() << endl;
+                wait_queue.pop();
+                run_queue.push({node[1], node[2]});
+                // run_queue.push({1,2});
+                
+            }
+            
+            ans.push_back(run_queue.top()[1]);
+            cout << run_queue.size() << " " << wait_queue.size() << endl;
+            // wait_queue.push({0, 1, 2});
+            vector<int> temp = {t + tasks[i], run_queue.top()[0], run_queue.top()[1]};
+            wait_queue.push(temp);
+            run_queue.pop();
+
+        }
+
+        return ans;
+    }
+};
