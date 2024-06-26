@@ -1,0 +1,97 @@
+/**
+ * // This is the interface that allows for creating nested lists.
+ * // You should not implement it, or speculate about its implementation
+ * class NestedInteger {
+ *   public:
+ *     // Constructor initializes an empty nested list.
+ *     NestedInteger();
+ *
+ *     // Constructor initializes a single integer.
+ *     NestedInteger(int value);
+ *
+ *     // Return true if this NestedInteger holds a single integer, rather than a nested list.
+ *     bool isInteger() const;
+ *
+ *     // Return the single integer that this NestedInteger holds, if it holds a single integer
+ *     // The result is undefined if this NestedInteger holds a nested list
+ *     int getInteger() const;
+ *
+ *     // Set this NestedInteger to hold a single integer.
+ *     void setInteger(int value);
+ *
+ *     // Set this NestedInteger to hold a nested list and adds a nested integer to it.
+ *     void add(const NestedInteger &ni);
+ *
+ *     // Return the nested list that this NestedInteger holds, if it holds a nested list
+ *     // The result is undefined if this NestedInteger holds a single integer
+ *     const vector<NestedInteger> &getList() const;
+ * };
+ */
+class Solution {
+public:
+    NestedInteger recurse(vector<int>& rightBracket, string s, int i){
+        // if(s.length() == 0)return 
+        cout << "String  " << s << endl;
+        NestedInteger current = NestedInteger();
+        // if(s.length() == 2 and s[0] == '['){
+        //     return current;
+        // }
+        if(s[0] != '[')
+            return NestedInteger(stoi(s));
+        int start = i+1;
+        int end = rightBracket[i]-1;
+        
+        
+        
+        
+        string word = "";
+        int idx = start;
+        
+        for(idx = start;idx <= end;idx++){
+            char c = s[idx-i];
+            
+            if(c == '['){
+                int e = rightBracket[idx];
+                // cout << "recurse list " << s.substr(idx-i, e-idx+1) << endl;
+                
+                current.add(recurse(rightBracket, s.substr(idx-i, e-idx+1), idx));
+                idx = e;
+                word = "";
+                continue;
+            }
+            else if(c == ','){
+                // cout << "recurse single word " << word << endl;
+                if(!word.empty())
+                    current.add(recurse(rightBracket, word, idx - word.size()));
+                word = "";
+                continue;
+            }
+            
+            word += c;
+        }
+        if(!word.empty()){
+            // cout << "hey" << endl;
+            current.add(recurse(rightBracket, word, idx - word.size()));
+            }
+        return current;
+    }
+    NestedInteger deserialize(string s) {
+        vector<int> rightBrackets(s.length(), -1);
+        stack<int> stack;
+        for(int i = 0;i < s.length();i++){
+            if(s[i] == '['){
+                stack.push(i);
+            }else if(s[i] == ']'){
+                rightBrackets[stack.top()] = i;
+                stack.pop();
+            }
+        }
+
+        // for(int i = 0;i < rightBrackets.size();i++){
+        //     cout << rightBrackets[i] << " ";
+        // }
+        // cout << endl;
+        // return NestedInteger(0);
+        return recurse(rightBrackets, s, 0);
+    }
+};
