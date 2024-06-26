@@ -1,0 +1,36 @@
+class Solution {
+public:
+    bool check(string s){
+        map<char, int> count;
+
+        for(char c : s)
+            count[c]++;
+        int ans = count.begin()->second;
+        for(auto kv : count){
+            if(kv.second != ans)return false;
+        }
+
+        return true;
+    }
+    int minimumSubstringsInPartition(string s) {
+        
+        int n = s.length();
+        vector<int> dp(n+1, 0);
+        // dp[1] = 1;
+        for(int i = 1;i <= n;i++){
+            dp[i] = i;
+            for(int j = i-1;j >= 0;j--){
+                if(check(s.substr(j, i-j))){
+                    
+                    dp[i] = min(dp[i], dp[j]+1);
+                }
+            }
+            // dp[i] = mini+1;
+            // cout << dp[i] << " ";
+
+        }
+
+        return dp[n];
+
+    }
+};
