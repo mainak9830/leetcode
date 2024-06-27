@@ -1,0 +1,45 @@
+class Solution {
+public:
+    
+    int openLock(vector<string>& deadends, string target) {
+        
+        string start = "0000";
+
+        queue<pair<string, int>> queue;
+
+        set<string> deadEnds(deadends.begin(), deadends.end());
+        set<string> visited;
+        if(!deadEnds.count(start)){
+            queue.push({start, 0});
+            visited.insert(start);
+        }
+        while(!queue.empty()){
+            auto [node, level] = queue.front();
+            // cout << "node " << node << endl;
+            queue.pop();
+            if(node == target)return level;
+           
+
+            for(int i = 0;i < 4;i++){
+                int p = node[i] - '0';
+
+                node[i] = (p+9)%10 + '0';
+                
+                if(!visited.count(node) && !deadEnds.count(node)){
+                    queue.push({node, level+1});
+                    visited.insert(node);
+                }
+
+                node[i] = (p+1)%10 + '0';
+                if(!visited.count(node) && !deadEnds.count(node)){
+                    queue.push({node, level+1});
+                    visited.insert(node);
+                }
+
+                node[i] = p + '0';
+            }
+        }
+
+        return -1;
+    }
+};
