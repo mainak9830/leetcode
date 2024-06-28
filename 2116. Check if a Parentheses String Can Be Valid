@@ -1,0 +1,36 @@
+class Solution {
+public:
+    bool canBeValid(string s, string locked) {
+        
+        int n = s.length();
+
+        if(n % 2)return false;
+
+        stack<int> stack, stack1;
+        for(int i = 0;i < n;i++){
+            if(locked[i] == '1' and s[i] == ')'){
+                if(stack.empty())return false;
+                stack.pop();
+            }else{
+                stack.push(i);
+            }
+            
+        }
+
+        // stack has just '(' and unlocked
+        // stack.c()
+        reverse(locked.begin(), locked.end());
+        reverse(s.begin(), s.end());
+
+        for(int i = 0;i < n;i++){
+            if(locked[i] == '1' and s[i] == '('){
+                if(stack1.empty())return false;
+                stack1.pop();
+            }else{
+                stack1.push(i);
+            }
+            
+        }
+        return true;
+    }
+};
