@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int find(map<int, int> &d, int k){
+        int num = 0;
+        for(auto [key,v] : d){
+            if(key >= 0)return 0;
+            k -= v;
+            num = key;
+            if(k <= 0)
+                break;
+        }
+
+        return num;
+    }
+    vector<int> getSubarrayBeauty(vector<int>& nums, int k, int x) {
+        int n = nums.size();
+        priority_queue<int, vector<int>, greater<int>> pq_max; 
+        vector<int> output;
+        map<int, int> dict;
+        for(int i = 0;i < n;i++){
+            dict[nums[i]]++;
+
+            if(i >= k){
+                dict[nums[i-k]]--;
+                if(dict[nums[i]] == 0)
+                    dict.erase(nums[i]);
+                
+               
+            }
+
+            if(i >= k-1){
+                output.push_back(find(dict, x));
+            }
+        }
+
+        return output;
+    }
+};
