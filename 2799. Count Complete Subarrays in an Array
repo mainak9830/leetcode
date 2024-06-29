@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int countCompleteSubarrays(vector<int>& nums) {
+        int n = nums.size();
+
+        int count = 0;
+
+        int l = 0;
+        int r = 0;
+
+        set<int> unique_global;
+
+        for(int num : nums)
+            unique_global.insert(num);
+
+        int nunique = unique_global.size();
+        map<int, int> rightMostIndex;
+        
+        while(r < n){
+            rightMostIndex[nums[r]] = max(rightMostIndex[nums[r]], r);
+            
+            
+            int right = n;
+            if(rightMostIndex.size() == nunique){
+                for(auto [k, v] : rightMostIndex){
+                    
+                    right = min(right, v);
+                }
+            }
+            else if(rightMostIndex.size() > nunique){
+                rightMostIndex.erase(nums[right]);
+                l = right + 1;
+                right = right + 1;
+            }
+
+
+            if(rightMostIndex.size() == nunique)
+                count += right - l + 1;
+            r++;
+
+        }
+        return count;
+    }
+};
