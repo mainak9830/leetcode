@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int dp[6002][2];
+    int func(int a, int b, int x, int pos, int back, set<int> &forbidden){
+        if(pos == x)return 0;
+        if(pos < 0 || pos > 6000 || forbidden.count(pos))return 1e9;
+
+        if(dp[pos][back] != -1)return dp[pos][back];
+
+        dp[pos][back] = 1 + func(a,b,x,pos+a,0,forbidden);
+        if(back == 0){
+            dp[pos][back] = min(dp[pos][back], 1 + func(a,b,x,pos-b,1,forbidden));
+       } 
+       return dp[pos][back];
+    }
+    int minimumJumps(vector<int>& forbidden, int a, int b, int x) {
+        set<int> sets(forbidden.begin(), forbidden.end());
+        memset(dp, -1, sizeof(dp));
+        int ans = func(a,b,x,0,0,sets);
+        return ans > 1e9 ? -1 : ans;    
+    }
+};
