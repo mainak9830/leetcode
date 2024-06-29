@@ -1,3 +1,5 @@
+Apparently huge difference in directly assigning the values to the dp in line 12, instead of taking an extra variable and assinging it again and again, huge difference in time.
+
 class Solution {
 public:
     int dp[6002][2];
