@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> fairCandySwap(vector<int>& aliceSizes, vector<int>& bobSizes) {
+        
+        int sumA = 0, sumB = 0;
+        set<int> aliceSet ;
+        for(int num : aliceSizes){
+            sumA += num;
+            aliceSet.insert(num);
+        }
+        
+        for(int num : bobSizes)
+            sumB += num;
+        
+        int d = (sumA - sumB) / 2;
+        
+        for(int x : bobSizes){
+            if(aliceSet.count(x+d))
+                return {x+d, x};
+        }
+        return {};
+    }
+};
