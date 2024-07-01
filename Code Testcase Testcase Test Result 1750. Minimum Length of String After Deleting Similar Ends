@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int minimumLength(string s) {
+        int n = s.length();
+
+        int l = 0;
+        int h = n-1;
+
+
+        while(l <= h && s[l] == s[h]){
+            if(l == h)
+                break;
+            char c = s[l];
+            while(l <= h && s[l] == c)
+                l++;
+            while(l < h && s[h] == c)
+                h--;
+        }
+
+        return l > h ? 0 : h-l+1;
+    }
+};
