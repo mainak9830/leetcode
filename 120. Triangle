@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int n = triangle.size();
+        vector<int> curr = triangle[0];
+        
+        for(int i = 2;i <= n;i++){
+            vector<int> prev = curr;
+            curr.resize(i, 0);
+            
+            for(int j = 0;j < i;j++){
+                if(j == 0)
+                    curr[j] = prev[j] + triangle[i-1][j];
+                else if(j == i-1)
+                    curr[j] = prev[j-1] + triangle[i-1][j];
+                else
+                    curr[j] = min(prev[j], prev[j-1]) + triangle[i-1][j];
+            }
+        }
+
+        return *min_element(curr.begin(), curr.end());
+    }
+};
