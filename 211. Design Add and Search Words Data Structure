@@ -1,0 +1,77 @@
+class Node{ 
+public:
+    map<char, Node*> childs;
+    bool end = false;
+
+    void setEnd(){
+        end = true;
+    }
+
+    bool isEnd(){
+        return end;
+    }
+};
+class Trie{
+    Node* root;
+public:
+    Trie(){
+        root = new Node();
+    }
+    void addWord(string &word){
+        Node* head = root;
+        for(char c : word){
+            if(head->childs.count(c) == 0)
+                head->childs[c] = new Node();
+            head = head->childs[c];
+        }
+        head->setEnd();
+    }
+
+    bool search(string &word){
+
+        return searchWord(word, root, 0);
+    }
+
+    bool searchWord(string &word, Node* root, int i){
+        int n = word.size();
+        if(i == n){
+            return root->isEnd();
+        }
+
+        if(word[i] != '.' && root->childs.count(word[i]) == 0)
+            return false;
+        else if(word[i] != '.'){
+            return searchWord(word, root->childs[word[i]], i+1);
+        }
+        bool res = false;
+        for(auto [k,v] : root->childs){
+            res |= searchWord(word, v, i+1);
+            if(res)return res;
+        }
+
+        return res;        
+    }
+};
+
+class WordDictionary {
+    Trie *t;
+public:
+    WordDictionary() {
+        t = new Trie();
+    }
+    
+    void addWord(string word) {
+        t->addWord(word);
+    }
+    
+    bool search(string word) {
+        return t->search(word);
+    }
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary* obj = new WordDictionary();
+ * obj->addWord(word);
+ * bool param_2 = obj->search(word);
+ */
