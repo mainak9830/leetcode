@@ -1,0 +1,41 @@
+class Solution {
+public:
+    ListNode* removeZeroSumSublists(ListNode* head) {
+        vector<ListNode*> arr;
+        ListNode* root = head;
+        map<int, int> map;
+        int sum = 0;
+        vector<int> sumVec;
+        while(root){
+            sum += root->val;
+            
+            map[sum] = sumVec.size();
+            sumVec.push_back(sum);
+            arr.push_back(root);
+            root = root->next;
+        }
+
+        ListNode* t = new ListNode(-1);
+        root = t;
+        int n = arr.size();
+        sum = 0;
+        for(int i = 0;i < n;i++){
+            
+            if(map.count(sum) && map[sum] > i){
+                
+                i = map[sum];
+            }else if(map.count(sum) && map[sum] == i && arr[map[sum]]->val == 0){
+                continue;
+            }
+            else{
+                arr[i]->next = NULL;
+                root->next = arr[i];
+                root = root->next;
+                sum += arr[i]->val;
+            }
+            
+
+        }
+        return t->next;
+    }
+};
