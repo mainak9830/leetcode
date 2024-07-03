@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        int n = p.length();
+
+        vector<int> res;
+        map<char, int> pfreq, sfreq;
+        
+        for(char c : p){
+            pfreq[c]++;
+        }
+        for(int i = 0;i < s.length();i++){
+            if(i >= n){
+                sfreq[s[i-n]]--;
+                if(sfreq[s[i-n]] == 0)
+                    sfreq.erase(s[i-n]);
+            }
+                
+            sfreq[s[i]]++;
+            if(i >= n-1){
+                
+                bool flag = true;
+                if(sfreq.size() != pfreq.size())
+                    flag = false;
+
+                for(auto [k,v] : pfreq){
+                    if(!sfreq.count(k) || sfreq[k] != v){
+                        flag = false;
+                        break;
+                    }
+                }
+                
+                if(flag)
+                    res.push_back(i-n+1);
+            }
+        }
+
+        return res;
+    }
+};
