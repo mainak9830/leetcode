@@ -1,0 +1,25 @@
+class Solution {
+public:
+    unordered_map<int, bool> m; 
+    bool canWin(int maxValue, int total, int mask){
+        if(total <= 0){
+            return false;
+        }
+        if(m.count(mask))
+            return m[mask];
+        for(int k = 1;k <= maxValue;k++){
+            if(!(mask & (1 << k)) and !canWin(maxValue, total-k, mask | (1 << k))){
+                return m[mask] = true;
+                
+            }
+            
+        }
+
+        return (m[mask] = false);
+    }
+    bool canIWin(int maxChoosableInteger, int desiredTotal) {
+        if(desiredTotal == 0)return true;
+        if(desiredTotal * 2 > maxChoosableInteger*(maxChoosableInteger+1))return false;
+        return canWin(maxChoosableInteger, desiredTotal, 0);
+    }
+};
