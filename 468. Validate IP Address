@@ -1,0 +1,61 @@
+class Solution {
+public:
+    bool validIPv4(string IP){
+        if(count(IP.begin(), IP.end(), '.') != 3)return false;
+
+        vector<string> parts = split(IP, '.');
+
+        if(parts.size() != 4)return false;
+
+
+        for(auto part : parts){
+            if(part.empty() || (part.length() > 1 && part[0] == '0') || part.length() > 3)return false;
+
+            for(char c : part){
+                if(!isdigit(c))return false;
+            }
+            if(stoi(part) > 255)
+                return false;
+        }
+
+
+        return true;
+    }
+
+    bool validIPv6(string IP){
+        if(count(IP.begin(), IP.end(), ':') != 7)return false;
+
+        vector<string> parts = split(IP, ':');
+
+        if(parts.size() != 8)return false;
+
+
+        for(auto part : parts){
+            cout << part  << endl;
+            if(part.empty() || part.length() > 4)return false;
+
+            for(char c : part){
+                if(isdigit(c) || (isalpha(c) && tolower(c) <= 'f'))
+                    continue;
+                else
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    vector<string> split(string s, char del){
+        istringstream ss(s);
+        vector<string> parts;
+        string word;
+        while(getline(ss, word, del)){
+            parts.push_back(word);
+        }
+
+        return parts;
+
+    }
+    string validIPAddress(string queryIP) {
+        return validIPv4(queryIP) ? "IPv4" : (validIPv6(queryIP) ? "IPv6" : "Neither");
+    }
+};
