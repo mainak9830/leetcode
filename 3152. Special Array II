@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<bool> isArraySpecial(vector<int>& nums, vector<vector<int>>& queries) {
+        
+        int n = nums.size();
+
+        vector<int> res(n, 0);
+        
+        for(int i = 1;i < n;i++){
+            if(nums[i]%2 == nums[i-1]%2)
+                res[i] = res[i-1] + 1;
+            else
+                res[i] = res[i-1];
+        }
+
+        vector<bool> ans;
+        for(auto query : queries){
+            // bool res = ;
+            ans.push_back(res[query[0]] == res[query[1]]);
+            
+        }
+
+        return ans;
+    }
+};
