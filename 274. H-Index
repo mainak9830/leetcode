@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        int n = citations.size();
+        vector<int> count(n+1, 0);
+
+        for(int i = 0;i < n;i++){
+            count[min(citations[i], n)]++;
+        }
+        int k = n;
+        int citationsCount = 0;
+        for(;k >= 0;k--){
+            citationsCount += count[k];
+            if(citationsCount >= k)return k;
+        }
+
+        return 0;
+    }
+};
