@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int passThePillow(int n, int time) {
+        
+        int index = time % (n-1);
+        int laps = time / (n-1);
+
+        // if(index == 0)
+        return laps % 2 ? n-index : 1 + index;
+    }
+};
