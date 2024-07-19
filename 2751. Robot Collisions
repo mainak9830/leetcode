@@ -1,0 +1,103 @@
+//pass class by reference rather data, it will not reflect the updates on the data inside the class
+class Solution {
+public:
+    class robot{
+        public:
+            int p;
+            int h;
+            char d;
+            robot(int p, int h, char d):p(p), h(h), d(d){}
+    };
+    vector<int> survivedRobotsHealths(vector<int>& positions, vector<int>& healths, string directions) {
+        
+
+        // L L R R
+        // R L R L
+        
+        int n = positions.size();
+        stack<robot*> stack;
+        vector<robot*> robots;
+        map<int, robot*> pos_to_robot;
+
+        for(int i = 0;i < n;i++){
+            auto trobot = new robot(positions[i], healths[i], directions[i]);
+            robots.push_back(trobot);
+            pos_to_robot.insert({positions[i], trobot});
+
+            // cout << pos_to_robot.find(positions[i])->second->h <<endl;
+        }
+
+
+        sort(robots.begin(), robots.end(), [](robot* a, robot* b){
+            return a->p < b->p; 
+        });
+        
+        set<int> filtered;
+
+        
+        for(auto robot : robots){
+            if(robot->d == 'R')
+                stack.push(robot);
+            else{
+                // bool 
+                bool done = false;
+                while(!stack.empty() and stack.top()->d == 'R'){
+                    
+                    if(stack.top()->h < robot->h){
+                        stack.pop();
+                        robot->h--; 
+                        // cout << "colliding with " << stack.top().p << " " << robot.p << "new health " << robot.h << endl;
+                    }else if(stack.top()->h == robot->h){
+                        
+                        done = true;
+                        
+                        // cout << "cancelled each other " << stack.top().p << " " << robot.p << endl;
+                        stack.pop();
+                        break;
+                    }else{
+                        stack.top()->h--; 
+                        done = true;
+                        
+
+                        // cout << "left side more strength " << stack.top().p << " " << robot.p << stack.top().h << endl;
+                        break;
+                    }
+                    // robot.h--;
+                    if(robot->h == 0){
+                        done = true;
+                        break;
+                    }
+                }
+
+                if(done)
+                    continue;
+                stack.push(robot);
+
+          
+        
+               
+
+ 
+            }
+            
+        }
+
+        while(!stack.empty()){
+            // cout << stack.top().p << " ";
+            filtered.insert(stack.top()->p);
+            stack.pop();
+        }
+
+        
+        vector<int> res;
+
+        for(int i = 0;i < n;i++){
+            if(filtered.count(positions[i])){
+                // cout << pos << " " << pos_to_robot.count(pos) << endl;
+                res.push_back(pos_to_robot.find(positions[i])->second->h);
+            }
+        }
+
+        return res;
+    }
+};
