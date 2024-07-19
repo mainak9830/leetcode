@@ -1,0 +1,63 @@
+class Solution {
+public:
+    map<string, int> mapper;
+    void helper(string& formula, int extra, int i, int j, vector<int>& end){
+        if(i > j)
+            return;
+
+        int n = formula.length();
+        for(int k = i;k <= j;){
+            if(formula[k] == '('){
+                int l = end[k] + 1;
+                string number = "";
+                while(l < n && isdigit(formula[l])){
+                    number += formula[l++];
+                }
+                // cout << number << " " << formula.substr(k, end[k]-k+1) << endl;
+                helper(formula, extra*(number.length() ? stoi(number) : 1), k+1, end[k]-1, end);
+                k = l;
+            }else{
+                
+                string element = "";
+                element += formula[k];
+                string number = "";
+
+                int l = k+1;
+                while(l <= j && isalpha(formula[l]) && islower(formula[l]))
+                    element += formula[l++];
+                
+                while(l <= j && isdigit(formula[l]))
+                    number += formula[l++];
+                
+                mapper[element] += extra * (number.length() ? stoi(number) : 1);
+                k = l;
+            }
+            // k++;
+        }
+    }
+    string countOfAtoms(string formula) {
+        
+        int n = formula.length();
+        vector<int> end(n, -1);
+        stack<int> stack;
+        for(int i = n-1;i >= 0;i--){
+            if(formula[i] == ')')
+                stack.push(i);
+            else if(formula[i] == '('){
+                end[i] = stack.top();
+                stack.pop();
+            }
+        }
+        helper(formula, 1, 0, n-1, end);
+        string ans = "";
+        for(auto [k, v] : mapper){
+            // cout << k << " " << v << endl;
+            ans += k;
+            if(v > 1)
+                ans += to_string(v);
+        }
+
+        return ans;
+        // h2o2(no2)4
+    }
+};
