@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> grayCode(int n) {
+        
+        vector<int> results = {0};
+
+
+        for(int i = 1;i <= n;i++){
+            
+            int mask = 1 << (i-1);
+            
+            for(int j = results.size()-1;j >= 0;j--){
+                results.push_back(mask + results[j]);
+            }
+        }
+
+        return results;
+    }
+};
