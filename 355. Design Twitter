@@ -1,0 +1,71 @@
+class Twitter {
+public:
+    int timestamp = 0;
+    int K = 10;
+    Twitter() {
+        
+    }
+    map<int, set<int>> followers;
+    map<int, list<vector<int>>> allPosts;
+    
+    void postTweet(int userId, int tweetId) {
+        timestamp++;
+        allPosts[userId].push_front({timestamp, tweetId});
+        if(allPosts[userId].size() > K)
+            allPosts[userId].pop_back();
+    }
+    
+    vector<int> getNewsFeed(int userId) {
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+        vector<int> tweets;
+
+        for(auto post : allPosts[userId]){
+            if(pq.size() < K){
+                pq.push(post);
+            }else if(pq.top()[0] < post[0]){
+                pq.pop();
+                pq.push(post);
+            }
+        }
+
+        for(auto followee : followers[userId]){
+            for(auto post : allPosts[followee]){
+                if(pq.size() < K){
+                    pq.push(post);
+                }else if(pq.top()[0] < post[0]){
+                    pq.pop();
+                    pq.push(post);
+                }
+            }
+        }
+
+
+
+        while(!pq.empty()){ 
+            tweets.push_back(pq.top()[1]);
+            pq.pop();
+        }
+
+        reverse(tweets.begin(), tweets.end());
+        return tweets;
+    }
+    
+    void follow(int followerId, int followeeId) {
+        followers[followerId].insert(followeeId);
+    }
+    
+    void unfollow(int followerId, int followeeId) {
+        if(followers[followerId].count(followeeId)){
+            followers[followerId].erase(followeeId);
+        }
+    }
+};
+
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * Twitter* obj = new Twitter();
+ * obj->postTweet(userId,tweetId);
+ * vector<int> param_2 = obj->getNewsFeed(userId);
+ * obj->follow(followerId,followeeId);
+ * obj->unfollow(followerId,followeeId);
+ */
