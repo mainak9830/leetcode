@@ -1,0 +1,20 @@
+class Solution {
+public:
+    long long maximumAlternatingSubarraySum(vector<int>& nums) {
+        long long neg = 0, pos = nums[0];
+        
+        long long ans = nums[0];
+        for(int i = 1;i < nums.size();i++){
+            auto t = neg;
+            neg = pos - nums[i];
+            pos = t + nums[i];
+
+            if(nums[i] > pos)
+                pos = nums[i];
+            ans = max({ans, neg, pos});
+
+        }
+
+        return ans;
+    }
+};
